@@ -908,6 +908,70 @@ Use case ends.
 [appendix]
 == Glossary
 
+App
+....
+Short for “application”, a program designed to perform a group
+of coordinated functions, tasks or activities for the benefit of
+the user. In the Address Book, the user can keep track of his or
+her contacts.
+....
+
+Application Programming Interface (API)
+....
+The interface that a computer system, library or application
+provides to allow other computer programs to request services
+from it and exchange data.
+....
+
+AppVeyor
+....
+A Continuous Integration platform for GitHub projects. It runs
+its builds on Windows virtual machines. Runs the project’s tests
+automatically whenever new code is pushed to the repository.
+....
+
+Build automation
+....
+Process of automating the creation of a software build and the
+associated processes including: compiling computer source
+code into binary code, packaging binary code and running
+automated tests.
+....
+
+Cleanup method
+....
+A set of code that can be called when unnecessary files or processes are
+to be removed.
+....
+
+Continuous Integration (CI)
+....
+Practice of merging all developer working copies to a shared
+mainline several times a day. Each check-in is then verified by
+an automated build, allowing teams to detect problems early.
+....
+
+Gradle
+....
+An open source build automation system designed for multi-project
+builds. Supports incremental builds by intelligently determining
+which parts of the build tree are up-to-date, so that any task
+dependent upon those parts will not need to be re-executed.
+....
+
+Graphical User Interface (GUI)
+....
+Where interactions between the user and the Address Book
+occur through the form of graphical icons and visual indicators.
+....
+
+JavaFX
+....
+Set of graphics and media packages that enables developers to
+design, create, test, debug and deploy rich client applications
+that operate consistently across diverse platforms.
+....
+
 [[mainstream-os]]
 Mainstream OS
 
@@ -921,6 +985,28 @@ Private contact detail
 ....
 A contact detail that is not meant to be shared with others
 ....
+
+TestFX
+....
+Framework for use in automating JavaFX Graphical User
+Interface(GUI) tests.
+....
+
+Travis
+....
+A Continuous Integration platform for GitHub projects. Runs
+the project’s tests automatically whenever new code is pushed
+to the repository.
+....
+
+User Interface(UI)
+....
+Space where interactions between the user and Address Book
+happens.
+....
+
+
+
 
 [appendix]
 == Product Survey
