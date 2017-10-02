@@ -890,7 +890,18 @@ Use case ends.
 
 .  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
 .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
+.  Should be able to run the Address Book with a minimum resolution of 800 x 600 pixels.
+.  Should work on both 32-bit and 64-bit environments.
+.  Should be able to handle at least 1000 valid commands.
+.  Should not crash more than once while starting the AddressBook.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+.  A user should be able to use the AddressBook anywhere without being connected to any existing network.
+.  A user should be free to use this software with zero cost.
+.  A user aged 10 & above should be able to use the Address Book without difficulty.
+.  95% of users who did not use the Address Book before should be familiar with it after reading the UserGuide.
+.  Address Book user should not take more than 2 second to respond after a command has been entered.
+.  The information stored in the user local storage should not be accessible by other users.
+.  Any text displayed on the Address Book should be readable with minimum font size of 11.
 
 {More to be added}
 
