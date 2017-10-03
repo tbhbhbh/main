@@ -908,6 +908,18 @@ Use case ends.
 [appendix]
 == Glossary
 
+.CSV
+....
+File format used to store tabular data. In AddressBook's case, this would
+be a database of contacts.
+....
+
+Aliases
+....
+Shortcuts for the default commands so that the user can customize AddressBook to
+their liking.
+....
+
 App
 ....
 Short for “application”, a program designed to perform a group
@@ -944,11 +956,35 @@ A set of code that can be called when unnecessary files or processes are
 to be removed.
 ....
 
+Command Line Interface (CLI)
+....
+Means of interacting with the AddressBook in the form of successive lines
+of text.
+....
+
 Continuous Integration (CI)
 ....
 Practice of merging all developer working copies to a shared
 mainline several times a day. Each check-in is then verified by
 an automated build, allowing teams to detect problems early.
+....
+
+iCloud
+....
+An Apple service to keep all Apple devices in sync.
+....
+
+Google Contacts
+....
+Google's contact management tool that acts as an address book available
+in its free email service Gmail, as a standalone service, and as a part
+of Google's business-oriented suite of web apps Google Apps.
+....
+
+Google Maps
+....
+Google's web mapping service that offers satellite imagery, street maps,
+route planning and other features.
 ....
 
 Gradle
@@ -979,11 +1015,22 @@ Mainstream OS
 Windows, Linux, Unix, OS-X
 ....
 
-[[private-contact-detail]]
-Private contact detail
-
+MSS (Main Success Scenario)
 ....
-A contact detail that is not meant to be shared with others
+Action steps of a typical scenario in which the goal is delivered.
+....
+
+Social media
+....
+Computer-mediated technologies that facilitate the creation and sharing
+of information via virtual communities and networks. In AddressBook, this would refer
+to Instagram and Facebook.
+....
+
+Tag
+....
+A label attached to a contact in AddressBook for the purpose of identification or
+to give other information.
 ....
 
 TestFX
@@ -1003,6 +1050,13 @@ User Interface(UI)
 ....
 Space where interactions between the user and Address Book
 happens.
+....
+
+vCard
+....
+Also known as Virtual Contact File (VCF). It is a file format
+standard for electronic business cards and can contain information like
+name and address information for use in AddressBook.
 ....
 
 
