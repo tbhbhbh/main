@@ -908,6 +908,106 @@ Use case ends.
 [appendix]
 == Glossary
 
+.CSV
+....
+File format used to store tabular data. In AddressBook's case, this would
+be a database of contacts.
+....
+
+Aliases
+....
+Shortcuts for the default commands so that the user can customize AddressBook to
+their liking.
+....
+
+App
+....
+Short for “application”, a program designed to perform a group
+of coordinated functions, tasks or activities for the benefit of
+the user. In the Address Book, the user can keep track of his or
+her contacts.
+....
+
+Application Programming Interface (API)
+....
+The interface that a computer system, library or application
+provides to allow other computer programs to request services
+from it and exchange data.
+....
+
+AppVeyor
+....
+A Continuous Integration platform for GitHub projects. It runs
+its builds on Windows virtual machines. Runs the project’s tests
+automatically whenever new code is pushed to the repository.
+....
+
+Build automation
+....
+Process of automating the creation of a software build and the
+associated processes including: compiling computer source
+code into binary code, packaging binary code and running
+automated tests.
+....
+
+Cleanup method
+....
+A set of code that can be called when unnecessary files or processes are
+to be removed.
+....
+
+Command Line Interface (CLI)
+....
+Means of interacting with the AddressBook in the form of successive lines
+of text.
+....
+
+Continuous Integration (CI)
+....
+Practice of merging all developer working copies to a shared
+mainline several times a day. Each check-in is then verified by
+an automated build, allowing teams to detect problems early.
+....
+
+iCloud
+....
+An Apple service to keep all Apple devices in sync.
+....
+
+Google Contacts
+....
+Google's contact management tool that acts as an address book available
+in its free email service Gmail, as a standalone service, and as a part
+of Google's business-oriented suite of web apps Google Apps.
+....
+
+Google Maps
+....
+Google's web mapping service that offers satellite imagery, street maps,
+route planning and other features.
+....
+
+Gradle
+....
+An open source build automation system designed for multi-project
+builds. Supports incremental builds by intelligently determining
+which parts of the build tree are up-to-date, so that any task
+dependent upon those parts will not need to be re-executed.
+....
+
+Graphical User Interface (GUI)
+....
+Where interactions between the user and the Address Book
+occur through the form of graphical icons and visual indicators.
+....
+
+JavaFX
+....
+Set of graphics and media packages that enables developers to
+design, create, test, debug and deploy rich client applications
+that operate consistently across diverse platforms.
+....
+
 [[mainstream-os]]
 Mainstream OS
 
@@ -915,12 +1015,52 @@ Mainstream OS
 Windows, Linux, Unix, OS-X
 ....
 
-[[private-contact-detail]]
-Private contact detail
+MSS (Main Success Scenario)
+....
+Action steps of a typical scenario in which the goal is delivered.
+....
 
+Social media
 ....
-A contact detail that is not meant to be shared with others
+Computer-mediated technologies that facilitate the creation and sharing
+of information via virtual communities and networks. In AddressBook, this would refer
+to Instagram and Facebook.
 ....
+
+Tag
+....
+A label attached to a contact in AddressBook for the purpose of identification or
+to give other information.
+....
+
+TestFX
+....
+Framework for use in automating JavaFX Graphical User
+Interface(GUI) tests.
+....
+
+Travis
+....
+A Continuous Integration platform for GitHub projects. Runs
+the project’s tests automatically whenever new code is pushed
+to the repository.
+....
+
+User Interface(UI)
+....
+Space where interactions between the user and Address Book
+happens.
+....
+
+vCard
+....
+Also known as Virtual Contact File (VCF). It is a file format
+standard for electronic business cards and can contain information like
+name and address information for use in AddressBook.
+....
+
+
+
 
 [appendix]
 == Product Survey
