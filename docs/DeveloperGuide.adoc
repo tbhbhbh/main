@@ -755,6 +755,16 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |sociable user |export a contact |share their details with other friends
 
+|`* * *` |power user |define my own alias for the shortcuts |use the application more efficiently
+
+|`* *` |user |add display picture for my contact |can easily identify them
+
+|`* *` |sociable user |list all the persons having same birthday |will not miss out on my friends' birthday
+
+|`* *` |user |increase the font size of the address book |see more clearly
+
+|`* *` |experienced user |able to see the number of times I interacted with a contact |know who I frequently contact
+
 |`* *` |experienced user | view the history of commands in a chronological order | see what command I entered at the start
 
 |`* *` |new user | enter commands in a human-friendly manner | use the application in a more flexible manner
@@ -880,9 +890,39 @@ Use case ends.
 
 *MSS*
 
+1.  User requests to list persons with same name or number
+2.  User selects the persons that he wants to keep
+3.  Addressbook deletes the rest of the persons that were not selected
 
 +
 Use case ends.
+
+[discrete]
+=== Use case: Define own aliases for the command
+
+*MSS*
+
+1.  User requests to alias a key to a command
+2.  Addressbook forms the alias
+
++
+Use case ends
+
+*Extensions*
+
+[none]
+* 2a.   Command already has a key aliased to it
+* 2b.   Choose to replace the key aliased
+
++
+Use case ends
+
+[none]
+* 3a.   Key already aliased to other command
+* 3b.   Choose to replace the command aliased
+
++
+Use case ends
 
 
 [appendix]
