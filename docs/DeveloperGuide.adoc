@@ -938,12 +938,20 @@ Use case ends
 .  A user should be able to use the AddressBook anywhere without being connected to any existing network.
 .  A user should be free to use this software with zero cost.
 .  A user aged 10 & above should be able to use the Address Book without difficulty.
-.  95% of users who did not use the Address Book before should be familiar with it after reading the UserGuide.
-.  Address Book user should not take more than 2 second to respond after a command has been entered.
-.  The information stored in the user local storage should not be accessible by other users.
+.  Application should not take more than 2 second to respond after a command has been entered.
 .  Any text displayed on the Address Book should be readable with minimum font size of 11.
+.  Application data should be stored in a human-readable manner.
+.  Application should not require installation.
+.  Application should be able to handle invalid user inputs without crashing.
+.  Documentation should be updated accordingly when an enhancement is added.
+.  In-program help should be updated when a command's functionality has been changed.
+.  User/Developer Guide should be written in a clear and concise manner for readability.
+.  User Interface should be intuitive.
+.  Tests should be added accordingly when an enhancement is implemented.
 
-{More to be added}
+
+
+
 
 [appendix]
 == Glossary
