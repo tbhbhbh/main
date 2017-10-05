@@ -1,5 +1,8 @@
 package seedu.address.ui;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,6 +17,9 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
+    private static HashMap<String, String> tagColours = new HashMap<String, String>();
+    private static String[] colours = { "red", "brown", "grey", "yellow", "blue", "pink", "green", "maroon", "orange" };
+    private static Random rand = new Random();
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -59,12 +65,28 @@ public class PersonCard extends UiPart<Region> {
         email.textProperty().bind(Bindings.convert(person.emailProperty()));
         person.tagProperty().addListener((observable, oldValue, newValue) -> {
             tags.getChildren().clear();
-            person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+            initTags(person);
         });
     }
 
+    /**
+     * Create new labels and bind a colour to it
+     * @param person
+     */
     private void initTags(ReadOnlyPerson person) {
-        person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+        person.getTags().forEach(tag -> {
+            Label newTag = new Label(tag.tagName);
+            newTag.setStyle("-fx-background-color: "
+                    + getTagColours(tag.tagName));
+            tags.getChildren().add(newTag);
+        });
+    }
+
+    private String getTagColours(String tagName) {
+        if (!tagColours.containsKey(tagName)) {
+            tagColours.put(tagName, colours[rand.nextInt(colours.length)]);
+        }
+        return tagColours.get(tagName);
     }
 
     @Override
