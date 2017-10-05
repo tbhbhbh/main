@@ -39,7 +39,7 @@ public class ResultDisplay extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         Platform.runLater(() -> displayed.setValue(event.message));
 
-        if(event.isError) {
+        if (event.isError) {
             setStyleToIndicateCommandFailure();
         } else {
             setStyleToDefault();

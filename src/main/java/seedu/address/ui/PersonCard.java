@@ -1,13 +1,14 @@
 package seedu.address.ui;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import java.util.HashMap;
-import java.util.Random;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -71,13 +72,14 @@ public class PersonCard extends UiPart<Region> {
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label newTag = new Label(tag.tagName);
-            newTag.setStyle("-fx-background-color: " + getTagColours(tag.tagName));
+            newTag.setStyle("-fx-background-color: " +
+                    getTagColours(tag.tagName));
             tags.getChildren().add(newTag);
         });
     }
 
     private String getTagColours(String tagName) {
-        if(!tagColours.containsKey(tagName)) {
+        if (!tagColours.containsKey(tagName)) {
             tagColours.put(tagName, colours[rand.nextInt(colours.length)]);
         }
         return tagColours.get(tagName);
