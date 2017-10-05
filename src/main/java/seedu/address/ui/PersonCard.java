@@ -69,11 +69,15 @@ public class PersonCard extends UiPart<Region> {
         });
     }
 
+    /**
+     * Create new labels and bind a colour to it
+     * @param person
+     */
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label newTag = new Label(tag.tagName);
-            newTag.setStyle("-fx-background-color: " +
-                    getTagColours(tag.tagName));
+            newTag.setStyle("-fx-background-color: "
+                    + getTagColours(tag.tagName));
             tags.getChildren().add(newTag);
         });
     }
