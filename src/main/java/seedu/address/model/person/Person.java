@@ -105,10 +105,14 @@ public class Person implements ReadOnlyPerson {
     }
 
     @Override
-    public ObjectProperty<Birthday> birthdayProperty() { return birthday; }
+    public ObjectProperty<Birthday> birthdayProperty() {
+        return birthday;
+    }
 
     @Override
-    public Birthday getBirthday() { return birthday.get(); }
+    public Birthday getBirthday() {
+        return birthday.get();
+    }
 
     public void setBirthday(Birthday birthday) { this.birthday.set(requireNonNull(birthday)); }
 
