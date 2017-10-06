@@ -110,6 +110,8 @@ public class Person implements ReadOnlyPerson {
     @Override
     public Birthday getBirthday() { return birthday.get(); }
 
+    public void setBirthday(Birthday birthday) { this.birthday.set(requireNonNull(birthday)); }
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
@@ -140,7 +142,7 @@ public class Person implements ReadOnlyPerson {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, address, birthday, tags);
     }
 
     @Override
