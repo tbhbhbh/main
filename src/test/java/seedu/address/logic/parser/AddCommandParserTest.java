@@ -145,7 +145,8 @@ public class AddCommandParserTest {
                 Email.MESSAGE_EMAIL_CONSTRAINTS);
 
         // invalid address
-        assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_ADDRESS_DESC + BIRTHDAY_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
+        assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
+                        + INVALID_ADDRESS_DESC + BIRTHDAY_DESC_BOB + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
                 Address.MESSAGE_ADDRESS_CONSTRAINTS);
 
         // invalid address
