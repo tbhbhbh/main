@@ -11,9 +11,9 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
-            "Birthday should be represented by 8 digits in the date format: DDMMYYYY";
+            "Birthday should be represented by 8 digits in the date format: DDMMYYYY with a space before any digit";
     //try regex : \d{2}\.\d{2}\.\d{4} 25.07.1995
-    public static final String BIRTHDAY_VALIDATION_REGEX = "\\d{8,}";
+    public static final String BIRTHDAY_VALIDATION_REGEX = "(\\d{2}\\.)(\\d{2}\\.)(\\d{4})";
 
     public final String value;
 
