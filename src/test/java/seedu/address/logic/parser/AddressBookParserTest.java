@@ -145,7 +145,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_alias() throws Exception {
-        assertTrue(parser.parseCommand(AliasCommand.COMMAND_WORD) instanceof AliasCommand);
+        assertTrue(parser.parseCommand("alias a add") instanceof AliasCommand);
     }
 
 }
