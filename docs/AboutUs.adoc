@@ -46,7 +46,7 @@ Responsibilities: Model
 
 '''
 
-=== Conant Teo Jia YU
+=== Conant Teo Jia Yu
 image::conantteo.jpg[width="150", align="left"]
 {empty}[https://github.com/conantteo[github]] [<<conantteo#, portfolio>>]
 
