@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import seedu.address.commons.core.GuiSettings;
@@ -12,9 +13,12 @@ public class UserPrefs {
     private GuiSettings guiSettings;
     private String addressBookFilePath = "data/addressbook.xml";
     private String addressBookName = "MyAddressBook";
+    private HashMap<String, String> aliasMap;
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
+        aliasMap = new HashMap<>();
+        aliasMap.put("b", "add");
     }
 
     public GuiSettings getGuiSettings() {
@@ -43,6 +47,14 @@ public class UserPrefs {
 
     public void setAddressBookName(String addressBookName) {
         this.addressBookName = addressBookName;
+    }
+
+    public HashMap<String, String> getAliasMap() {
+        return aliasMap;
+    }
+
+    public void addAlias(String alias, String command) {
+        aliasMap.put(alias, command);
     }
 
     @Override

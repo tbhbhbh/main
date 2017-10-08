@@ -23,7 +23,7 @@ public class AliasCommandParser implements Parser<AliasCommand> {
             String command = args[INDEX_COMMAND];
 
             return new AliasCommand(userAlias, command);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                     AliasCommand.MESSAGE_USAGE));
         }
