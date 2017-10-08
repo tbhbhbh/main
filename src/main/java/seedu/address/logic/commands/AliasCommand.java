@@ -17,6 +17,8 @@ public class AliasCommand extends UndoableCommand{
     private final String alias;
     private final String actualCommand;
 
+    public static final String MESSAGE_SUCCESS = "New alias added: ";
+
     /**
      * Creates an AliasCommand to add the specified alias
      */
@@ -27,7 +29,13 @@ public class AliasCommand extends UndoableCommand{
 
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
-        throw new CommandException(alias + " " + actualCommand);
+        model.addAlias(alias, actualCommand);
+        StringBuilder sb = new StringBuilder();
+        sb.append(MESSAGE_SUCCESS);
+        sb.append(alias);
+        sb.append(" for ");
+        sb.append(actualCommand);
+        return new CommandResult(sb.toString());
     }
 
     @Override

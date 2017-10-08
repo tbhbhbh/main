@@ -16,7 +16,7 @@ public class AliasCommandParser implements Parser<AliasCommand> {
      */
     @Override
     public AliasCommand parse(String userInput) throws ParseException {
-        String[] args = userInput.split(" ");
+        String[] args = userInput.trim().split(" ");
 
         try {
             String userAlias = args[INDEX_ALIAS];

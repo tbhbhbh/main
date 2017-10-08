@@ -18,7 +18,6 @@ public class UserPrefs {
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
         aliasMap = new HashMap<>();
-        aliasMap.put("b", "add");
     }
 
     public GuiSettings getGuiSettings() {
