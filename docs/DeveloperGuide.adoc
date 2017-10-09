@@ -800,9 +800,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  System shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+4.  System deletes the person
 +
 Use case ends.
 
@@ -816,7 +816,7 @@ Use case ends.
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. System shows an error message.
 +
 Use case resumes at step 2.
 
@@ -826,10 +826,9 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User selects persons to email
-4.  User enters keyboard shortcut to email
-5.  AddressBook opens user's mail application with persons' emails put into the "To:" field
+2.  System shows a list of persons
+3.  User selects persons to email, then requests to email selected persons
+4.  System opens user's default mail application with persons' emails put into the "To:" field
 +
 Use case ends.
 
@@ -840,18 +839,19 @@ Use case ends.
 1.  User searches for desired persons
 2.  AddressBook shows a list of persons
 3.  User requests to access social media profile of person
-4.  AddressBook opens user's default browser with the page of the desired person
+4.  System opens user's default browser with the page of the desired person
 +
 Use case ends.
 
 [discrete]
-=== Use case: Import contacts from iCloud/Google
+=== Use case: Import contacts from iCloud/Google Contacts
 
 *MSS*
 
-1.  User requests to import a .CSV file
-2.  AddressBook shows user amount of newly added contacts
-3.  AddressBook shows updated contact list to the user
+1.  User requests to import contacts, specifying service (iCloud/Google)
+2.  User enters credentials required to access private data
+3.  System authenticates with remote service
+4.  System shows user amount of newly added contacts, and shows updated contact list to the user
 +
 Use case ends.
 
@@ -861,7 +861,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to list persons starting with an alphabet
-2.  AddressBook shows a list of persons
+2.  System shows a list of persons
 
 +
 Use case ends.
@@ -872,9 +872,9 @@ Use case ends.
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  System shows a list of persons
 3.  User requests to export contact
-4.  AddressBook creates a vCard file in the application directory
+4.  System creates a vCard file in the application directory
 +
 Use case ends.
 
@@ -884,10 +884,9 @@ Use case ends.
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User decides on which tag to search for
-4.  User requests to find persons using desired tag
-5.  AddressBook shows the list of persons whose tags match the user's tag
+2.  System shows a list of persons
+3.  User requests to find persons using desired tag
+4.  System shows the list of persons whose tags match the user's tag
 +
 Use case ends.
 
@@ -896,9 +895,8 @@ Use case ends.
 
 *MSS*
 
-1.  User requests to list persons with same name or number
-2.  User selects the persons that he wants to keep
-3.  Addressbook deletes the rest of the persons that were not selected
+1.  User requests to list persons with same name or number, selects the persons that he/she wants to keep
+2.  System deletes the rest of the persons that were not selected
 
 +
 Use case ends.
@@ -909,7 +907,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to alias a key to a command
-2.  Addressbook forms the alias
+2.  System maps the alias to the command
 
 +
 Use case ends
@@ -917,15 +915,8 @@ Use case ends
 *Extensions*
 
 [none]
-* 2a.   Command already has a key aliased to it
-* 2b.   Choose to replace the key aliased
-
-+
-Use case ends
-
-[none]
-* 3a.   Key already aliased to other command
-* 3b.   Choose to replace the command aliased
+* 2a.   Key already aliased to other command
+* 2b.   Key's old mapping is overwritten to new command
 
 +
 Use case ends
@@ -939,7 +930,6 @@ Use case ends
 .  Should be able to run the Address Book with a minimum resolution of 800 x 600 pixels.
 .  Should work on both 32-bit and 64-bit environments.
 .  Should be able to handle at least 1000 valid commands.
-.  Should not crash more than once while starting the AddressBook.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 .  A user should be able to use the AddressBook anywhere without being connected to any existing network.
 .  A user should be free to use this software with zero cost.
