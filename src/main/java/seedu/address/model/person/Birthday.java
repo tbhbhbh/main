@@ -11,9 +11,9 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
-            "Birthday format should be 'DD.MM.YYYY', and it should not be blank";
-    //try regex : \d{2}\.\d{2}\.\d{4} 25.07.1995
-    public static final String BIRTHDAY_VALIDATION_REGEX = "(\\d{2}\\.)(\\d{2}\\.)(\\d{4})";
+            "Birthday format should be 'DD/MM/YYYY', and it should not be blank";
+
+    public static final String BIRTHDAY_VALIDATION_REGEX = "\\d{2}\\/\\d{2}\\/\\d{4}";
 
     public final String value;
 

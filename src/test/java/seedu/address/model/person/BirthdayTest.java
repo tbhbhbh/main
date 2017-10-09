@@ -15,10 +15,10 @@ public class BirthdayTest {
         assertFalse(Birthday.isValidBirthday("91")); // less than 8 numbers
         assertFalse(Birthday.isValidBirthday("phone")); // non-numeric
         assertFalse(Birthday.isValidBirthday("9011p041")); // alphabets within digits
-        assertFalse(Birthday.isValidBirthday("9312 1534")); // spaces within digits
-        assertFalse(Birthday.isValidBirthday("02031990")); //exactly 8 digits
+        assertFalse(Birthday.isValidBirthday("09.03 1994")); //invalid characters and spaces within digits
+        assertFalse(Birthday.isValidBirthday("02031990")); //exactly 8 digits without any forward slash
 
         // valid birthdays
-        assertTrue(Birthday.isValidBirthday("02.03.1990")); // DD.MM.YYYY format consists of 8 digits and 2 '.'
+        assertTrue(Birthday.isValidBirthday("02/03/1990")); // DD/MM/YYYY format consists of 8 digits and 2 '/'
     }
 }
