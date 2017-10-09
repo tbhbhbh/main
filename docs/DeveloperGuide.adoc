@@ -723,21 +723,27 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a ... |I want to ... |So that I can...
 |`* * *` |user |add multiple phone numbers for a contact |easily find an alternate number to contact someone
 
-|`* * *` | user | undo/redo my last action | recover from mistakes
+|`* * *` |user |undo/redo my last action |recover from mistakes
 
 |`* * *` |user |add a new person |
+
+|`* * *` |user |delete a person |remove entries that I no longer need
+
+|`* * *` |user |edit a person |update details easily
+
+|`* * *` |user |view a person |obtain the details I need
 
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
-|`* * *` |user |use acronyms instead of the full command |use the app more efficiently
-
 |`* * *` |user |view all entries in alphabetical order |easily find the contact I'm looking for
 
 |`* * *` |user |store birthdays of my contacts |remember them
 
-|`* * *` |user |import contacts from Google Contacts/iCloud |populate the app without having to add manually
+|`* * *` |Google Contacts user |import contacts from Google Contacts |populate the app without having to add contacts individually
+
+|`* *` |iCloud user |import contacts from iCloud |populate the app without having to add contacts individually
 
 |`* * *` |user |email a contact by clicking his/her email or shortcut |talk to people faster
 
@@ -745,7 +751,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |experienced user |remove duplicate contacts |have a cleaner Address Book
 
-|`* * *` |user |view my favourite contacts immediately |save time by not having to find them
+|`* * *` |user |view my groups immediately on startup |quickly filter my contacts list
 
 |`* * *` |user |store my contacts' social media usernames |easily access their profiles
 
@@ -755,9 +761,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |sociable user |export a contact |share their details with other friends
 
-|`* * *` |power user |define my own alias for the shortcuts |use the application more efficiently
+|`* *` |power user |define my own alias for the shortcuts |use the application more efficiently
 
-|`* *` |user |add display picture for my contact |can easily identify them
+|`* *` |user |add display picture for my contacts |can easily identify them
 
 |`* *` |sociable user |list all the persons having same birthday |will not miss out on my friends' birthday
 
@@ -765,21 +771,21 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |experienced user |able to see the number of times I interacted with a contact |know who I frequently contact
 
-|`* *` |experienced user | view the history of commands in a chronological order | see what command I entered at the start
+|`* *` |experienced user |view the history of commands in a chronological order |see what command I entered at the start
 
-|`* *` |new user | enter commands in a human-friendly manner | use the application in a more flexible manner
+|`* *` |new user |enter commands in a human-friendly manner |use the application in a more flexible manner
 
-|`* *` |security-conscious user | secure my application using a password | ensure that only I can access the data
+|`* *` |security-conscious user |secure my application using a password |ensure that only I can access the data
 
-|`* *` |forgetful user | add reminders that appear during launch | remember my meetings with people
+|`* *` |forgetful user |add reminders that appear during launch |remember my meetings with people
 
-|`* *` |experienced user | send emails to a selected group of contacts | contact them all at once
+|`* *` |experienced user |send emails to a selected group of contacts |contact them all at once
 
-|`* *` |experienced user | search by tags | easily find the person I'm looking for
+|`* *` |experienced user |search by tags |easily find the person I'm looking for
 
-|`*` |security-conscious user | encrypt the application's data file | ensure that my contacts' data is safe
+|`*` |security-conscious user |encrypt the application's data file |ensure that my contacts' data is safe
 
-|`*` | user | view my recent contacts | remember who I last contacted
+|`*` |user |view my recent contacts |remember who I last contacted
 
 |=======================================================================
 
