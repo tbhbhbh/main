@@ -20,29 +20,29 @@ Role: Project Advisor
 '''
 
 === Daniel Berzin Chua Yuan Siang
-image::lejolly.jpg[width="150", align="left"]
-{empty}[https://github.com/danielbrzn[github]] insert Project Portfolio here
+image::danielbrzn.jpg[width="150", align="left"]
+{empty}[https://github.com/danielbrzn[github]] [<<danielbrzn#, portfolio>>]
 
 Role: Team Lead +
-Responsibilities: Logic
+Responsibilities: In charge of Logic, Integration
 
 '''
 
 === Lim Jun Quan
-image::yijinl.jpg[width="150", align="left"]
-{empty}[https://github.com/JunQuann[github]] insert Project Portfolio here
+image::JunQuann.jpg[width="150", align="left"]
+{empty}[https://github.com/JunQuann[github]] [<<JunQuann#, portfolio>>]
 
 Role: Developer +
-Responsibilities: UI
+Responsibilities: In charge of UI, Testing
 
 '''
 
 === Tan Bing Hwang
-image::m133225.jpg[width="150", align="left"]
-{empty}[https://github.com/tbhbhbh[github]] insert Project Portfolio here
+image::tbhbhbh.jpg[width="150", align="left"]
+{empty}[https://github.com/tbhbhbh[github]] [<<tbhbhbh#, portfolio>>]
 
 Role: Developer +
-Responsibilities: Model
+Responsibilities: In charge of Model, Code quality
 
 '''
 
@@ -51,6 +51,6 @@ image::conantteo.jpg[width="150", align="left"]
 {empty}[https://github.com/conantteo[github]] [<<conantteo#, portfolio>>]
 
 Role: Developer +
-Responsibilities: Storage
+Responsibilities: In charge of Storage, Documentation, Scheduling and tracking
 
 '''
