@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Test;
@@ -20,8 +21,18 @@ public class AliasCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    public void executeAliasCommand() throws CommandException {
-        assertCommandFailure(prepareCommand("a", "add"), model, "a add");
+    public void execute_addAlias_success() throws CommandException {
+
+        Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        expectedModel.addAlias("a", "add");
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(AliasCommand.MESSAGE_SUCCESS);
+        sb.append("a");
+        sb.append(" for ");
+        sb.append("add");
+        assertCommandSuccess(prepareCommand("a", "add"), model, sb.toString(), expectedModel);
     }
 
     @Test
