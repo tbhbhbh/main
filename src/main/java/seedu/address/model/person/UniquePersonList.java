@@ -111,7 +111,7 @@ public class UniquePersonList implements Iterable<Person> {
      * Sorts AddressBook by name.
      */
     public void sortByName() {
-         FXCollections.sort(internalList, comparator);
+        FXCollections.sort(internalList, comparator);
     }
 
     @Override
