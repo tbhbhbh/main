@@ -78,6 +78,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Adds a person to the address book.
+     * Subsequently sorts the list by name.
      * Also checks the new person's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the person to point to those in {@link #tags}.
      *
@@ -90,10 +91,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         // This can cause the tags master list to have additional tags that are not tagged to any person
         // in the person list.
         persons.add(newPerson);
+        persons.sortByName();
     }
 
     /**
      * Replaces the given person {@code target} in the list with {@code editedReadOnlyPerson}.
+     * Subsequently sorts the list by name.
      * {@code AddressBook}'s tag list will be updated with the tags of {@code editedReadOnlyPerson}.
      *
      * @throws DuplicatePersonException if updating the person's details causes the person to be equivalent to
@@ -112,6 +115,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         // This can cause the tags master list to have additional tags that are not tagged to any person
         // in the person list.
         persons.setPerson(target, editedPerson);
+        persons.sortByName();
     }
 
     /**
