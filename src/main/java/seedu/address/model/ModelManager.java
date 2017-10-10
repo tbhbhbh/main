@@ -3,9 +3,9 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
-import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +25,6 @@ import seedu.address.model.tag.Tag;
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-
     private final AddressBook addressBook;
     private final FilteredList<ReadOnlyPerson> filteredPersons;
 
@@ -88,6 +87,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void deleteTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException {
         for (int i = 0; i < addressBook.getPersonList().size(); i++) {
             ReadOnlyPerson oldPerson = addressBook.getPersonList().get(i);
+
             Person newPerson = new Person(oldPerson);
             Set<Tag> newTags = newPerson.getTags();
             newTags.remove(tag);
