@@ -142,7 +142,7 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     }
 
     @Override
-    public int compare(Person p1, Person p2){
+    public int compare(Person p1, Person p2) {
         return p1.name.toString().compareTo(p2.name.toString());
     }
 
