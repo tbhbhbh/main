@@ -31,6 +31,7 @@ import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.UserPrefs;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -40,8 +41,7 @@ import seedu.address.testutil.PersonUtil;
 public class AddressBookParserTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-    private HashMap<String, String> aliasMap = new HashMap<String, String>();
-    private final AddressBookParser parser = new AddressBookParser(aliasMap);
+    private final AddressBookParser parser = new AddressBookParser(new UserPrefs());
 
     @Test
     public void parseCommand_add() throws Exception {

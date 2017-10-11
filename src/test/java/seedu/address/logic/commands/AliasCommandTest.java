@@ -29,13 +29,9 @@ public class AliasCommandTest {
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel.addAlias("a", "add");
 
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(AliasCommand.MESSAGE_SUCCESS);
-        sb.append("a");
-        sb.append(" for ");
-        sb.append("add");
-        assertCommandSuccess(prepareCommand("a", "add"), model, sb.toString(), expectedModel);
+        assertCommandSuccess(prepareCommand("a", "add"), model,
+                String.format(AliasCommand.MESSAGE_SUCCESS, "a", "add"),
+                expectedModel);
     }
 
     @Test
