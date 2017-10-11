@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.util.HashMap;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -18,8 +19,14 @@ public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyAddressBook newData);
 
+    /** Clears existing aliases from UserPrefs and replaces with the provided new data */
+    void resetAlias(HashMap<String, String> prevAliasMap);
+
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
+
+    /** Returns the User Preferences */
+    UserPrefs getUserPrefs();
 
     /** Deletes the given person. */
     void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;

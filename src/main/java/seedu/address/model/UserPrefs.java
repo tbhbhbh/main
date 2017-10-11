@@ -20,6 +20,10 @@ public class UserPrefs {
         aliasMap = new HashMap<>();
     }
 
+    public void resetAlias(HashMap<String, String> prevAliasMap) {
+        this.aliasMap = prevAliasMap;
+    }
+
     public GuiSettings getGuiSettings() {
         return guiSettings == null ? new GuiSettings() : guiSettings;
     }
