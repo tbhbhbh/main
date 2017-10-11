@@ -56,6 +56,10 @@ public class UserPrefs {
         aliasMap.put(alias, command);
     }
 
+    public String getAlias(String alias) {
+        return aliasMap.get(alias);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {

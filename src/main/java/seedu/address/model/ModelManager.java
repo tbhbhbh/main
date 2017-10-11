@@ -83,6 +83,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public String getAlias(String alias) {
+        return userPrefs.getAlias(alias);
+    }
+
+    @Override
     public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
             throws DuplicatePersonException, PersonNotFoundException {
         requireAllNonNull(target, editedPerson);

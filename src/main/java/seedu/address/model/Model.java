@@ -30,6 +30,9 @@ public interface Model {
     /** Adds the given alias */
     void addAlias(String alias, String command);
 
+    /** Gets the command mapping for an alias */
+    String getAlias(String alias);
+
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

@@ -108,7 +108,7 @@ public class AddressBookParser {
     }
 
     /**
-     * Parses user input into command for execution.
+     * Checks if the input command is valid.
      *
      * @param command command part of user input
      * @return boolean determining if command entered is valid
