@@ -57,9 +57,9 @@ public class ModelManagerTest {
         // resets modelManager to initial state for upcoming tests
         modelManager.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        // different userPrefs -> returns true
+        // different userPrefs -> returns false
         UserPrefs differentUserPrefs = new UserPrefs();
         differentUserPrefs.setAddressBookName("differentName");
-        assertTrue(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, differentUserPrefs)));
     }
 }

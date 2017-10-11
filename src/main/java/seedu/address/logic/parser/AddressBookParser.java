@@ -3,10 +3,12 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AliasCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
@@ -31,6 +33,12 @@ public class AddressBookParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
+    private HashMap<String, String> aliasMap;
+
+    public AddressBookParser(HashMap<String, String> aliasMap) {
+        this.aliasMap = aliasMap;
+    }
+
     /**
      * Parses user input into command for execution.
      *
@@ -46,46 +54,83 @@ public class AddressBookParser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
-        switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD: case AddCommand.COMMAND_ALIAS:
+        String actualCommand = commandWord;
+
+        if (aliasMap.get(actualCommand) != null) {
+            actualCommand = aliasMap.get(commandWord);
+        }
+
+        switch (actualCommand) {
+
+        case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
 
-        case EditCommand.COMMAND_WORD: case EditCommand.COMMAND_ALIAS:
+        case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);
 
-        case SelectCommand.COMMAND_WORD: case SelectCommand.COMMAND_ALIAS:
+        case SelectCommand.COMMAND_WORD:
             return new SelectCommandParser().parse(arguments);
 
-        case DeleteCommand.COMMAND_WORD: case DeleteCommand.COMMAND_ALIAS:
+        case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
 
-        case ClearCommand.COMMAND_WORD: case ClearCommand.COMMAND_ALIAS:
+        case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-        case FindCommand.COMMAND_WORD: case FindCommand.COMMAND_ALIAS:
+        case FindCommand.COMMAND_WORD:
             return new FindCommandParser().parse(arguments);
 
-        case ListCommand.COMMAND_WORD: case ListCommand.COMMAND_ALIAS:
+        case ListCommand.COMMAND_WORD:
             return new ListCommand();
 
-        case HistoryCommand.COMMAND_WORD: case HistoryCommand.COMMAND_ALIAS:
+        case HistoryCommand.COMMAND_WORD:
             return new HistoryCommand();
 
-        case ExitCommand.COMMAND_WORD: case ExitCommand.COMMAND_ALIAS:
+        case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
-        case HelpCommand.COMMAND_WORD: case HelpCommand.COMMAND_ALIAS:
+        case HelpCommand.COMMAND_WORD:
             return new HelpCommand();
 
-        case UndoCommand.COMMAND_WORD: case UndoCommand.COMMAND_ALIAS:
+        case UndoCommand.COMMAND_WORD:
             return new UndoCommand();
 
-        case RedoCommand.COMMAND_WORD: case RedoCommand.COMMAND_ALIAS:
+        case RedoCommand.COMMAND_WORD:
             return new RedoCommand();
+
+        case AliasCommand.COMMAND_WORD:
+            return new AliasCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        }
+    }
+
+    /**
+     * Parses user input into command for execution.
+     *
+     * @param command command part of user input
+     * @return boolean determining if command entered is valid
+     */
+    public static boolean checkValidCommand(String command) {
+        switch (command) {
+        case AddCommand.COMMAND_WORD:
+        case EditCommand.COMMAND_WORD:
+        case SelectCommand.COMMAND_WORD:
+        case DeleteCommand.COMMAND_WORD:
+        case ClearCommand.COMMAND_WORD:
+        case FindCommand.COMMAND_WORD:
+        case ListCommand.COMMAND_WORD:
+        case HistoryCommand.COMMAND_WORD:
+        case ExitCommand.COMMAND_WORD:
+        case HelpCommand.COMMAND_WORD:
+        case UndoCommand.COMMAND_WORD:
+        case RedoCommand.COMMAND_WORD:
+        case AliasCommand.COMMAND_WORD:
+            return true;
+        default:
+            return false;
         }
     }
 

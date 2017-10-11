@@ -8,6 +8,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AliasCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
@@ -38,8 +40,8 @@ import seedu.address.testutil.PersonUtil;
 public class AddressBookParserTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
-    private final AddressBookParser parser = new AddressBookParser();
+    private HashMap<String, String> aliasMap = new HashMap<String, String>();
+    private final AddressBookParser parser = new AddressBookParser(aliasMap);
 
     @Test
     public void parseCommand_add() throws Exception {
@@ -141,4 +143,10 @@ public class AddressBookParserTest {
         thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
         parser.parseCommand("unknownCommand");
     }
+
+    @Test
+    public void parseCommand_alias() throws Exception {
+        assertTrue(parser.parseCommand("alias a add") instanceof AliasCommand);
+    }
+
 }
