@@ -802,7 +802,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 1.  User requests to list persons
 2.  System shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  System deletes the person
+4.  System deletes the specified person
 +
 Use case ends.
 
