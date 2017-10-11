@@ -108,6 +108,12 @@ public class AddCommandTest {
         }
 
         @Override
+        public String getAlias(String alias) {
+            fail("This method should not be called.");
+            return null;
+        }
+
+        @Override
         public void resetData(ReadOnlyAddressBook newData) {
             fail("This method should not be called.");
         }
