@@ -723,21 +723,27 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a ... |I want to ... |So that I can...
 |`* * *` |user |add multiple phone numbers for a contact |easily find an alternate number to contact someone
 
-|`* * *` | user | undo/redo my last action | recover from mistakes
+|`* * *` |user |undo/redo my last action |recover from mistakes
 
 |`* * *` |user |add a new person |
+
+|`* * *` |user |delete a person |remove entries that I no longer need
+
+|`* * *` |user |edit a person |update details easily
+
+|`* * *` |user |view a person |obtain the details I need
 
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
-|`* * *` |user |use acronyms instead of the full command |use the app more efficiently
-
 |`* * *` |user |view all entries in alphabetical order |easily find the contact I'm looking for
 
 |`* * *` |user |store birthdays of my contacts |remember them
 
-|`* * *` |user |import contacts from Google Contacts/iCloud |populate the app without having to add manually
+|`* * *` |Google Contacts user |import contacts from Google Contacts |populate the app without having to add contacts individually
+
+|`* *` |iCloud user |import contacts from iCloud |populate the app without having to add contacts individually
 
 |`* * *` |user |email a contact by clicking his/her email or shortcut |talk to people faster
 
@@ -745,7 +751,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |experienced user |remove duplicate contacts |have a cleaner Address Book
 
-|`* * *` |user |view my favourite contacts immediately |save time by not having to find them
+|`* * *` |user |view my groups immediately on startup |quickly filter my contacts list
 
 |`* * *` |user |store my contacts' social media usernames |easily access their profiles
 
@@ -755,9 +761,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |sociable user |export a contact |share their details with other friends
 
-|`* * *` |power user |define my own alias for the shortcuts |use the application more efficiently
+|`* *` |power user |define my own alias for the shortcuts |use the application more efficiently
 
-|`* *` |user |add display picture for my contact |can easily identify them
+|`* *` |user |add display picture for my contacts |can easily identify them
 
 |`* *` |sociable user |list all the persons having same birthday |will not miss out on my friends' birthday
 
@@ -765,21 +771,21 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |experienced user |able to see the number of times I interacted with a contact |know who I frequently contact
 
-|`* *` |experienced user | view the history of commands in a chronological order | see what command I entered at the start
+|`* *` |experienced user |view the history of commands in a chronological order |see what command I entered at the start
 
-|`* *` |new user | enter commands in a human-friendly manner | use the application in a more flexible manner
+|`* *` |new user |enter commands in a human-friendly manner |use the application in a more flexible manner
 
-|`* *` |security-conscious user | secure my application using a password | ensure that only I can access the data
+|`* *` |security-conscious user |secure my application using a password |ensure that only I can access the data
 
-|`* *` |forgetful user | add reminders that appear during launch | remember my meetings with people
+|`* *` |forgetful user |add reminders that appear during launch |remember my meetings with people
 
-|`* *` |experienced user | send emails to a selected group of contacts | contact them all at once
+|`* *` |experienced user |send emails to a selected group of contacts |contact them all at once
 
-|`* *` |experienced user | search by tags | easily find the person I'm looking for
+|`* *` |experienced user |search by tags |easily find the person I'm looking for
 
-|`*` |security-conscious user | encrypt the application's data file | ensure that my contacts' data is safe
+|`*` |security-conscious user |encrypt the application's data file |ensure that my contacts' data is safe
 
-|`*` | user | view my recent contacts | remember who I last contacted
+|`*` |user |view my recent contacts |remember who I last contacted
 
 |=======================================================================
 
@@ -794,9 +800,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  System shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+4.  System deletes the specified person
 +
 Use case ends.
 
@@ -810,7 +816,7 @@ Use case ends.
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. System shows an error message.
 +
 Use case resumes at step 2.
 
@@ -820,10 +826,9 @@ Use case resumes at step 2.
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User selects persons to email
-4.  User enters keyboard shortcut to email
-5.  AddressBook opens user's mail application with persons' emails put into the "To:" field
+2.  System shows a list of persons
+3.  User selects persons to email, then requests to email selected persons
+4.  System opens user's default mail application with persons' emails put into the "To:" field
 +
 Use case ends.
 
@@ -834,18 +839,19 @@ Use case ends.
 1.  User searches for desired persons
 2.  AddressBook shows a list of persons
 3.  User requests to access social media profile of person
-4.  AddressBook opens user's default browser with the page of the desired person
+4.  System opens user's default browser with the page of the desired person
 +
 Use case ends.
 
 [discrete]
-=== Use case: Import contacts from iCloud/Google
+=== Use case: Import contacts from iCloud/Google Contacts
 
 *MSS*
 
-1.  User requests to import a .CSV file
-2.  AddressBook shows user amount of newly added contacts
-3.  AddressBook shows updated contact list to the user
+1.  User requests to import contacts, specifying service (iCloud/Google)
+2.  User enters credentials required to access private data
+3.  System authenticates with remote service
+4.  System shows user amount of newly added contacts, and shows updated contact list to the user
 +
 Use case ends.
 
@@ -855,7 +861,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to list persons starting with an alphabet
-2.  AddressBook shows a list of persons
+2.  System shows a list of persons
 
 +
 Use case ends.
@@ -866,9 +872,9 @@ Use case ends.
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  System shows a list of persons
 3.  User requests to export contact
-4.  AddressBook creates a vCard file in the application directory
+4.  System creates a vCard file in the application directory
 +
 Use case ends.
 
@@ -878,10 +884,9 @@ Use case ends.
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
-3.  User decides on which tag to search for
-4.  User requests to find persons using desired tag
-5.  AddressBook shows the list of persons whose tags match the user's tag
+2.  System shows a list of persons
+3.  User requests to find persons using desired tag
+4.  System shows the list of persons whose tags match the user's tag
 +
 Use case ends.
 
@@ -890,9 +895,8 @@ Use case ends.
 
 *MSS*
 
-1.  User requests to list persons with same name or number
-2.  User selects the persons that he wants to keep
-3.  Addressbook deletes the rest of the persons that were not selected
+1.  User requests to list persons with same name or number, selects the persons that he/she wants to keep
+2.  System deletes the rest of the persons that were not selected
 
 +
 Use case ends.
@@ -903,7 +907,7 @@ Use case ends.
 *MSS*
 
 1.  User requests to alias a key to a command
-2.  Addressbook forms the alias
+2.  System maps the alias to the command
 
 +
 Use case ends
@@ -911,15 +915,8 @@ Use case ends
 *Extensions*
 
 [none]
-* 2a.   Command already has a key aliased to it
-* 2b.   Choose to replace the key aliased
-
-+
-Use case ends
-
-[none]
-* 3a.   Key already aliased to other command
-* 3b.   Choose to replace the command aliased
+* 2a.   Key already aliased to other command
+* 2b.   Key's old mapping is overwritten to new command
 
 +
 Use case ends
@@ -933,7 +930,6 @@ Use case ends
 .  Should be able to run the Address Book with a minimum resolution of 800 x 600 pixels.
 .  Should work on both 32-bit and 64-bit environments.
 .  Should be able to handle at least 1000 valid commands.
-.  Should not crash more than once while starting the AddressBook.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 .  A user should be able to use the AddressBook anywhere without being connected to any existing network.
 .  A user should be free to use this software with zero cost.

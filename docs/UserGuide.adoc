@@ -42,6 +42,24 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 == Features
 
 ====
+*Coming in v2.0*
+
+* Simply add a person with their name and number!
+* Add pictures to every contact
+* Never forget a birthday again! Add birthdays to every contact
+* A powerful find command. Search by groups, keywords and more!
+* Import your contacts from Google Contacts/iCloud
+* View groups at a glance of the application
+* Export individual contacts to easily share with others
+* Easy access to social media profiles of each contact
+* Multiple themes to suit your needs
+* Email contacts quickly without copying and pasting
+* View your contacts' addresses quickly in Google Maps
+* Secure your application with a PIN
+* Automatic list sorting
+====
+
+====
 *Command Format*
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
@@ -212,6 +230,28 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `clear` command) +
 // end::undoredo[]
 
+=== Adding an alias for a command : `alias`
+
+Allows you to add an alias for any command used in the address book.
+
+Format: `alias ALIAS COMMAND`
+
+****
+* The alias must either be a single word or single character
+* The command must be a valid command
+* If an alias is currently used for a command, assigning the alias to another command will overwrite the previous mapping.
+****
+
+Examples:
+
+* `alias a add` +
+Assigns the alias 'a' to the add command. 'a' can now be used in place of add.
+* `alias d delete` +
+`alias d exit` +
+'d' can now be used in place of exit. Initially, alias 'd' was assigned to delete, but since the alias was subsequently assigned to exit,
+it is no longer assigned to delete.
+
+
 === Clearing all entries : `clear`
 
 Clears all entries from the address book. +
@@ -250,3 +290,5 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Alias* : `alias ALIAS COMMAND` +
+e.g. `alias a add`
