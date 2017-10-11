@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.jws.soap.SOAPBinding;
-
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AliasCommand;
 import seedu.address.logic.commands.ClearCommand;
@@ -24,7 +22,6 @@ import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.UserPrefs;
 
 /**
  * Parses user input.
@@ -41,6 +38,7 @@ public class AddressBookParser {
     public AddressBookParser(HashMap<String, String> aliasMap) {
         this.aliasMap = aliasMap;
     }
+
     /**
      * Parses user input into command for execution.
      *
@@ -58,8 +56,10 @@ public class AddressBookParser {
         final String arguments = matcher.group("arguments");
 
         String actualCommand = commandWord;
-        if (aliasMap.get(actualCommand) != null)
+
+        if (aliasMap.get(actualCommand) != null) {
             actualCommand = aliasMap.get(commandWord);
+        }
 
         switch (actualCommand) {
 
@@ -107,25 +107,30 @@ public class AddressBookParser {
         }
     }
 
+    /**
+     * Parses user input into command for execution.
+     *
+     * @param command command part of user input
+     * @return boolean determining if command entered is valid
+     */
     public static boolean checkValidCommand(String command) {
         switch (command) {
-
-            case AddCommand.COMMAND_WORD:
-            case EditCommand.COMMAND_WORD:
-            case SelectCommand.COMMAND_WORD:
-            case DeleteCommand.COMMAND_WORD:
-            case ClearCommand.COMMAND_WORD:
-            case FindCommand.COMMAND_WORD:
-            case ListCommand.COMMAND_WORD:
-            case HistoryCommand.COMMAND_WORD:
-            case ExitCommand.COMMAND_WORD:
-            case HelpCommand.COMMAND_WORD:
-            case UndoCommand.COMMAND_WORD:
-            case RedoCommand.COMMAND_WORD:
-            case AliasCommand.COMMAND_WORD:
-                return true;
-            default:
-                return false;
+        case AddCommand.COMMAND_WORD:
+        case EditCommand.COMMAND_WORD:
+        case SelectCommand.COMMAND_WORD:
+        case DeleteCommand.COMMAND_WORD:
+        case ClearCommand.COMMAND_WORD:
+        case FindCommand.COMMAND_WORD:
+        case ListCommand.COMMAND_WORD:
+        case HistoryCommand.COMMAND_WORD:
+        case ExitCommand.COMMAND_WORD:
+        case HelpCommand.COMMAND_WORD:
+        case UndoCommand.COMMAND_WORD:
+        case RedoCommand.COMMAND_WORD:
+        case AliasCommand.COMMAND_WORD:
+            return true;
+        default:
+            return false;
         }
     }
 

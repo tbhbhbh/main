@@ -1,6 +1,5 @@
 package seedu.address.logic;
 
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;

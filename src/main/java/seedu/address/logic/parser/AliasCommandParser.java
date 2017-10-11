@@ -4,6 +4,9 @@ import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.AliasCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+/**
+ * Parses input arguments and creates a new AliasCommand object
+ */
 public class AliasCommandParser implements Parser<AliasCommand> {
 
     private static final int INDEX_ALIAS = 0;

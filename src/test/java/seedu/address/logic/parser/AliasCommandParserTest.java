@@ -15,7 +15,7 @@ public class AliasCommandParserTest {
     public void parse_allFieldsPresent_success() {
         final String alias = "a";
         final String command = "add";
-        assertParseSuccess(parser,alias + " "
+        assertParseSuccess(parser, alias + " "
                 + command, new AliasCommand(alias, command));
     }
 
