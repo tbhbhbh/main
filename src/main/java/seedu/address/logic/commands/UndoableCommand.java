@@ -9,7 +9,6 @@ import java.util.HashMap;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.UserPrefs;
 
 /**
  * Represents a command which can be undone and redone.

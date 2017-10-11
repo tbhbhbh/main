@@ -3,6 +3,8 @@ package seedu.address.commons.events.model;
 import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.UserPrefs;
 
+/** Indicates the UserPrefs in the model has changed*/
+
 public class UserPrefsChangedEvent extends BaseEvent {
 
     public final UserPrefs data;
