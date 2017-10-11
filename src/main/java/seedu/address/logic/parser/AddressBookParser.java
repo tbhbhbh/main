@@ -107,4 +107,26 @@ public class AddressBookParser {
         }
     }
 
+    public static boolean checkValidCommand(String command) {
+        switch (command) {
+
+            case AddCommand.COMMAND_WORD:
+            case EditCommand.COMMAND_WORD:
+            case SelectCommand.COMMAND_WORD:
+            case DeleteCommand.COMMAND_WORD:
+            case ClearCommand.COMMAND_WORD:
+            case FindCommand.COMMAND_WORD:
+            case ListCommand.COMMAND_WORD:
+            case HistoryCommand.COMMAND_WORD:
+            case ExitCommand.COMMAND_WORD:
+            case HelpCommand.COMMAND_WORD:
+            case UndoCommand.COMMAND_WORD:
+            case RedoCommand.COMMAND_WORD:
+            case AliasCommand.COMMAND_WORD:
+                return true;
+            default:
+                return false;
+        }
+    }
+
 }

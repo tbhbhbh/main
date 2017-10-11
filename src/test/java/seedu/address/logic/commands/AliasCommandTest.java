@@ -6,6 +6,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
@@ -18,10 +19,13 @@ import seedu.address.model.UserPrefs;
 
 public class AliasCommandTest {
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    public void execute_addAlias_success() throws CommandException {
+    public void execute_addAlias_success() throws Exception {
 
         Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel.addAlias("a", "add");
@@ -33,6 +37,15 @@ public class AliasCommandTest {
         sb.append(" for ");
         sb.append("add");
         assertCommandSuccess(prepareCommand("a", "add"), model, sb.toString(), expectedModel);
+    }
+
+    @Test
+    public void execute_addAliasForInvalidCommand_throwsException() throws Exception {
+
+        thrown.expect(CommandException.class);
+        thrown.expectMessage(AliasCommand.MESSAGE_INVALID_COMMAND);
+
+        prepareCommand("a", "abcde").execute();
     }
 
     @Test
