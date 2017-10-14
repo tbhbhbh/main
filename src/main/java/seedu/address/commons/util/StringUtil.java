@@ -68,4 +68,19 @@ public class StringUtil {
             return false;
         }
     }
+
+    /**
+     * Returns a String where white space are replaced by ',' from a given String.
+     * @param string is a valid String that cannot be null.
+     */
+    public static String getAddressString(String string) {
+        StringBuilder stringList = new StringBuilder();
+        String separator = "";
+        String[] stringArray = string.trim().split(" ");
+        for (String address : stringArray) {
+            stringList.append(separator).append(address);
+            separator = ",";
+        }
+        return stringList.toString();
+    }
 }
