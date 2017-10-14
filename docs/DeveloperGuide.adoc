@@ -345,6 +345,16 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+---
+
+**Aspect:** Type of browser to support the email command +
+**Alternative 1 (current choice):** Use java `Desktop` class +
+**Pros:** It can launch the default email application that loads quickly. +
+**Cons:** `Desktop` API may not be available in some platforms such as Linux +
+**Alternative 2:** Use javafx `WebView` class +
+**Pros:** Able to run HTML5 applications on desktop systems that lack a compatible web browser +
+**Cons:** Opens some websites such as Gmail in basic HTML view.
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
@@ -1043,6 +1053,12 @@ Graphical User Interface (GUI)
 ....
 Where interactions between the user and the Address Book
 occur through the form of graphical icons and visual indicators.
+....
+
+Hypertext Markup Language (HTML)
+....
+A standardized system for tagging text files to achieve font, colour,
+graphic, and hyperlink effects on World Wide Web pages.
 ....
 
 JavaFX
