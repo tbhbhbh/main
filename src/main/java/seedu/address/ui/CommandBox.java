@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -7,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.logic.ListElementPointer;
@@ -25,14 +28,16 @@ public class CommandBox extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
+    private final Stage primaryStage;
     private ListElementPointer historySnapshot;
 
     @FXML
     private TextField commandTextField;
 
-    public CommandBox(Logic logic) {
+    public CommandBox(Logic logic, Stage primaryStage) {
         super(FXML);
         this.logic = logic;
+        this.primaryStage = primaryStage;
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
         historySnapshot = logic.getHistorySnapshot();
@@ -126,6 +131,14 @@ public class CommandBox extends UiPart<Region> {
         // add an empty string to represent the most-recent end of historySnapshot, to be shown to
         // the user if she tries to navigate past the most-recent end of the historySnapshot.
         historySnapshot.add("");
+    }
+
+    private String getDisplayPicPath() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PICTURE files","*.jpg", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        return selectedFile.getAbsolutePath();
     }
 
     /**
