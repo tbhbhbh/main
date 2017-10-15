@@ -138,7 +138,11 @@ public class CommandBox extends UiPart<Region> {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PICTURE files","*.jpg", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
-        return selectedFile.getAbsolutePath();
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        } else {
+            return "DEFAULT_DISPLAY_PIC";
+        }
     }
 
     /**
