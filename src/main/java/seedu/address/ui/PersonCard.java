@@ -47,7 +47,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private ImageView displaypic;
+    private ImageView displayPic;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
