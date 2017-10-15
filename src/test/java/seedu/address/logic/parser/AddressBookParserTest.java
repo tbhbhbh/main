@@ -25,6 +25,7 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
@@ -148,4 +149,8 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand("alias a add") instanceof AliasCommand);
     }
 
+    @Test
+    public void parseCommand_import() throws Exception {
+        assertTrue(parser.parseCommand("import google") instanceof ImportCommand);
+    }
 }
