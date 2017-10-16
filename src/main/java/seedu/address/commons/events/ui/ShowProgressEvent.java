@@ -1,16 +1,21 @@
 package seedu.address.commons.events.ui;
 
+import javafx.concurrent.Task;
 import seedu.address.commons.events.BaseEvent;
 
 /**
  * An event requesting to view the authentication page.
  */
-public class ShowOAuthPageEvent extends BaseEvent {
+public class ShowProgressEvent extends BaseEvent {
 
-    public final String authorizationUrl;
+    private Task task;
 
-    public ShowOAuthPageEvent(String authorizationUrl) {
-        this.authorizationUrl = authorizationUrl;
+    public ShowProgressEvent(Task task) {
+        this.task = task;
+    }
+
+    public Task getTask() {
+        return task;
     }
 
     @Override

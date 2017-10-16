@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -19,7 +22,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.events.ui.ShowOAuthPageEvent;
+import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
@@ -195,12 +198,13 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
-     * Opens the help window.
+     * Opens the progress window.
      */
     @FXML
-    public void handleOAuth(String authorizationUrl) {
-        BrowserWindow window = new BrowserWindow(authorizationUrl);
-        window.show();
+    public void handleProgress(Task task) {
+        ProgressWindow pWindow = new ProgressWindow(task);
+        pWindow.show();
+        new Thread(task).start();
     }
 
     void show() {
@@ -230,8 +234,8 @@ public class MainWindow extends UiPart<Region> {
     }
 
     @Subscribe
-    private void handleShowOAuthPageEvent(ShowOAuthPageEvent event) {
+    private void handleShowProgressEvent(ShowProgressEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        handleOAuth(event.authorizationUrl);
+        handleProgress(event.getTask());
     }
 }

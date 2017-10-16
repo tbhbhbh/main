@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.fxmisc.easybind.EasyBind;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.CollectionUtil;
@@ -47,7 +48,7 @@ public class UniquePersonList implements Iterable<Person> {
         if (contains(toAdd)) {
             throw new DuplicatePersonException();
         }
-        internalList.add(new Person(toAdd));
+        Platform.runLater(() -> internalList.add(new Person(toAdd)));
     }
 
 

@@ -26,6 +26,10 @@ import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.Person;
 import com.google.api.services.people.v1.model.PhoneNumber;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Phone;
@@ -51,7 +55,9 @@ public class ImportCommand extends UndoableCommand {
 
     private static HttpTransport httpTransport;
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static int personCount = 0;
     private final String service;
+
 
     /**
      * Creates an ImportCommand to add contacts from the specified service
@@ -64,9 +70,10 @@ public class ImportCommand extends UndoableCommand {
     protected CommandResult executeUndoableCommand() throws CommandException {
 
         ArrayList<String> failedToAdd = new ArrayList<>();
-        int count = 0;
+
 
         try {
+
             //setUp();
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 
@@ -80,61 +87,75 @@ public class ImportCommand extends UndoableCommand {
                     .execute();
             List<Person> connections = response.getConnections();
 
-            String name;
-            String phone;
-            String email;
-            String address;
-            String birthday;
+                    Task<Void> task;
+                    task = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            String name;
+                            String phone;
+                            String email;
+                            String address;
+                            String birthday;
+                            for (Person person : connections) {
+                                List<Name> names = person.getNames();
+                                List<PhoneNumber> numbers = person.getPhoneNumbers();
+                                List<EmailAddress> emailAddresses = person.getEmailAddresses();
+                                List<Birthday> birthdays = person.getBirthdays();
+                                List<Address> addresses = person.getAddresses();
 
-            for (Person person : connections) {
-                List<Name> names = person.getNames();
-                List<PhoneNumber> numbers = person.getPhoneNumbers();
-                List<EmailAddress> emailAddresses = person.getEmailAddresses();
-                List<Birthday> birthdays = person.getBirthdays();
-                List<Address> addresses = person.getAddresses();
+                                // get first value for each list
+                                if (names != null && names.size() > 0) {
+                                    name = names.get(0).getDisplayName();
+                                    if (!seedu.address.model.person.Name.isValidName(name)) {
+                                        failedToAdd.add(name);
+                                        continue;
+                                    }
+                                } else {
+                                    continue;
+                                }
 
-                // get first value for each list
-                if (names != null && names.size() > 0) {
-                    name = names.get(0).getDisplayName();
-                    if (!seedu.address.model.person.Name.isValidName(name)) {
-                        failedToAdd.add(name);
-                        continue;
-                    }
-                } else {
-                    continue;
-                }
+                                if (numbers != null && numbers.size() > 0) {
+                                    phone = numbers.get(0).getCanonicalForm().replace("+", "");
+                                } else {
+                                    phone = "91234567";
+                                }
+                                if (emailAddresses != null && emailAddresses.size() > 0) {
+                                    email = emailAddresses.get(0).getValue();
+                                    System.out.println(email);
+                                } else {
+                                    email = "test@gmail.com";
+                                }
+                                if (birthdays != null && birthdays.size() > 0) {
+                                    birthday = birthdays.get(0).getText();
+                                } else {
+                                    birthday = "08/11/1995";
+                                }
+                                if (addresses != null && addresses.size() > 0) {
+                                    address = addresses.get(0).getFormattedValue();
+                                } else {
+                                    address = "160, Bishan";
+                                }
+                                Set<Tag> defaultTags = SampleDataUtil.getTagSet("Google");
 
-                if (numbers != null && numbers.size() > 0) {
-                    phone = numbers.get(0).getCanonicalForm().replace("+", "");
-                } else {
-                    phone = "91234567";
-                }
-                if (emailAddresses != null && emailAddresses.size() > 0) {
-                    email = emailAddresses.get(0).getValue();
-                    System.out.println(email);
-                } else {
-                    email = "test@gmail.com";
-                }
-                if (birthdays != null && birthdays.size() > 0) {
-                    birthday = birthdays.get(0).getText();
-                } else {
-                    birthday = "08/11/1995";
-                }
-                if (addresses != null && addresses.size() > 0) {
-                    address = addresses.get(0).getFormattedValue();
-                } else {
-                    address = "160, Bishan";
-                }
-                Set<Tag> defaultTags = SampleDataUtil.getTagSet("Google");
+                                seedu.address.model.person.Name nameAdd = new seedu.address.model.person.Name(name);
+                                seedu.address.model.person.Person toAdd;
+                                toAdd = new seedu.address.model.person.Person(nameAdd,
+                                        new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
+                                        new seedu.address.model.person.Birthday(birthday), defaultTags);
+                                personCount++;
+                                Platform.runLater(() -> {
+                                    updateProgress(personCount, connections.size());
+                                });
 
-                seedu.address.model.person.Name nameAdd = new seedu.address.model.person.Name(name);
-                seedu.address.model.person.Person toAdd;
-                toAdd = new seedu.address.model.person.Person(nameAdd,
-                        new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
-                        new seedu.address.model.person.Birthday(birthday), defaultTags);
-                model.addPerson(toAdd);
-                count++;
-            }
+                                model.addPerson(toAdd);
+                            }
+                        return null;
+                        }
+                    };
+
+            EventsCenter.getInstance().post(new ShowProgressEvent(task));
+
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } catch (GeneralSecurityException e) {
@@ -146,7 +167,7 @@ public class ImportCommand extends UndoableCommand {
         for (String s: failedToAdd) {
             System.out.println(s);
         }
-        return new CommandResult(String.format(MESSAGE_SUCCESS, count));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, personCount));
     }
 
     /**
