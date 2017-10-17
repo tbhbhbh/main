@@ -2,13 +2,13 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 import org.fxmisc.easybind.EasyBind;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.CollectionUtil;
@@ -48,7 +48,7 @@ public class UniquePersonList implements Iterable<Person> {
         if (contains(toAdd)) {
             throw new DuplicatePersonException();
         }
-        Platform.runLater(() -> internalList.add(new Person(toAdd)));
+        internalList.add(new Person(toAdd));
     }
 
 

@@ -4,9 +4,7 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -201,10 +199,9 @@ public class MainWindow extends UiPart<Region> {
      * Opens the progress window.
      */
     @FXML
-    public void handleProgress(Task task) {
-        ProgressWindow pWindow = new ProgressWindow(task);
+    public void handleProgress(ReadOnlyDoubleProperty progress) {
+        ProgressWindow pWindow = new ProgressWindow(progress);
         pWindow.show();
-        new Thread(task).start();
     }
 
     void show() {
@@ -236,6 +233,6 @@ public class MainWindow extends UiPart<Region> {
     @Subscribe
     private void handleShowProgressEvent(ShowProgressEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        handleProgress(event.getTask());
+        handleProgress(event.getProgress());
     }
 }

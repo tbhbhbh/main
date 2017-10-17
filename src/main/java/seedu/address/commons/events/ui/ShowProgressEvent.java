@@ -1,6 +1,6 @@
 package seedu.address.commons.events.ui;
 
-import javafx.concurrent.Task;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import seedu.address.commons.events.BaseEvent;
 
 /**
@@ -8,14 +8,14 @@ import seedu.address.commons.events.BaseEvent;
  */
 public class ShowProgressEvent extends BaseEvent {
 
-    private Task task;
+    private ReadOnlyDoubleProperty progress;
 
-    public ShowProgressEvent(Task task) {
-        this.task = task;
+    public ShowProgressEvent(ReadOnlyDoubleProperty progress) {
+        this.progress = progress;
     }
 
-    public Task getTask() {
-        return task;
+    public ReadOnlyDoubleProperty getProgress() {
+        return progress;
     }
 
     @Override
