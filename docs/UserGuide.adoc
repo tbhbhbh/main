@@ -42,21 +42,26 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 == Features
 
 ====
+*Since v1.2*
+
+* Never forget a birthday again! Add birthdays to every contact
+* Email contacts quickly without copying and pasting
+* Import your contacts from Google Contacts/iCloud
+* Automatic list sorting
+====
+
+====
 *Coming in v2.0*
 
 * Simply add a person with their name and number!
 * Add pictures to every contact
-* Never forget a birthday again! Add birthdays to every contact
 * A powerful find command. Search by groups, keywords and more!
-* Import your contacts from Google Contacts/iCloud
 * View groups at a glance of the application
 * Export individual contacts to easily share with others
 * Easy access to social media profiles of each contact
 * Multiple themes to suit your needs
-* Email contacts quickly without copying and pasting
 * View your contacts' addresses quickly in Google Maps
 * Secure your application with a PIN
-* Automatic list sorting
 ====
 
 ====
