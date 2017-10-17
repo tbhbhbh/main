@@ -24,7 +24,8 @@ public class EmailCommand extends Command {
             + "Parameters: INDEX [INDEX]... (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1" + " [2]" + " [3]";
 
-    private static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Email Person: %1$s";
+    public static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Email Person: %1$s";
+
     private static final String EMAIL_URI_PREFIX = "mailTo:";
 
     private final Index[] targetIndexes;
