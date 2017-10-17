@@ -170,9 +170,9 @@ Selects the 2nd person in the address book.
 `select 1` +
 Selects the 1st person in the results of the `find` command.
 
-=== Sending email to one or more person: email
+=== Sending an email to one or more person: email
 Emails one or more person identified by the index number used in the last person listing. +
-Format: `email INDEX [INDEX] [INDEX]`
+Format: `email INDEX [INDEX]...`
 
 ****
 * Opens a default email application and compose a new email with the email address(es)
@@ -312,3 +312,5 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Alias* : `alias ALIAS COMMAND` +
 e.g. `alias a add`
+* *Email* : `email INDEX [INDEX]...` +
+e.g. `email 1 2`
