@@ -348,12 +348,12 @@ image::UndoRedoActivityDiagram.png[width="200"]
 ---
 
 **Aspect:** Type of browser to support the email command +
-**Alternative 1 (current choice):** Use java `Desktop` class +
+**Alternative 1 (current choice):** Using java `Desktop` class +
 **Pros:** It can launch the default email application that loads quickly. +
 **Cons:** `Desktop` API may not be available in some platforms such as Linux +
-**Alternative 2:** Use javafx `WebView` class +
+**Alternative 2:** Using javafx `WebView` class +
 **Pros:** Able to run HTML5 applications on desktop systems that lack a compatible web browser +
-**Cons:** Opens some websites such as Gmail in basic HTML view.
+**Cons:** Web pages load slower and google mail will load in basic HTML view.
 
 === Logging
 
