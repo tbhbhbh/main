@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import seedu.address.commons.core.index.Index;
@@ -18,9 +19,16 @@ public class EmailCommandParser implements Parser<EmailCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public EmailCommand parse(String args) throws ParseException {
+        requireNonNull(args);
+        String[] indexes = args.trim().split(" ");
+        Index[] indexArray = new Index[indexes.length];
+
         try {
-            Index index = ParserUtil.parseIndex(args);
-            return new EmailCommand(index);
+            for (int i = 0; i < indexes.length; i++) {
+                Index index = ParserUtil.parseIndex(indexes[i]);
+                indexArray[i] = index;
+            }
+            return new EmailCommand(indexArray);
         } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
