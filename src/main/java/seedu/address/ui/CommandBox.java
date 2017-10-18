@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
+import seedu.address.commons.util.ImagePathUtil;
 import seedu.address.logic.ListElementPointer;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
@@ -110,7 +111,9 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private void handleCommandInputChanged() {
         try {
-            CommandResult commandResult = logic.execute(commandTextField.getText(), this);
+            String arguments = commandTextField.getText();
+            arguments = ImagePathUtil.requireFileChooser(arguments, this);
+            CommandResult commandResult = logic.execute(arguments);
             initHistory();
             historySnapshot.next();
             // process result of the command
