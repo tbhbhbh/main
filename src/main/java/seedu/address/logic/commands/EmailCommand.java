@@ -28,10 +28,10 @@ public class EmailCommand extends Command {
 
     private static final String EMAIL_URI_PREFIX = "mailTo:";
 
-    private final Index[] targetIndexes;
+    private final Index[] targetIndices;
 
     public EmailCommand(Index[] targetIndexes) {
-        this.targetIndexes = targetIndexes;
+        this.targetIndices = targetIndexes;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class EmailCommand extends Command {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         StringBuilder addresses = new StringBuilder();
         StringBuilder persons = new StringBuilder();
-        for (Index targetIndex : targetIndexes) {
+        for (Index targetIndex : targetIndices) {
             if (targetIndex.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
                         + targetIndex.getOneBased());
@@ -73,15 +73,16 @@ public class EmailCommand extends Command {
     }
 
     /**
-     *
-     * @return
+     * This method is intended for tests involving Email Command.
+     * The difference is that user default email application is not launched during execution.
+     * @return CommandResult representing command success.
      * @throws CommandException
      */
     public CommandResult testExecute() throws CommandException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         StringBuilder addresses = new StringBuilder();
         StringBuilder persons = new StringBuilder();
-        for (Index targetIndex : targetIndexes) {
+        for (Index targetIndex : targetIndices) {
             if (targetIndex.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
                         + targetIndex.getOneBased());
@@ -103,7 +104,7 @@ public class EmailCommand extends Command {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof EmailCommand // instanceof handles nulls
-                && IndexArrayUtil.compareIndexArrays(this.targetIndexes, (
-                        (EmailCommand) other).targetIndexes)); // state check
+                && IndexArrayUtil.compareIndexArrays(this.targetIndices, (
+                        (EmailCommand) other).targetIndices)); // state check
     }
 }
