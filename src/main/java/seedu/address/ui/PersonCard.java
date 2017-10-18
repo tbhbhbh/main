@@ -1,13 +1,7 @@
 package seedu.address.ui;
 
-import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -20,8 +14,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
-import seedu.address.MainApp;
-import seedu.address.commons.util.AppUtil;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
