@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
@@ -64,6 +65,8 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    private ProgressWindow pWindow;
 
     public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML);
@@ -200,8 +203,16 @@ public class MainWindow extends UiPart<Region> {
      */
     @FXML
     public void handleProgress(ReadOnlyDoubleProperty progress) {
-        ProgressWindow pWindow = new ProgressWindow(progress);
+        pWindow = new ProgressWindow(progress);
         pWindow.show();
+    }
+
+    /**
+     * Closes the progress window.
+     */
+    @FXML
+    public void handleCloseProgress() {
+        pWindow.getDialogStage().close();
     }
 
     void show() {
@@ -234,5 +245,13 @@ public class MainWindow extends UiPart<Region> {
     private void handleShowProgressEvent(ShowProgressEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleProgress(event.getProgress());
+
+    }
+
+    @Subscribe
+    private void handleCloseProgressEvent(CloseProgressEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleCloseProgress();
+
     }
 }

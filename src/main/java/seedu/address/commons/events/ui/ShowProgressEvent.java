@@ -4,7 +4,7 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * An event requesting to view the authentication page.
+ * An event requesting to show the progress window of a task.
  */
 public class ShowProgressEvent extends BaseEvent {
 

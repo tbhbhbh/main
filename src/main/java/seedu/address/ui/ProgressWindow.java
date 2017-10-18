@@ -9,14 +9,12 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.util.FxViewUtil;
 
 /**
  * Controller for a progress window
  */
 public class ProgressWindow extends UiPart<Region> {
     private static final Logger logger = LogsCenter.getLogger(ProgressWindow.class);
-    private static final String ICON = "";
     private static final String FXML = "ProgressWindow.fxml";
     private static final String TITLE = "Import Progress";
 
@@ -34,12 +32,11 @@ public class ProgressWindow extends UiPart<Region> {
         //Null passed as the parent stage to make it non-modal.
         dialogStage = createDialogStage(TITLE, null, scene);
         progBar = (ProgressBar) scene.lookup("#progressBar");
-        FxViewUtil.setStageIcon(dialogStage, ICON);
         bindListeners(progress);
     }
 
     /**
-     * Binds the progress bar to a provided Float object
+     * Binds the progress bar to a provided {@code ReadOnlyDoubleProperty}
      * so that it will be notified of any changes.
      */
     private void bindListeners(ReadOnlyDoubleProperty progress) {
@@ -68,4 +65,10 @@ public class ProgressWindow extends UiPart<Region> {
         logger.fine("Showing progress window.");
         dialogStage.show();
     }
+
+    public Stage getDialogStage() {
+        return dialogStage;
+    }
+
+
 }

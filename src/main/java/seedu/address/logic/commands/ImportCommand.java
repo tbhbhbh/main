@@ -27,6 +27,7 @@ import com.google.api.services.people.v1.model.PhoneNumber;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -162,8 +163,12 @@ public class ImportCommand extends UndoableCommand {
                 return null;
             }
         };
-        task.setOnSucceeded(t -> EventsCenter.getInstance().post(new NewResultAvailableEvent(
-                String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded), false)));
+
+        task.setOnSucceeded(t -> {
+            EventsCenter.getInstance().post(new CloseProgressEvent());
+            EventsCenter.getInstance().post(new NewResultAvailableEvent(
+                    String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded), false));
+        });
 
         task.setOnFailed(t -> EventsCenter.getInstance().post(
                 new NewResultAvailableEvent(String.format(MESSAGE_FAILURE), true)));

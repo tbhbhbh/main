@@ -345,6 +345,56 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+=== Import mechanism
+
+The import mechanism is facilitated by Google's People API. It supports reading contacts from the user's personal Google account and parsing them into a format that can be added to the address book. Currently the import mechanism only supports
+adding contacts from Google but iCloud import is scheduled for release in a later version of the application.
+
+Before any importing can be done, the address book has to be authorized to request data from Google's API. This is done using the OAuth 2.0 protocol as it is the standard used by Google for all of their APIs.
+As there are libraries from Google that make authorization easier, these libraries have been used in the implementation of the import mechanism.
+
+Client information such as the Client ID and Client secret are first loaded into a GoogleClientSecrets object. After which, A GoogleAuthorizationCodeFlow object is set up
+using the GoogleClientSecrets, HttpTransport, JsonFactory objects and the scope of access desired to the user's Google Contacts data. In this implementation, we have chosen read-only as we are only importing
+contacts and no modification to the data on Google's side will be performed. A AuthorizationCodeInstalledApp object is then created using the previously mentioned GoogleAuthorizationCodeFlow object, and also a LocalServerReceiver object which allows the application to listen on the local
+web server for the authorization code that is provided when the user gives consent to access his/her data.
+
+After which, the authorization flow can finally begin. The following sequence diagram illustrates this process.
+
+image::https://developers.google.com/accounts/images/webflow.png[width="377"]
+(Diagram from: https://developers.google.com/identity/protocols/OAuth2, reused under Creative Commons Attribution 3.0 License)
+
+A token is first requested by the AuthorizationCodeInstalledApp object, and a page for the user to login to his/her Google account is shown in the System's default web browser.
+Once the user provides consent for the address book to access the data, an authorization code is sent back to the local web server where it is received by the LocalServerReceiver object and passed onto the GoogleAuthorizationCodeFlow
+object so that the code can be exchanged for a token. Once the token is received, a Credential object is created and returned to the executeUndoableCommand method.
+
+The Credential object is then passed to a `retrieveContacts` method that creates a `PeopleService` object that allows the application to interact with Google's People API.
+The parameters used to get the list of the user's connections (Google's term for contacts) are as follows:
+
+----
+PageSize: 1000
+PersonFields: Names, EmailAddresses, PhoneNumbers
+----
+
+A PageSize (the number of connections to fetch) of 1000 is chosen as it is the amount of contacts that the address book should be able to hold before it gets sluggish.
+The PersonFields chosen are the ones most relevant to storing a contact, and more fields such as addresses will be added in future updates.
+
+`retrieveContacts` will then pass the `List<Person>` of connections back to the caller and finally, a `importContacts` method will be called on the `List<Person>`.
+
+
+The `importContacts` method is implemented using the `Task` class from JavaFX and takes care of importing contacts to the address book. `importContacts` is run in a separate `Thread` from the main program.
+It parses every connection from the `List<Person>` using a `convertPerson` method that converts a `Person` object to a `seedu.address.model.person.Person` such that it can be added to the address book.
+A progress bar for importing is also shown to the user, implemented using the `progressProperty()` method of the `Task` class.
+
+
+
+The following sequence diagram shows how the import operation works:
+
+The import mechanism is built upon an `UndoableCommand`, which means that any changes made by the command can be easily reversed by calling the
+`undo` command.
+
+
+
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
