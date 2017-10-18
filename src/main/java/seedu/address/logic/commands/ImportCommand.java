@@ -2,7 +2,6 @@ package seedu.address.logic.commands;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +29,7 @@ import javafx.concurrent.Task;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Phone;
@@ -66,7 +66,7 @@ public class ImportCommand extends UndoableCommand {
      * Creates an ImportCommand to add contacts from the specified service
      */
     public ImportCommand(String service) {
-        this.service = service;
+        this.service = service.toLowerCase();
         peopleAdded = 0;
         try {
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -77,22 +77,21 @@ public class ImportCommand extends UndoableCommand {
 
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
-
         // authorization with Google
         Credential credential = null;
         try {
             credential = authorize();
+            // Retrieve a list of Persons
+            List<Person> connections = retrieveContacts(credential);
+            // Import contacts into the application
+            importContacts(connections);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new CommandException(MESSAGE_FAILURE);
         }
-
-        // Retrieve a list of Persons
-        List<Person> connections = retrieveContacts(credential);
-        // Import contacts into the application
-        importContacts(connections);
 
         return new CommandResult(MESSAGE_IN_PROGRESS);
     }
+
 
     /**
      * Creates an authorized {@code Credential} for the application to interact with
@@ -135,65 +134,18 @@ public class ImportCommand extends UndoableCommand {
     /**
      * Imports contacts into the application using the given {@code List<Person>}
      */
-    private void importContacts(List<Person> connections) {
+    public void importContacts(List<Person> connections) {
 
-        ArrayList<String> failedToAdd = new ArrayList<>();
 
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                String name;
-                String phone;
-                String email;
-                String address;
-                String birthday;
                 int amountToAdd = connections.size();
                 for (Person person : connections) {
-                    List<Name> names = person.getNames();
-                    List<PhoneNumber> numbers = person.getPhoneNumbers();
-                    List<EmailAddress> emailAddresses = person.getEmailAddresses();
-                    List<Birthday> birthdays = person.getBirthdays();
-                    List<Address> addresses = person.getAddresses();
-
-                    // get first value for each list
-                    if (names != null && names.size() > 0) {
-                        name = names.get(0).getDisplayName();
-                        if (!seedu.address.model.person.Name.isValidName(name)) {
-                            failedToAdd.add(name);
-                            continue;
-                        }
-                    } else {
+                    seedu.address.model.person.Person toAdd = convertPerson(person);
+                    if (toAdd == null) {
                         continue;
                     }
-
-                    if (numbers != null && numbers.size() > 0) {
-                        phone = numbers.get(0).getCanonicalForm().replace("+", "");
-                    } else {
-                        phone = "";
-                    }
-                    if (emailAddresses != null && emailAddresses.size() > 0) {
-                        email = emailAddresses.get(0).getValue();
-                        System.out.println(email);
-                    } else {
-                        email = "";
-                    }
-                    if (birthdays != null && birthdays.size() > 0) {
-                        birthday = birthdays.get(0).getText();
-                    } else {
-                        birthday = "";
-                    }
-                    if (addresses != null && addresses.size() > 0) {
-                        address = addresses.get(0).getFormattedValue();
-                    } else {
-                        address = "";
-                    }
-                    Set<Tag> defaultTags = SampleDataUtil.getTagSet("Google");
-
-                    seedu.address.model.person.Name nameAdd = new seedu.address.model.person.Name(name);
-                    seedu.address.model.person.Person toAdd;
-                    toAdd = new seedu.address.model.person.Person(nameAdd,
-                            new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
-                            new seedu.address.model.person.Birthday(birthday), defaultTags);
                     try {
                         model.addPerson(toAdd);
                     } catch (DuplicatePersonException e) {
@@ -210,9 +162,8 @@ public class ImportCommand extends UndoableCommand {
                 return null;
             }
         };
-
-        task.setOnSucceeded(t -> EventsCenter.getInstance().post(
-                new NewResultAvailableEvent(String.format(MESSAGE_SUCCESS, peopleAdded, failedToAdd.size()), false)));
+        task.setOnSucceeded(t -> EventsCenter.getInstance().post(new NewResultAvailableEvent(
+                String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded), false)));
 
         task.setOnFailed(t -> EventsCenter.getInstance().post(
                 new NewResultAvailableEvent(String.format(MESSAGE_FAILURE), true)));
@@ -221,6 +172,64 @@ public class ImportCommand extends UndoableCommand {
         Thread importThread = new Thread(task);
         importThread.start();
 
+    }
+
+    /**
+     * Converts a {@code Person} from Google to a {@code seedu.address.model.person.Person}
+     * Returns null if there is no name in the {@code Person}
+     * Returns {@code seedu.address.model.person.Person} if there is at least a name
+     */
+    public seedu.address.model.person.Person convertPerson(Person person) throws IllegalValueException {
+        String name;
+        String phone;
+        String email;
+        String birthday;
+        String address;
+
+        List<Name> names = person.getNames();
+        List<PhoneNumber> numbers = person.getPhoneNumbers();
+        List<EmailAddress> emailAddresses = person.getEmailAddresses();
+        List<Birthday> birthdays = person.getBirthdays();
+        List<Address> addresses = person.getAddresses();
+
+        // get first value for each list
+        if (names != null && names.size() > 0) {
+            name = names.get(0).getDisplayName();
+            if (!seedu.address.model.person.Name.isValidName(name)) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
+        if (numbers != null && numbers.size() > 0) {
+            phone = numbers.get(0).getCanonicalForm().replace("+", "");
+        } else {
+            phone = "";
+        }
+        if (emailAddresses != null && emailAddresses.size() > 0) {
+            email = emailAddresses.get(0).getValue();
+        } else {
+            email = "";
+        }
+        if (birthdays != null && birthdays.size() > 0) {
+            birthday = birthdays.get(0).getText();
+        } else {
+            birthday = "";
+        }
+        if (addresses != null && addresses.size() > 0) {
+            address = addresses.get(0).getFormattedValue();
+        } else {
+            address = "";
+        }
+        Set<Tag> defaultTags = SampleDataUtil.getTagSet("Google");
+
+        seedu.address.model.person.Name nameAdd = new seedu.address.model.person.Name(name);
+        seedu.address.model.person.Person toAdd;
+        toAdd = new seedu.address.model.person.Person(nameAdd,
+                new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
+                new seedu.address.model.person.Birthday(birthday), defaultTags);
+        return toAdd;
     }
 
     @Override

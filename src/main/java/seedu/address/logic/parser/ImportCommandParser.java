@@ -16,7 +16,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
      */
     @Override
     public ImportCommand parse(String userInput) throws ParseException {
-        String trimmedInput = userInput.trim().toLowerCase();
+        String trimmedInput = userInput.trim();
 
         // unexpected input
         if (trimmedInput.contains(" ") || trimmedInput.length() == 0 || !trimmedInput.contains("google")) {
