@@ -66,7 +66,7 @@ allprojects {
         compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDataTypeVersion"
         compile "com.google.guava:guava:$guavaVersion"
         compile "com.google.oauth-client:google-oauth-client-jetty:1.23.0"
-        compile "com.google.apis:google-api-services-people:v1-rev153-1.23.0"
+        compile fileTree(dir: 'lib', include: '*.jar')
 
         testCompile "junit:junit:$junitVersion"
         testCompile "org.testfx:testfx-core:$testFxVersion"
