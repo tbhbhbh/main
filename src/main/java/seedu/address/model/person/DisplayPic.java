@@ -3,6 +3,8 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.File;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
@@ -16,6 +18,11 @@ public class DisplayPic {
         requireNonNull(displayPicPath);
         String trimmedDisplayPicPath = displayPicPath.trim();
         this.displayPicPath = trimmedDisplayPicPath;
+    }
+
+    @Override
+    public String toString() {
+        return this.displayPicPath;
     }
 
     @Override
