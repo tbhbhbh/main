@@ -169,23 +169,23 @@ public class ImportCommand extends UndoableCommand {
                     if (numbers != null && numbers.size() > 0) {
                         phone = numbers.get(0).getCanonicalForm().replace("+", "");
                     } else {
-                        phone = "91234567";
+                        phone = "";
                     }
                     if (emailAddresses != null && emailAddresses.size() > 0) {
                         email = emailAddresses.get(0).getValue();
                         System.out.println(email);
                     } else {
-                        email = "test@gmail.com";
+                        email = "";
                     }
                     if (birthdays != null && birthdays.size() > 0) {
                         birthday = birthdays.get(0).getText();
                     } else {
-                        birthday = "08/11/1995";
+                        birthday = "";
                     }
                     if (addresses != null && addresses.size() > 0) {
                         address = addresses.get(0).getFormattedValue();
                     } else {
-                        address = "160, Bishan";
+                        address = "";
                     }
                     Set<Tag> defaultTags = SampleDataUtil.getTagSet("Google");
 
