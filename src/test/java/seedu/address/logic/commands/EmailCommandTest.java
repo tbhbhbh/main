@@ -32,7 +32,7 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 personToEmail.getName().toString());
-        CommandResult result = emailCommand.execute();
+        CommandResult result = emailCommand.testExecute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
     }
@@ -56,7 +56,7 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 personToEmail.getName().toString());
-        CommandResult result = emailCommand.execute();
+        CommandResult result = emailCommand.testExecute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
     }
@@ -84,7 +84,7 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 firstPersonToEmail.getName().toString() + ", " + secondPersonToEmail.getName().toString());
-        CommandResult result = emailCommand.execute();
+        CommandResult result = emailCommand.testExecute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
     }

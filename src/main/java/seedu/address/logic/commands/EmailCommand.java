@@ -72,6 +72,33 @@ public class EmailCommand extends Command {
         return new CommandResult(String.format(MESSAGE_EMAIL_PERSON_SUCCESS, allPersons));
     }
 
+    /**
+     *
+     * @return
+     * @throws CommandException
+     */
+    public CommandResult testExecute() throws CommandException {
+        List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+        StringBuilder addresses = new StringBuilder();
+        StringBuilder persons = new StringBuilder();
+        for (Index targetIndex : targetIndexes) {
+            if (targetIndex.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+                        + targetIndex.getOneBased());
+            }
+            ReadOnlyPerson personToEmail = lastShownList.get(targetIndex.getZeroBased());
+            persons.append(", ");
+            persons.append(personToEmail.getName().toString());
+            addresses.append(" ");
+            addresses.append(personToEmail.getEmail().toString());
+        }
+
+        String allPersons = persons.toString().trim().substring(2, persons.length());
+        String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
+
+        return new CommandResult(String.format(MESSAGE_EMAIL_PERSON_SUCCESS, allPersons));
+    }
+
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
