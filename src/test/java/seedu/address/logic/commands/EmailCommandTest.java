@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
@@ -32,9 +33,9 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 personToEmail.getName().toString());
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        CommandResult result = emailCommand.execute();
 
-        assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
+        assertEquals(expectedMessage, result.feedbackToUser);
     }
 
     @Test
@@ -56,11 +57,9 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 personToEmail.getName().toString());
+        CommandResult result = emailCommand.execute();
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        showFirstPersonOnly(expectedModel);
-
-        assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
+        assertEquals(expectedMessage, result.feedbackToUser);
     }
 
     @Test
@@ -86,10 +85,9 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 firstPersonToEmail.getName().toString() + ", " + secondPersonToEmail.getName().toString());
+        CommandResult result = emailCommand.execute();
 
-        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-
-        assertCommandSuccess(emailCommand, model, expectedMessage, expectedModel);
+        assertEquals(expectedMessage, result.feedbackToUser);
     }
 
     @Test
