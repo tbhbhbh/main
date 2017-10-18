@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.logic.ListElementPointer;
@@ -25,6 +27,8 @@ public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
     private static final String FXML = "CommandBox.fxml";
+    public static final String DEFAULT_DISPLAY_PIC = "data/images/defaultperson.png";
+
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
@@ -106,7 +110,7 @@ public class CommandBox extends UiPart<Region> {
     @FXML
     private void handleCommandInputChanged() {
         try {
-            CommandResult commandResult = logic.execute(commandTextField.getText());
+            CommandResult commandResult = logic.execute(commandTextField.getText(), this);
             initHistory();
             historySnapshot.next();
             // process result of the command
@@ -133,7 +137,7 @@ public class CommandBox extends UiPart<Region> {
         historySnapshot.add("");
     }
 
-    private String getDisplayPicPath() {
+    public String getDisplayPicPath() {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PICTURE files","*.jpg", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);
@@ -141,7 +145,7 @@ public class CommandBox extends UiPart<Region> {
         if (selectedFile != null) {
             return selectedFile.getAbsolutePath();
         } else {
-            return "DEFAULT_DISPLAY_PIC";
+            return DEFAULT_DISPLAY_PIC;
         }
     }
 
