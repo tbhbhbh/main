@@ -16,10 +16,10 @@ public class ImportCommandParser implements Parser<ImportCommand> {
      */
     @Override
     public ImportCommand parse(String userInput) throws ParseException {
-        String trimmedInput = userInput.trim();
+        String trimmedInput = userInput.trim().toLowerCase();
 
         // unexpected input
-        if (trimmedInput.contains(" ") || trimmedInput.length() == 0) {
+        if (trimmedInput.contains(" ") || trimmedInput.length() == 0 || !trimmedInput.contains("google")) {
             throw new ParseException(String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT,
                     ImportCommand.MESSAGE_USAGE));
         } else {

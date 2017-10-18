@@ -84,15 +84,8 @@ public class PersonListPanel extends UiPart<Region> {
                     setGraphic(person.getRoot());
                 }
 
-
-                //Platform.runLater(new Runnable() {
-                //   @Override
-                //  public void run() {
-
-                //   }
-                // });
             });
-        }
 
+        }
     }
 }
