@@ -3,17 +3,21 @@ package seedu.address.ui;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.testfx.api.FxToolkit;
 
 import guitests.guihandles.CommandBoxHandle;
 import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 import seedu.address.logic.Logic;
 import seedu.address.logic.LogicManager;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
+
 
 public class CommandBoxTest extends GuiUnitTest {
 
@@ -26,11 +30,12 @@ public class CommandBoxTest extends GuiUnitTest {
     private CommandBoxHandle commandBoxHandle;
 
     @Before
-    public void setUp() {
+    public void setUp() throws TimeoutException {
         Model model = new ModelManager();
         Logic logic = new LogicManager(model);
+        Stage stage = FxToolkit.registerPrimaryStage();
 
-        CommandBox commandBox = new CommandBox(logic);
+        CommandBox commandBox = new CommandBox(logic, stage);
         commandBoxHandle = new CommandBoxHandle(getChildNode(commandBox.getRoot(),
                 CommandBoxHandle.COMMAND_INPUT_FIELD_ID));
         uiPartRule.setUiPart(commandBox);
@@ -124,6 +129,7 @@ public class CommandBoxTest extends GuiUnitTest {
         assertInputHistory(KeyCode.DOWN, "");
         assertInputHistory(KeyCode.UP, thirdCommand);
     }
+
 
     /**
      * Runs a command that fails, then verifies that <br>
