@@ -76,13 +76,16 @@ public class PersonListPanel extends UiPart<Region> {
         protected void updateItem(PersonCard person, boolean empty) {
             super.updateItem(person, empty);
 
-            if (empty || person == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                setGraphic(person.getRoot());
-            }
+            Platform.runLater(() -> {
+                if (empty || person == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    setGraphic(person.getRoot());
+                }
+
+            });
+
         }
     }
-
 }
