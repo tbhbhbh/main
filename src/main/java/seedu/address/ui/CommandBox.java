@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
+
 import java.io.File;
 import java.util.logging.Logger;
 
@@ -110,7 +112,10 @@ public class CommandBox extends UiPart<Region> {
     private void handleCommandInputChanged() {
         try {
             String arguments = commandTextField.getText();
-            arguments = ImagePathUtil.requireFileChooser(arguments, this);
+            if (arguments.contains(PREFIX_DP.getPrefix())) {
+                arguments = ImagePathUtil.setPath(arguments, this);
+            }
+            System.out.println(arguments);
             CommandResult commandResult = logic.execute(arguments);
             initHistory();
             historySnapshot.next();

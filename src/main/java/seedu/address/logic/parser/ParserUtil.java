@@ -84,7 +84,7 @@ public class ParserUtil {
      * Parses a {@code Optional<String> displayPic} into an {@code Optional<DisplayPic>} if {@code displayPic} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */
-    public static Optional<DisplayPic> parsesDisplayPic(Optional<String> displayPic) throws IllegalValueException {
+    public static Optional<DisplayPic> parseDisplayPic(Optional<String> displayPic) throws IllegalValueException {
         requireNonNull(displayPic);
         return displayPic.isPresent() ? Optional.of(new DisplayPic(displayPic.get())) : Optional.empty();
     }

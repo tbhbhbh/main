@@ -3,6 +3,7 @@ package seedu.address.commons.util;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
 import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
 
+import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.ui.CommandBox;
 
 /**
@@ -11,17 +12,36 @@ import seedu.address.ui.CommandBox;
 
 public class ImagePathUtil {
 
-    public static String requireFileChooser(String arguments, CommandBox commandBox) {
-        int prefixIndex = findPrefixPosition(arguments, PREFIX_DP.getPrefix(), 0);
-        if (prefixIndex != -1) {
-            StringBuilder sb = new StringBuilder((CharSequence) arguments);
-            String selectedPath = commandBox.getDisplayPicPath();
-            sb.insert(prefixIndex + PREFIX_DP.getPrefix().length(), selectedPath);
-            arguments = sb.toString();
-        } else {
-            arguments += " " + PREFIX_DP + DEFAULT_DISPLAY_PIC;
+    private static final String ERROR_MESSAGE = "Please make sure that your input includes either dp/y or dp/n";
+
+    private static final int PREFIX_LENGTH = PREFIX_DP.getPrefix().length();
+
+    public static String setPath(String arguments, CommandBox commandBox) throws ParseException {
+        try {
+            int prefixIndex = findPrefixPosition(arguments, PREFIX_DP.getPrefix(), 0);
+            StringBuilder sb = new StringBuilder(arguments);
+            String choice = sb.substring(prefixIndex + PREFIX_LENGTH, prefixIndex + PREFIX_LENGTH + 1);
+            if (requireFileChooser(choice)) {
+                String selectedPath = commandBox.getDisplayPicPath();
+                sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix() + selectedPath + " ");
+                arguments = sb.toString();
+            }
+            else {
+                sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix() + DEFAULT_DISPLAY_PIC + " ");
+                arguments = sb.toString();
+            }
+            return arguments;
+        } catch (StringIndexOutOfBoundsException sioe) {
+            throw new ParseException(ERROR_MESSAGE, sioe);
         }
-        return arguments;
+    }
+
+    public static boolean requireFileChooser(String input) {
+        String trimmedInput = input.trim();
+        if (trimmedInput.equalsIgnoreCase("y")) {
+            return true;
+        }
+        return false;
     }
 
     private static int findPrefixPosition(String argsString, String prefix, int fromIndex) {
