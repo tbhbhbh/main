@@ -952,16 +952,9 @@ Use case ends
 [appendix]
 == Glossary
 
-.CSV
-....
-File format used to store tabular data. In AddressBook's case, this would
-be a database of contacts.
-....
-
 Aliases
 ....
-Shortcuts for the default commands so that the user can customize AddressBook to
-their liking.
+Shortcuts for the default commands so that the user can customize AddressBook to their liking.
 ....
 
 App
@@ -1011,6 +1004,12 @@ Continuous Integration (CI)
 Practice of merging all developer working copies to a shared
 mainline several times a day. Each check-in is then verified by
 an automated build, allowing teams to detect problems early.
+....
+
+CSV
+....
+File format used to store tabular data. In AddressBook's case, this would
+be a database of contacts.
 ....
 
 iCloud
