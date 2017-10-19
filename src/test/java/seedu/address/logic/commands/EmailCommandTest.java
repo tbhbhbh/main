@@ -9,21 +9,38 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.email.EmailRequestEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class EmailCommandTest {
 
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
+
+    //Model simply provides the required names of recipients and are not modified in any way.
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
     private Index[] indexArray;
+
+    @Test
+    public void execute_emailRequestEvent_success() throws CommandException {
+        EmailCommand emailCommand = prepareCommand(INDEX_FIRST_PERSON);
+        CommandResult result = emailCommand.execute();
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof EmailRequestEvent);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
+
+    }
 
     @Test
     public void execute_validIndexUnfilteredList_success() throws Exception {
@@ -32,7 +49,7 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 personToEmail.getName().toString());
-        CommandResult result = emailCommand.testExecute();
+        CommandResult result = emailCommand.execute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
     }
@@ -56,7 +73,7 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 personToEmail.getName().toString());
-        CommandResult result = emailCommand.testExecute();
+        CommandResult result = emailCommand.execute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
     }
@@ -84,7 +101,7 @@ public class EmailCommandTest {
 
         String expectedMessage = String.format(EmailCommand.MESSAGE_EMAIL_PERSON_SUCCESS,
                 firstPersonToEmail.getName().toString() + ", " + secondPersonToEmail.getName().toString());
-        CommandResult result = emailCommand.testExecute();
+        CommandResult result = emailCommand.execute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
     }
@@ -123,7 +140,7 @@ public class EmailCommandTest {
     }
 
     /**
-     * Returns a {@code EmailCommand} with the parameter {@code index}.
+     * Returns a {@code EmailCommand} using one index parameter {@code index1}
      */
     private EmailCommand prepareCommand(Index index) {
         indexArray = new Index[1];
@@ -135,7 +152,7 @@ public class EmailCommandTest {
         return emailCommand;
     }
     /**
-     * Returns a {@code EmailCommand} with the parameter of more than one {@code index}.
+     * Returns a {@code EmailCommand} using two index parameter {@code index1, index2}
      */
     private EmailCommand prepareCommand(Index index1, Index index2) {
         indexArray = new Index[2];
