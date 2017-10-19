@@ -26,13 +26,13 @@ public class IndexArrayUtilTest {
     @Test
     public void compareIndexArrays_arraysContainsZeroElement_throwsIllegalArgumentException() {
         assertExceptionThrown(IllegalArgumentException.class, new Index[0], new Index[0],
-                Optional.of("Both arrays must have at least one element"));
+                Optional.of("Both arrays must have at least one Index"));
     }
 
     @Test
     public void compareIndexArrays_differentLengthArrays_throwsIllegalArgumentException() {
         assertExceptionThrown(IllegalArgumentException.class, new Index[1], new Index[2],
-                Optional.of("Both arrays must have same number of elements"));
+                Optional.of("Both arrays must have same number of Index"));
     }
 
     private void assertExceptionThrown(Class<? extends Throwable> exceptionClass, Index[] arr1, Index[] arr2,
