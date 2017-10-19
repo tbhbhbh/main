@@ -1,7 +1,6 @@
 package seedu.address.ui;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -11,7 +10,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.util.ImagePathUtil;
