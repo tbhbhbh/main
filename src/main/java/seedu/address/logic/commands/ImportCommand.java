@@ -135,7 +135,7 @@ public class ImportCommand extends UndoableCommand {
     /**
      * Imports contacts into the application using the given {@code List<Person>}
      */
-    public void     importContacts(List<Person> connections) {
+    public void importContacts(List<Person> connections) {
 
 
         Task<Void> task = new Task<Void>() {

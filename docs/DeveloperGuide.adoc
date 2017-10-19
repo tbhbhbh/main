@@ -389,9 +389,42 @@ A progress bar for importing is also shown to the user, implemented using the `p
 
 The following sequence diagram shows how the import operation works:
 
+image::ImportSequenceDiagram.png[width="800"]
+
 The import mechanism is built upon an `UndoableCommand`, which means that any changes made by the command can be easily reversed by calling the
 `undo` command.
 
+==== Design Considerations
+
+**Aspect:** How import executes +
+**Alternative 1 (current choice):** Individually adds each contact. +
+**Pros:** User is able to see each contact being added. +
+**Cons:** Slower than adding retrieved contacts all at once as the data has to be written to disk every time a contact is added individually +
+**Alternative 2:** Contacts are only added after every single `Person` is parsed +
+**Pros:** Faster than adding as soon as each `Person` is parsed as data is written all at once, instead of multiple times +
+**Cons:** Requires a new method `addAllInList` to be implemented in model, which only has limited use as import is the only command doing a batch
+addition of contacts
+
+---
+
+**Aspect:** How import progress is shown to the user +
+**Alternative 1 (current choice):** Show a pop-up progress window indicating how many contacts have been added +
+**Pros:** Intuitive for the user to understand +
+**Cons:** Difficult to implement as importing contacts takes a (relatively) long time and thus, blocks the JavaFX thread from updating the UI in a timely manner. As such, the progress bar will not be updated until the `importContacts` function is completed.
+Threading has to be used to allow the progress bar to update as the `importContacts` method is running. +
+**Alternative 2:** Show the user how many contacts have been added in `ResultDisplay`  +
+**Pros:** Easy to implement as no new UI elements have to be added +
+**Cons:** Not as user-friendly as having a progress bar +
+
+---
+
+**Aspect:** Implementation of authorization +
+**Alternative 1 (current choice):** Pop-up the authorization page in the user's default browser +
+**Pros:** Easy for the user to authorize as they may already be logged in to their Google account on their browsers. +
+**Cons:** Takes the focus away from the main application to the user's default browser, which may be a jarring user experience. +
+**Alternative 2:** Use the existing browser panel to show the authorization page +
+**Pros:** Clearer for the user to understand and focus is kept on the main application. +
+**Cons:** Requires implementing a new class to listen on the local web server for the authorization code instead of using the provided `LocalServerReceiver` from the Google Client Library. +
 
 
 
