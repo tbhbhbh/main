@@ -347,7 +347,7 @@ image::UndoRedoActivityDiagram.png[width="200"]
 
 === Import mechanism
 
-The import mechanism is facilitated by Google's People API. It supports reading contacts from the user's personal Google account and parsing them into a format that can be added to the address book. Currently the import mechanism only supports
+The import mechanism is facilitated by Google's People API. It supports reading contacts from the user's personal Google account and parsing them into a format that can be added to the address book. The import mechanism only supports
 adding contacts from Google but iCloud import is scheduled for release in a later version of the application.
 
 Before any importing can be done, the address book has to be authorized to request data from Google's API. This is done using the OAuth 2.0 protocol as it is the standard used by Google for all of their APIs.

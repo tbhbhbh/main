@@ -31,6 +31,7 @@ public class ProgressWindow extends UiPart<Region> {
         Scene scene = new Scene(getRoot());
         //Null passed as the parent stage to make it non-modal.
         dialogStage = createDialogStage(TITLE, null, scene);
+        dialogStage.setAlwaysOnTop(true);
         progBar = (ProgressBar) scene.lookup("#progressBar");
         bindListeners(progress);
     }
