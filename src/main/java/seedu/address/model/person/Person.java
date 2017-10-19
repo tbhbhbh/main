@@ -104,6 +104,10 @@ public class Person implements ReadOnlyPerson {
         return address.get();
     }
 
+    public void setDisplayPic(DisplayPic displayPic) {
+        this.displayPic.set(requireNonNull(displayPic));
+    }
+
     @Override
     public ObjectProperty<DisplayPic> displayPicProperty() { return displayPic; }
 
