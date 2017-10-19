@@ -6,24 +6,24 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 import seedu.address.commons.core.index.Index;
 
 /**
- * Helper functions for handling index arrays.
+ * Helper functions for handling arrays containing one or more Index.
  */
 public class IndexArrayUtil {
 
     /**
-     * Compare two arrays {@code arr1} & {@code arr2} if they have the same Index.
-     * Index in both arrays do not have to be in the same order.
+     * Compare two arrays {@code arr1} & {@code arr2} if they have the same Index number(s).
+     * Index in both arrays do not have to be in ascending or descending order.
      * @param arr1 cannot be null, cannot be empty, must be of same size as arr2
      * @param arr2 cannot be null, cannot be empty, must be of same size as arr1
-     * @return true if two arrays have the same Index.
+     * @return true if two arrays have the same Index number(s)
      */
     public static boolean compareIndexArrays(Index[] arr1, Index[] arr2) {
         requireNonNull(arr1);
         requireNonNull(arr2);
 
         checkArgument(arr1.length > 0 && arr2.length > 0,
-                "Both arrays must have at least one element");
-        checkArgument(arr1.length == arr2.length, "Both arrays must have same number of elements");
+                "Both arrays must have at least one Index");
+        checkArgument(arr1.length == arr2.length, "Both arrays must have same number of Index");
 
         Index[] sortedArr1 = sortArray(arr1);
         Index[] sortedArr2 = sortArray(arr2);
@@ -39,7 +39,7 @@ public class IndexArrayUtil {
     /**
      * Swap elements in an array by its position.
      * @param arr is a given array, it cannot be null
-     * @param pos is the position to be swap with the next element.
+     * @param pos is a valid position to be swap with the next element.
      */
     private static void swapElements(Index[] arr, int pos) {
 

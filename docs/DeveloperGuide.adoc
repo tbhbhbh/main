@@ -347,16 +347,22 @@ image::UndoRedoActivityDiagram.png[width="200"]
 
 === Sending Emails To Contacts
 
-This feature is implemented to provide users the utility to email their contacts using the user's default mail client
-to launch an email application which will contain the email addresses of contacts specified by user. +
-User can edit the subject field and compose the email using their own default email application.
+This feature is implemented to provide users the ability to email their contacts using the users' default mail client
+to launch an email application which will contain the email addresses of contacts specified by users. Users can compose or edit the email using their own default email application before sending it. +
 
-==== Email feature implementation
-When user enter the command to email one or more person in their address book. `EmailCommandParser`
-will parse the arguments which are indices and store these indices provided by the user's input
-in an array called `targetIndices` and return a `EmailCommand`. +
-`EmailComand` will ensure that `Index` specified is valid and construct a String `allEmaillAddress`
-containing the email addresses separated by a comma. For example: +
+The java `Desktop` class allows java application to launch default email applications registered on the users' native desktop to handle a Uniform Resource Indentifier `URI`.
+In this case, `URI` is created as a reference to the mail command scheme and email addresses to mail to.
+
+==== Email command implementation
+
+image::3.2.1 Email Command Implementation.png[width="800"]
+
+pass:[<div align="center"><b>Figure 3.2.1 Email Command Implementation</b></div>]
+
+From the diagram above, when users enter the command `email 1` to email one or more person in their address book.
+`EmailCommandParser` will parse the arguments, which are either a single index or multiple indices, provided by the users and store them
+in an array called `targetIndices` and return a `EmailCommand`. Next, `EmailCommand` will call its method `execute()`
+and ensure that `Index` specified is valid and construct a String `allEmaillAddress` which contains all the email addresses. Refer to code example below: +
 
 * Code listing:
 +
@@ -367,24 +373,39 @@ public CommandResult execute() throws CommandException {
         StringBuilder addresses = new StringBuilder();
         for (Index targetIndex : targetIndexes) {
             if (targetIndex.getZeroBased() >= lastShownList.size()) {
-                //Throw exception due to invalid index
+                //Throw exception due to invalid index after checking
             }
             //Append the address of the person to addresses and do others
+            address.append(" ");
+            addresses.append(personToEmail.getEmail.toString());
         }
         //Add a comma between email addresses
         String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
 -------------
-Next, we are using `java.awt.Desktop` package to launch the default mail client registered on
-the native desktop to handle a `URI`. The `URI mailTo` instance is created by using a String prefix
-which specifies the operation to launch user's default mail client and is followed by the String `allEmailAddresses`. Lastly, user's desktop will launch
-the mail client. Refer to the code example below: +
+[NOTE]
+The String `allEmailAddresses` is constructed by appending a comma after each email address of a contact. This is done to ensure that it follows the syntax required when
+constructing a `URI`.
+
+==== Email request event process
+
+image::3.2.1 Email Request Event Process.png[width="800"]
+
+pass:[<div align="center"><b>Figure 3.2.2 Email Request Event Process</b></div>]
+
+With reference to the diagram above, after `EmailCommand` has executed, it will post a new `EmailRequestEvent` and allow the UI to handle this event. In the UI, we are using java `Desktop` class to
+launch the default mail client registered on users' native desktop. A `URI` instance have to be created and pass to the mail method in the `Desktop` class.
+Refer to the code example below: +
 
 * Code listing:
 +
 [source, java]
 --------------
+private staic final String EMAIL_URI_PREFIX = "mailTo:";
+
+//rest of methods in MainWindow
+
 URI mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
-    //Checks if user Desktop applications are supported
+    //Checks if user native Desktop applications are supported
     if (Desktop.isDesktopSupported()) {
         Desktop userDesktop = Desktop.getDesktop();
         userDesktop.mail(mailTo);
@@ -393,16 +414,24 @@ URI mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
     }
 --------------
 
+[NOTE]
+To construct a valid `URI` instance, the scheme `EMAIL_URI_PREFIX` which specifies the operation to launch user's default mail client must be
+followed by the String `allEmailAddresses`.
+
+Lastly, users' desktop will launch a default mail client where they can compose the subject and message body of the email.
+In addition, users can also edit their recipients field to include carbon copy or blind carbon copy before sending out
+the email to their recipients.
+
 ==== Design consideration
 **Aspect:** Type of application to send emails +
 **Alternative 1 (current choice):** Use user's default mail client +
-**Pros:** Default mail client tend to load faster than the default browser `javafx.scene.web.WebView` used by `UI` `BrowserPanel`. +
+**Pros:** Default mail client tend to load faster than the default browser `WebView` used by `UI`: `BrowserPanel`. +
 **Cons:** Does not support some operating systems such as Linux. +
-**Alternative 2:** Use web browser to access user email online. +
-**Pros:** Able to support more users to use this email feature. +
-**Cons:** Not all users use the same email services such as Gmail or Outlook. Hence,
-it will be difficult to authorize the web pages or API access for them and it is often dependent
-on the services they need. +
+**Alternative 2:** Use web browser to access user email services online. +
+**Pros:** Able to support more users to use this email feature as there are more options for different users. +
+**Cons:** Not all users use the same email services such as Gmail or Outlook. Moreover,
+it is difficult to authorize the web pages or API access for them since it is often dependent
+on the type of email services they need. +
 
 === Logging
 
@@ -1159,6 +1188,12 @@ User Interface(UI)
 ....
 Space where interactions between the user and Address Book
 happens.
+....
+
+Uniform Resource Identifier(URI)
+....
+A string of characters used to identify a resource over a network, typically the World Wide Web, using specific protocols.
+Schemes specifying a concrete syntax and associated protocols define each URI.
 ....
 
 vCard
