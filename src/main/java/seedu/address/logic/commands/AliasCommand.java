@@ -12,13 +12,14 @@ public class AliasCommand extends UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an alias for a command. "
             + "Parameters: "
-            + "USER DEFINED ALIAS "
+            + "ALIAS "
             + "COMMAND "
             + "Example: " + COMMAND_WORD + " "
             + "a "
             + "add ";
 
-    public static final String MESSAGE_SUCCESS = "New alias added: ";
+    public static final String MESSAGE_SUCCESS = "New alias added: %1$s for %2$s";
+    public static final String MESSAGE_OVERRIDE = "Alias %1$s is now mapped to %2$s instead of %3$s";
     public static final String MESSAGE_INVALID_COMMAND = "Command entered is invalid.";
 
     private final String alias;
@@ -35,13 +36,13 @@ public class AliasCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         if (AddressBookParser.checkValidCommand(actualCommand)) {
-            model.addAlias(alias, actualCommand);
-            StringBuilder sb = new StringBuilder();
-            sb.append(MESSAGE_SUCCESS);
-            sb.append(alias);
-            sb.append(" for ");
-            sb.append(actualCommand);
-            return new CommandResult(sb.toString());
+            String mapping = model.getAlias(this.alias);
+            model.addAlias(this.alias, actualCommand);
+            if (mapping == null) {
+                return new CommandResult(String.format(MESSAGE_SUCCESS, this.alias, actualCommand));
+            } else {
+                return new CommandResult(String.format(MESSAGE_OVERRIDE, this.alias, actualCommand, mapping));
+            }
         } else {
             throw new CommandException(MESSAGE_INVALID_COMMAND);
         }
