@@ -50,7 +50,9 @@ public interface Model {
     void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
             throws DuplicatePersonException, PersonNotFoundException;
 
-    void deleteTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException;
+    void deleteTag(Tag tag) throws DuplicatePersonException, PersonNotFoundException;
+
+    void editTag(Tag oldTag, Tag newTag) throws DuplicatePersonException, PersonNotFoundException;
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<ReadOnlyPerson> getFilteredPersonList();
