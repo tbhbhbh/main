@@ -33,6 +33,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setEmail(person.getEmail());
         descriptor.setAddress(person.getAddress());
         descriptor.setBirthday(person.getBirthday());
+        descriptor.setDisplayPic(person.getDisplayPic());
         descriptor.setTags(person.getTags());
     }
 
@@ -92,6 +93,17 @@ public class EditPersonDescriptorBuilder {
             ParserUtil.parseBirthday(Optional.of(birthday)).ifPresent(descriptor::setBirthday);
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("birthday is expected to be unique.");
+        }
+        return this;
+    }
+     /**
+      *  Sets the {@code DisplayPic} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withDisplayPic(String displayPic) {
+        try {
+            ParserUtil.parseDisplayPic(Optional.of(displayPic)).ifPresent(descriptor::setDisplayPic);
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("address is expected to be unique.");
         }
         return this;
     }

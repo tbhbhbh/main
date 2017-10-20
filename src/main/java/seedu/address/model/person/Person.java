@@ -24,19 +24,22 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     private ObjectProperty<Email> email;
     private ObjectProperty<Address> address;
     private ObjectProperty<Birthday> birthday;
+    private ObjectProperty<DisplayPic> displayPic;
 
     private ObjectProperty<UniqueTagList> tags;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Birthday birthday, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Birthday birthday, DisplayPic displayPic, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, birthday, tags);
+
         this.name = new SimpleObjectProperty<>(name);
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
         this.birthday = new SimpleObjectProperty<>(birthday);
+        this.displayPic = new SimpleObjectProperty<>(displayPic);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
     }
@@ -46,7 +49,7 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getBirthday(),
-                source.getTags());
+                source.getDisplayPic(), source.getTags());
     }
 
     public void setName(Name name) {
@@ -118,6 +121,16 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     public void setBirthday(Birthday birthday) {
         this.birthday.set(requireNonNull(birthday));
     }
+
+    public void setDisplayPic(DisplayPic displayPic) {
+        this.displayPic.set(requireNonNull(displayPic));
+    }
+
+    @Override
+    public ObjectProperty<DisplayPic> displayPicProperty() { return displayPic; }
+
+    @Override
+    public DisplayPic getDisplayPic() { return displayPic.get(); }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}

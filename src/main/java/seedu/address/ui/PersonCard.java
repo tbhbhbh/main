@@ -1,14 +1,19 @@
 package seedu.address.ui;
 
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -47,12 +52,17 @@ public class PersonCard extends UiPart<Region> {
     private Label birthday;
     @FXML
     private FlowPane tags;
+    @FXML
+    private StackPane imagePane;
+    @FXML
+    private ImageView displayPic;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
         initTags(person);
+        initImage(person);
         bindListeners(person);
     }
 
@@ -66,10 +76,23 @@ public class PersonCard extends UiPart<Region> {
         address.textProperty().bind(Bindings.convert(person.addressProperty()));
         email.textProperty().bind(Bindings.convert(person.emailProperty()));
         birthday.textProperty().bind(Bindings.convert(person.birthdayProperty()));
+        person.displayPicProperty().addListener((observable, oldValue, newValue) -> {
+            initImage(person);
+        });
         person.tagProperty().addListener((observable, oldValue, newValue) -> {
             tags.getChildren().clear();
             initTags(person);
         });
+    }
+
+    private void initImage(ReadOnlyPerson person) {
+        File personImg = new File(person.getDisplayPic().toString());
+        String imgUrl = personImg.toURI().toString();
+        Image displayPicture = new Image(imgUrl);
+        displayPic = new ImageView(displayPicture);
+        displayPic.setFitHeight(50);
+        displayPic.setFitWidth(50);
+        imagePane.getChildren().add(displayPic);
     }
 
     /**

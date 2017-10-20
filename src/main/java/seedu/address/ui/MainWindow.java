@@ -148,7 +148,7 @@ public class MainWindow extends UiPart<Region> {
                 logic.getFilteredPersonList().size());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        CommandBox commandBox = new CommandBox(logic);
+        CommandBox commandBox = new CommandBox(logic, primaryStage);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
     }
 
