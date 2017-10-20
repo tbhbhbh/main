@@ -48,9 +48,6 @@ public class TagDeleteCommand extends UndoableCommand {
             assert false : "The target tag is invalid";
         } catch (PersonNotFoundException pnfe) {
             assert false : "The target person cannot be missing";
-        } catch (TagNotFoundException tnfe) {
-            assert false : "The target tag cannot be missing";
-
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));

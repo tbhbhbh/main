@@ -21,6 +21,7 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.TagDeleteCommand;
+import seedu.address.logic.commands.TagEditCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.UserPrefs;
@@ -58,6 +59,9 @@ public class AddressBookParser {
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
 
+
+        System.out.println("" + commandWord);
+        System.out.println("" + arguments);
         String actualCommand = commandWord;
 
         if (aliasMap.get(actualCommand) != null) {
@@ -108,6 +112,9 @@ public class AddressBookParser {
         case TagDeleteCommand.COMMAND_WORD:
             return new TagDeleteCommandParser().parse(arguments);
 
+        case TagEditCommand.COMMAND_WORD:
+            return new TagEditCommandParser().parse(arguments);
+
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
@@ -135,6 +142,7 @@ public class AddressBookParser {
         case RedoCommand.COMMAND_WORD:
         case AliasCommand.COMMAND_WORD:
         case TagDeleteCommand.COMMAND_WORD:
+        case TagEditCommand.COMMAND_WORD:
             return true;
         default:
             return false;
