@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
@@ -32,6 +34,7 @@ import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.person.DisplayPic;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -233,7 +236,7 @@ public class ImportCommand extends UndoableCommand {
         seedu.address.model.person.Person toAdd;
         toAdd = new seedu.address.model.person.Person(nameAdd,
                 new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
-                new seedu.address.model.person.Birthday(birthday), defaultTags);
+                new seedu.address.model.person.Birthday(birthday), new DisplayPic(DEFAULT_DISPLAY_PIC), defaultTags);
         return toAdd;
     }
 

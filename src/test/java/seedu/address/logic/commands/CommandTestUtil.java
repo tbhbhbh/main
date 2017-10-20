@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BIRTHDAY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -36,6 +37,7 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_BIRTHDAY_AMY = "11/07/1977";
     public static final String VALID_BIRTHDAY_BOB = "05/06/1994";
+    public static final String VALID_DISPLAYPIC = "data/images/defaultperson.png";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
 
@@ -49,6 +51,8 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String BIRTHDAY_DESC_AMY = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_AMY;
     public static final String BIRTHDAY_DESC_BOB = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_BOB;
+    public static final String DISPLAYPIC_DESC = " " + PREFIX_DP + VALID_DISPLAYPIC;
+    public static final String DISPLAYPIC_DEFAULT = " " + PREFIX_DP + "N";
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
