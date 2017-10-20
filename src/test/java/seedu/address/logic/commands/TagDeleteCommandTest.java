@@ -23,13 +23,13 @@ public class TagDeleteCommandTest {
     @Test
     public void execute_deleteValidTagUnfilteredList_success() throws Exception {
         Set<Tag> tagSet = new HashSet<>(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()).getTags());
-        String tagName = tagSet.toArray()[0].toString().substring(1,8);
-        TagDeleteCommand tagDeleteCommand = prepareCommand(tagSet.toArray()[0].toString().substring(1,8));
+        String tagName = tagSet.toArray()[0].toString().substring(1, 8);
+        TagDeleteCommand tagDeleteCommand = prepareCommand(tagSet.toArray()[0].toString().substring(1, 8));
 
         String expectedMessage = String.format(TagDeleteCommand.MESSAGE_DELETE_TAG_SUCCESS, tagName);
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
-        expectedModel.deleteTag(new Tag(tagSet.toArray()[0].toString().substring(1,8)));
+        expectedModel.deleteTag(new Tag(tagSet.toArray()[0].toString().substring(1, 8)));
 
         assertCommandSuccess(tagDeleteCommand, model, expectedMessage, expectedModel);
     }
