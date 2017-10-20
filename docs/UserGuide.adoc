@@ -253,6 +253,36 @@ Assigns the alias 'a' to the add command. 'a' can now be used in place of add.
 'd' can now be used in place of exit. Initially, alias 'd' was assigned to delete, but since the alias was subsequently assigned to exit,
 it is no longer assigned to delete.
 
+=== Deleting a tag : `tagdelete`
+
+Allows you to delete a tag from all persons in the address book.
+
+Format: `tagdelete TAG_NAME`
+
+****
+* The tag must be a valid tag (eg. already existing)
+****
+
+Examples:
+
+* `tagdelete friends` +
+Deletes the tag 'friends' from all persons with the 'friends' tag in the address book.
+
+=== Editing a tag : `tagedit`
+
+Allows you to change the name of a tag belonging to all persons in the address book.
+
+Format: `tagedit OLD TAG NAME OLD_TAG_NAME NEW_TAG_NAME`
+
+****
+* Old tag must be an existing, valid tag
+* New tag must be a valid tag (eg. alphanumerical only)
+****
+
+Examples:
+
+* `tagedit friends losers` +
+Changes the tag 'friends' into 'losers' for all persons with that tag.
 
 === Clearing all entries : `clear`
 
@@ -294,3 +324,9 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Alias* : `alias ALIAS COMMAND` +
 e.g. `alias a add`
+* *Tag Delete*: `tagdelete TAG_NAME` +
+e.g. `tagdelete friends`
+* *Tag Edit*: `tagedit OLD_TAG_NAME NEW_TAG_NAME` +
+e.g. `tagedit friends losers`
+
+

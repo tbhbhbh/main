@@ -50,7 +50,7 @@ public class TagDeleteCommand extends UndoableCommand {
             assert false : "The target person cannot be missing";
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagName));
     }
 
     @Override

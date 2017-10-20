@@ -59,9 +59,6 @@ public class AddressBookParser {
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
 
-
-        System.out.println("" + commandWord);
-        System.out.println("" + arguments);
         String actualCommand = commandWord;
 
         if (aliasMap.get(actualCommand) != null) {
