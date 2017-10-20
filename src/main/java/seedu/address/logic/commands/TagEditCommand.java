@@ -11,11 +11,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.exceptions.TagNotFoundException;
 
-/**
- * Deletes a tag identified using its tag name from the address book.
- */
-public class TagDeleteCommand extends UndoableCommand {
-
+public class TagEditCommand {
     public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted tag: %1$s";
     public static final String COMMAND_WORD = "tagdelete";
     public static final String MESSAGE_USAGE = COMMAND_WORD
@@ -26,9 +22,9 @@ public class TagDeleteCommand extends UndoableCommand {
     private final String tagName;
     private Tag tagToDelete;
 
-    public TagDeleteCommand(String tagName) {
+    public TagEditCommand(String newTagName) {
         requireNonNull(tagName);
-        this.tagName = tagName.trim();
+        this.newTagName = tagName.trim();
 
     }
 
