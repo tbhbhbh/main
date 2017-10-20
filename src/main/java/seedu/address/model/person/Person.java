@@ -31,7 +31,8 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Birthday birthday, DisplayPic displayPic, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Birthday birthday,
+                  DisplayPic displayPic, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, birthday, tags);
 
         this.name = new SimpleObjectProperty<>(name);
@@ -127,10 +128,14 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     }
 
     @Override
-    public ObjectProperty<DisplayPic> displayPicProperty() { return displayPic; }
+    public ObjectProperty<DisplayPic> displayPicProperty() {
+        return displayPic;
+    }
 
     @Override
-    public DisplayPic getDisplayPic() { return displayPic.get(); }
+    public DisplayPic getDisplayPic() {
+        return displayPic.get();
+    }
 
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}

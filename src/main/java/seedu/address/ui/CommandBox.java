@@ -27,8 +27,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
-    private static final String FXML = "CommandBox.fxml";
     public static final String DEFAULT_DISPLAY_PIC = "data/images/defaultperson.png";
+    private static final String FXML = "CommandBox.fxml";
 
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
@@ -145,7 +145,7 @@ public class CommandBox extends UiPart<Region> {
 
     public String getDisplayPicPath() {
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PICTURE files","*.jpg", "*.png");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files","*.jpg", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         if (selectedFile != null) {

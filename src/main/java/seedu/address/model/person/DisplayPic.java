@@ -1,9 +1,6 @@
 package seedu.address.model.person;
 
-
 import static java.util.Objects.requireNonNull;
-
-import java.io.File;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
@@ -14,7 +11,7 @@ public class DisplayPic {
 
     public final String displayPicPath;
 
-    public DisplayPic(String displayPicPath) throws IllegalValueException{
+    public DisplayPic(String displayPicPath) throws IllegalValueException {
         requireNonNull(displayPicPath);
         String trimmedDisplayPicPath = displayPicPath.trim();
         this.displayPicPath = trimmedDisplayPicPath;

@@ -110,7 +110,8 @@ public class EditCommand extends UndoableCommand {
         DisplayPic updatedDisplayPic = editPersonDescriptor.getDisplayPic().orElse(personToEdit.getDisplayPic());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedBirthday, updatedDisplayPic, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedBirthday,
+                updatedDisplayPic, updatedTags);
     }
 
     @Override
@@ -204,9 +205,13 @@ public class EditCommand extends UndoableCommand {
             return Optional.ofNullable(birthday);
         }
 
-        public void setDisplayPic(DisplayPic displayPic) { this.displayPic = displayPic; }
+        public void setDisplayPic(DisplayPic displayPic) {
+            this.displayPic = displayPic;
+        }
 
-        public Optional<DisplayPic> getDisplayPic() { return Optional.ofNullable(displayPic); }
+        public Optional<DisplayPic> getDisplayPic() {
+            return Optional.ofNullable(displayPic);
+        }
 
         public void setTags(Set<Tag> tags) {
             this.tags = tags;

@@ -26,9 +26,9 @@ public class ImagePathUtil {
                 String selectedPath = commandBox.getDisplayPicPath();
                 sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix() + selectedPath + " ");
                 arguments = sb.toString();
-            }
-            else {
-                sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix() + DEFAULT_DISPLAY_PIC + " ");
+            } else {
+                sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix()
+                        + DEFAULT_DISPLAY_PIC + " ");
                 arguments = sb.toString();
             }
             return arguments;
@@ -37,8 +37,11 @@ public class ImagePathUtil {
         }
     }
 
-
-
+    /**
+     *
+     * @param input is the user input in the Command Box
+     * @return
+     */
     private static boolean requireFileChooser(String input) {
         String trimmedInput = input.trim();
         if (trimmedInput.equalsIgnoreCase("y")) {
