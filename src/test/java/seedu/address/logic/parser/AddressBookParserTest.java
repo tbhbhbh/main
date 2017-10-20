@@ -8,7 +8,6 @@ import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +27,13 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.UserPrefs;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -42,8 +43,7 @@ import seedu.address.testutil.PersonUtil;
 public class AddressBookParserTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-    private HashMap<String, String> aliasMap = new HashMap<String, String>();
-    private final AddressBookParser parser = new AddressBookParser(aliasMap);
+    private final AddressBookParser parser = new AddressBookParser(new UserPrefs());
 
     @Test
     public void parseCommand_add() throws Exception {
@@ -158,4 +158,8 @@ public class AddressBookParserTest {
         assertEquals(new EmailCommand(new Index[] {INDEX_FIRST_PERSON}), command);
     }
 
+    @Test
+    public void parseCommand_import() throws Exception {
+        assertTrue(parser.parseCommand("import google") instanceof ImportCommand);
+    }
 }

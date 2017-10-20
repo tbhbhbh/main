@@ -28,7 +28,7 @@ public class LogicManager extends ComponentManager implements Logic {
     public LogicManager(Model model, UserPrefs userPrefs) {
         this.model = model;
         this.history = new CommandHistory();
-        this.addressBookParser = new AddressBookParser(userPrefs.getAliasMap());
+        this.addressBookParser = new AddressBookParser(userPrefs);
         this.undoRedoStack = new UndoRedoStack();
     }
 

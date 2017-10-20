@@ -18,11 +18,13 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.UserPrefs;
 
 /**
  * Parses user input.
@@ -34,10 +36,10 @@ public class AddressBookParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private HashMap<String, String> aliasMap;
+    private final UserPrefs userPrefs;
 
-    public AddressBookParser(HashMap<String, String> aliasMap) {
-        this.aliasMap = aliasMap;
+    public AddressBookParser(UserPrefs userPrefs) {
+        this.userPrefs = userPrefs;
     }
 
     /**
@@ -48,6 +50,7 @@ public class AddressBookParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public Command parseCommand(String userInput) throws ParseException {
+        HashMap<String, String> aliasMap = userPrefs.getAliasMap();
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
@@ -106,13 +109,16 @@ public class AddressBookParser {
         case EmailCommand.COMMAND_WORD:
             return new EmailCommandParser().parse(arguments);
 
+        case ImportCommand.COMMAND_WORD:
+            return new ImportCommandParser().parse(arguments);
+
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
     }
 
     /**
-     * Parses user input into command for execution.
+     * Checks if the input command is valid.
      *
      * @param command command part of user input
      * @return boolean determining if command entered is valid
@@ -133,6 +139,7 @@ public class AddressBookParser {
         case RedoCommand.COMMAND_WORD:
         case AliasCommand.COMMAND_WORD:
         case EmailCommand.COMMAND_WORD:
+        case ImportCommand.COMMAND_WORD:
             return true;
         default:
             return false;

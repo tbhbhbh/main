@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -14,6 +15,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.UserPrefsChangedEvent;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -55,8 +57,19 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void resetAlias(HashMap<String, String> prevAliasMap) {
+        userPrefs.resetAlias(prevAliasMap);
+        indicateUserPrefsChanged();
+    }
+
+    @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
+    }
+
+    @Override
+    public UserPrefs getUserPrefs() {
+        return userPrefs;
     }
 
     /** Raises an event to indicate the model has changed */
@@ -80,6 +93,17 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addAlias(String alias, String command) {
         userPrefs.addAlias(alias, command);
+        indicateUserPrefsChanged();
+    }
+
+    @Override
+    public String getAlias(String alias) {
+        return userPrefs.getAlias(alias);
+    }
+
+    /** Raises an event to indicate the model has changed */
+    private void indicateUserPrefsChanged() {
+        raise(new UserPrefsChangedEvent(userPrefs));
     }
 
     @Override
