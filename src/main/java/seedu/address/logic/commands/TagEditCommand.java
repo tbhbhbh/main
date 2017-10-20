@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.commands.TagDeleteCommand.MESSAGE_DELETE_TAG_SUCCESS;
 
 import java.util.List;
 
@@ -10,7 +9,6 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.exceptions.TagNotFoundException;
 
 public class TagEditCommand extends UndoableCommand {
     public static final String MESSAGE_EDIT_TAG_SUCCESS = "Edited tag: %1$s to %2$s";

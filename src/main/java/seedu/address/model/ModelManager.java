@@ -21,7 +21,6 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.exceptions.TagNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -130,6 +129,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
+    @Override
     public void editTag(Tag oldTag, Tag newTag) throws PersonNotFoundException, DuplicatePersonException {
         for (int i = 0; i < addressBook.getPersonList().size(); i++) {
             ReadOnlyPerson oldPerson = addressBook.getPersonList().get(i);

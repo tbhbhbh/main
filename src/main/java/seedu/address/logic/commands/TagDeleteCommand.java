@@ -9,7 +9,6 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.exceptions.TagNotFoundException;
 
 /**
  * Deletes a tag identified using its tag name from the address book.
