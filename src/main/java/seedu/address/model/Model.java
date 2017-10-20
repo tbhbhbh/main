@@ -3,7 +3,6 @@ package seedu.address.model;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
-import com.sun.org.apache.bcel.internal.generic.DUP;
 import javafx.collections.ObservableList;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
