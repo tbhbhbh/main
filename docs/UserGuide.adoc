@@ -326,7 +326,6 @@ Changes the tag 'friends' into 'losers' for all persons with that tag.
 1. Opens the Google authentication page in your default web browser to allow access to your contacts
 2. Once access has been granted, a progress window will pop up indicating the progress of import.
 3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
->>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea
 
 === Clearing all entries : `clear`
 

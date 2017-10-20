@@ -108,19 +108,17 @@ public class AddressBookParser {
         case AliasCommand.COMMAND_WORD:
             return new AliasCommandParser().parse(arguments);
 
-<<<<<<< HEAD
         case TagDeleteCommand.COMMAND_WORD:
             return new TagDeleteCommandParser().parse(arguments);
 
         case TagEditCommand.COMMAND_WORD:
             return new TagEditCommandParser().parse(arguments);
-=======
+
         case EmailCommand.COMMAND_WORD:
             return new EmailCommandParser().parse(arguments);
 
         case ImportCommand.COMMAND_WORD:
             return new ImportCommandParser().parse(arguments);
->>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
@@ -148,13 +146,10 @@ public class AddressBookParser {
         case UndoCommand.COMMAND_WORD:
         case RedoCommand.COMMAND_WORD:
         case AliasCommand.COMMAND_WORD:
-<<<<<<< HEAD
         case TagDeleteCommand.COMMAND_WORD:
         case TagEditCommand.COMMAND_WORD:
-=======
         case EmailCommand.COMMAND_WORD:
         case ImportCommand.COMMAND_WORD:
->>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea
             return true;
         default:
             return false;
