@@ -11,7 +11,8 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
 
 /**
- * Edits a tag identified using its tag name from the address book and replaces it with a new tag name provided by the user.
+ * Edits a tag identified using its tag name from the address book and
+ * replaces it with a new tag name provided by the user.
  */
 public class TagEditCommand extends UndoableCommand {
     public static final String MESSAGE_EDIT_TAG_SUCCESS = "Edited tag: %1$s to %2$s";
