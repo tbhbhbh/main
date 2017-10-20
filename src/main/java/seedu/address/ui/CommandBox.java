@@ -145,7 +145,7 @@ public class CommandBox extends UiPart<Region> {
 
     public String getDisplayPicPath() {
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files","*.jpg", "*.png");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files", "*.jpg", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         if (selectedFile != null) {
