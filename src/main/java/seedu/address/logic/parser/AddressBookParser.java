@@ -20,6 +20,7 @@ import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.TagDeleteCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.UserPrefs;
@@ -104,6 +105,11 @@ public class AddressBookParser {
         case AliasCommand.COMMAND_WORD:
             return new AliasCommandParser().parse(arguments);
 
+            case TagDeleteCommand.COMMAND_WORD:
+                return new TagDeleteCommandParser().parse(arguments);
+
+
+
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }
@@ -130,6 +136,7 @@ public class AddressBookParser {
         case UndoCommand.COMMAND_WORD:
         case RedoCommand.COMMAND_WORD:
         case AliasCommand.COMMAND_WORD:
+            case TagDeleteCommand.COMMAND_WORD:
             return true;
         default:
             return false;

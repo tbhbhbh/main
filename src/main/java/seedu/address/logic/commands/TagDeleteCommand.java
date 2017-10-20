@@ -17,6 +17,7 @@ import seedu.address.model.tag.exceptions.TagNotFoundException;
 import javax.swing.text.html.HTML;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.commands.EditCommand.MESSAGE_DUPLICATE_PERSON;
 import static seedu.address.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
 import static seedu.address.model.tag.Tag.isValidTagName;
 
@@ -25,51 +26,44 @@ import static seedu.address.model.tag.Tag.isValidTagName;
  */
 public class TagDeleteCommand extends UndoableCommand {
 
-    public static final String COMMAND_WORD = "tag delete";
+    public static final String MESSAGE_DELETE_TAG_SUCCESS = "Deleted tag: %1$s";
+    public static final String COMMAND_WORD = "tagdelete";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the tag identified by the tag name in the address book.\n"
             + "Parameters: TAGNAME\n"
             + "Example: " + COMMAND_WORD + " friends";
 
-    public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted tag: %1$s";
-
     private final String tagName;
-    private final Tag tagToDelete;
+    private Tag tagToDelete;
 
-    public TagDeleteCommand(String tagName) throws IllegalValueException {
+    public TagDeleteCommand(String tagName) {
         requireNonNull(tagName);
-        String trimmedName = tagName.trim();
-        if (!isValidTagName(trimmedName)) {
-            throw new IllegalValueException(MESSAGE_TAG_CONSTRAINTS);
-        }
+        this.tagName = tagName.trim();
 
-        this.tagName = tagName;
-        this.tagToDelete = new Tag(tagName);
     }
 
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
 
-        List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         List<Tag> tagList = model.getAddressBook().getTagList();
 
-        if (!tagList.contains(tagToDelete)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_TAG_NAME);
-        }
-
         try {
+            tagToDelete = new Tag(tagName);
+            if (!tagList.contains(tagToDelete)) {
+                throw new CommandException(Messages.MESSAGE_INVALID_TAG_NAME);
+            }
             model.deleteTag(tagToDelete);
+        } catch (IllegalValueException ive) {
+            assert false : "The target tag is invalid";
         } catch (PersonNotFoundException pnfe) {
             assert false : "The target person cannot be missing";
-        } catch (DuplicatePersonException dpe) {
-            throw new CommandException(
         } catch (TagNotFoundException tnfe) {
-            throw
+            assert false : "The target tag cannot be missing";
 
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, personToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_TAG_SUCCESS, tagToDelete));
     }
 
     @Override
