@@ -278,16 +278,6 @@ Assigns the alias 'a' to the add command. 'a' can now be used in place of add.
 'd' can now be used in place of exit. Initially, alias 'd' was assigned to delete, but since the alias was subsequently assigned to exit,
 it is no longer assigned to delete.
 
-<<<<<<< HEAD
-=== Deleting a tag : `tagdelete`
-
-Allows you to delete a tag from all persons in the address book.
-
-Format: `tagdelete TAG_NAME`
-
-****
-* The tag must be a valid tag (eg. already existing)
-=======
 === Importing contacts : `import`
 
 Allows you to import contacts from either Google Contacts or Apple iCloud.
@@ -297,16 +287,31 @@ Format: `import SERVICE_NAME`
 ****
 * The service name can only be "Google" or "Apple"
 * The service name is case-insensitive.
->>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea
+****
+
+=======
+* `import google` +
+1. Opens the Google authentication page in your default web browser to allow access to your contacts
+2. Once access has been granted, a progress window will pop up indicating the progress of import.
+3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
+=======
+
+=== Deleting a tag : `tagdelete`
+
+Allows you to delete a tag from all persons in the address book.
+
+Format: `tagdelete TAG_NAME`
+
+****
+* The tag must be a valid tag (eg. already existing)
 ****
 
 Examples:
 
-<<<<<<< HEAD
 * `tagdelete friends` +
 Deletes the tag 'friends' from all persons with the 'friends' tag in the address book.
 
-=== Editing a tag : `tagedit`
+==== Editing a tag : `tagedit`
 
 Allows you to change the name of a tag belonging to all persons in the address book.
 
@@ -317,15 +322,11 @@ Format: `tagedit OLD TAG NAME OLD_TAG_NAME NEW_TAG_NAME`
 * New tag must be a valid tag (eg. alphanumerical only)
 ****
 
+
 Examples:
 
 * `tagedit friends losers` +
 Changes the tag 'friends' into 'losers' for all persons with that tag.
-=======
-* `import google` +
-1. Opens the Google authentication page in your default web browser to allow access to your contacts
-2. Once access has been granted, a progress window will pop up indicating the progress of import.
-3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
 
 === Clearing all entries : `clear`
 
@@ -367,14 +368,11 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Alias* : `alias ALIAS COMMAND` +
 e.g. `alias a add`
-<<<<<<< HEAD
 * *Tag Delete*: `tagdelete TAG_NAME` +
 e.g. `tagdelete friends`
 * *Tag Edit*: `tagedit OLD_TAG_NAME NEW_TAG_NAME` +
 e.g. `tagedit friends losers`
 
 
-=======
 * *Email* : `email INDEX [INDEX]...` +
 e.g. `email 1 2`
->>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea
