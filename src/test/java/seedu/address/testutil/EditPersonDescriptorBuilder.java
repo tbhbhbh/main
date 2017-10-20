@@ -96,8 +96,8 @@ public class EditPersonDescriptorBuilder {
         }
         return this;
     }
-     /**
-      *  Sets the {@code DisplayPic} of the {@code EditPersonDescriptor} that we are building.
+    /**
+     * Sets the {@code DisplayPic} of the {@code EditPersonDescriptor} that we are building.
      */
     public EditPersonDescriptorBuilder withDisplayPic(String displayPic) {
         try {

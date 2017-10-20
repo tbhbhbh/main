@@ -97,7 +97,8 @@ public class AddCommandParserTest {
                 .withEmail(VALID_EMAIL_AMY).withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY)
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY + DISPLAYPIC_DESC, new AddCommand(expectedPerson));
+                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY + DISPLAYPIC_DESC,
+                new AddCommand(expectedPerson));
     }
 
     @Test
@@ -148,8 +149,8 @@ public class AddCommandParserTest {
 
         // invalid birthday
         assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                        + ADDRESS_DESC_BOB + INVALID_BIRTHDAY_DESC + DISPLAYPIC_DESC + TAG_DESC_HUSBAND + TAG_DESC_FRIEND,
-                Birthday.MESSAGE_BIRTHDAY_CONSTRAINTS);
+                        + ADDRESS_DESC_BOB + INVALID_BIRTHDAY_DESC + DISPLAYPIC_DESC + TAG_DESC_HUSBAND
+                        + TAG_DESC_FRIEND, Birthday.MESSAGE_BIRTHDAY_CONSTRAINTS);
 
         // invalid tag
         assertParseFailure(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
