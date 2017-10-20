@@ -1,9 +1,12 @@
 package seedu.address.ui;
 
+import java.awt.Desktop;
+import java.net.URI;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -17,8 +20,11 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.email.EmailRequestEvent;
+import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
+import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
@@ -33,6 +39,7 @@ public class MainWindow extends UiPart<Region> {
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
+    private static final String EMAIL_URI_PREFIX = "mailTo:";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -62,6 +69,8 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    private ProgressWindow pWindow;
 
     public MainWindow(Stage primaryStage, Config config, UserPrefs prefs, Logic logic) {
         super(FXML);
@@ -193,6 +202,43 @@ public class MainWindow extends UiPart<Region> {
         helpWindow.show();
     }
 
+    /**
+     * This method will invoke the user's default email client and set the recipients field with all the
+     * email addresses specified by the user.
+     * @param allEmailAddresses is a string of all valid email addresses user request to email to.
+     * @throws Exception when user's OS cannot support Desktop operations.
+     */
+    public void handleEmail(String allEmailAddresses) throws Exception {
+        try {
+            URI mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
+            if (Desktop.isDesktopSupported()) {
+                Desktop userDesktop = Desktop.getDesktop();
+                userDesktop.mail(mailTo);
+            } else {
+                throw new Exception("Desktop is not supported");
+            }
+        } catch (Exception e) {
+            throw new Exception("User default mail application is not found or failed to launch");
+        }
+    }
+
+    /**
+     * Opens the progress window.
+     */
+    @FXML
+    public void handleProgress(ReadOnlyDoubleProperty progress) {
+        pWindow = new ProgressWindow(progress);
+        pWindow.show();
+    }
+
+    /**
+     * Closes the progress window.
+     */
+    @FXML
+    public void handleCloseProgress() {
+        pWindow.getDialogStage().close();
+    }
+
     void show() {
         primaryStage.show();
     }
@@ -217,5 +263,25 @@ public class MainWindow extends UiPart<Region> {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    @Subscribe
+    private void handleEmailRequestEvent(EmailRequestEvent event) throws Exception {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleEmail(event.getAllEmailAddresses());
+    }
+
+    @Subscribe
+    private void handleShowProgressEvent(ShowProgressEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleProgress(event.getProgress());
+
+    }
+
+    @Subscribe
+    private void handleCloseProgressEvent(CloseProgressEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleCloseProgress();
+
     }
 }

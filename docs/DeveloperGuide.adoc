@@ -345,6 +345,176 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+=== Sending Emails To Contacts
+
+This feature is implemented to provide users the ability to email their contacts using the users' default mail client
+to launch an email application which will contain the email addresses of contacts specified by users. Users can compose or edit the email using their own default email application before sending it. +
+
+The java `Desktop` class allows java application to launch default email applications registered on the users' native desktop to handle a Uniform Resource Indentifier `URI`.
+In this case, `URI` is created as a reference to the mail command scheme and email addresses to mail to.
+
+==== Email command implementation
+
+image::3.2.1 Email Command Implementation.png[width="800"]
+
+pass:[<div align="center"><b>Figure 3.2.1 Email Command Implementation</b></div>]
+
+From the diagram above, when users enter the command `email 1` to email one or more person in their address book.
+`EmailCommandParser` will parse the arguments, which are either a single index or multiple indices, provided by the users and store them
+in an array called `targetIndices` and return a `EmailCommand`. Next, `EmailCommand` will call its method `execute()`
+and ensure that `Index` specified is valid and construct a String `allEmaillAddress` which contains all the email addresses. Refer to code example below: +
+
+* Code listing:
++
+[source, java]
+-------------
+public CommandResult execute() throws CommandException {
+        //StringBuilder helps to append the email addresses of each person
+        StringBuilder addresses = new StringBuilder();
+        for (Index targetIndex : targetIndexes) {
+            if (targetIndex.getZeroBased() >= lastShownList.size()) {
+                //Throw exception due to invalid index after checking
+            }
+            //Append the address of the person to addresses and do others
+            address.append(" ");
+            addresses.append(personToEmail.getEmail.toString());
+        }
+        //Add a comma between email addresses
+        String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
+-------------
+[NOTE]
+The String `allEmailAddresses` is constructed by appending a comma after each email address of a contact. This is done to ensure that it follows the syntax required when
+constructing a `URI`.
+
+==== Email request event process
+
+image::3.2.1 Email Request Event Process.png[width="800"]
+
+pass:[<div align="center"><b>Figure 3.2.2 Email Request Event Process</b></div>]
+
+With reference to the diagram above, after `EmailCommand` has executed, it will post a new `EmailRequestEvent` and allow the UI to handle this event. In the UI, we are using java `Desktop` class to
+launch the default mail client registered on users' native desktop. A `URI` instance have to be created and pass to the mail method in the `Desktop` class.
+Refer to the code example below: +
+
+* Code listing:
++
+[source, java]
+--------------
+private staic final String EMAIL_URI_PREFIX = "mailTo:";
+
+//rest of methods in MainWindow
+
+URI mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
+    //Checks if user native Desktop applications are supported
+    if (Desktop.isDesktopSupported()) {
+        Desktop userDesktop = Desktop.getDesktop();
+        userDesktop.mail(mailTo);
+    } else {
+        //throw Execepton
+    }
+--------------
+
+[NOTE]
+To construct a valid `URI` instance, the scheme `EMAIL_URI_PREFIX` which specifies the operation to launch user's default mail client must be
+followed by the String `allEmailAddresses`.
+
+Lastly, users' desktop will launch a default mail client where they can compose the subject and message body of the email.
+In addition, users can also edit their recipients field to include carbon copy or blind carbon copy before sending out
+the email to their recipients.
+
+==== Design consideration
+**Aspect:** Type of application to send emails +
+**Alternative 1 (current choice):** Use user's default mail client +
+**Pros:** Default mail client tend to load faster than the default browser `WebView` used by `UI`: `BrowserPanel`. +
+**Cons:** Does not support some operating systems such as Linux. +
+**Alternative 2:** Use web browser to access user email services online. +
+**Pros:** Able to support more users to use this email feature as there are more options for different users. +
+**Cons:** Not all users use the same email services such as Gmail or Outlook. Moreover,
+it is difficult to authorize the web pages or API access for them since it is often dependent
+on the type of email services they need. +
+
+=== Import mechanism
+
+The import mechanism is facilitated by Google's People API. It supports reading contacts from the user's personal Google account and parsing them into a format that can be added to the address book. The import mechanism only supports
+adding contacts from Google but iCloud import is scheduled for release in a later version of the application.
+
+Before any importing can be done, the address book has to be authorized to request data from Google's API. This is done using the OAuth 2.0 protocol as it is the standard used by Google for all of their APIs.
+As there are libraries from Google that make authorization easier, these libraries have been used in the implementation of the import mechanism.
+
+Client information such as the Client ID and Client secret are first loaded into a GoogleClientSecrets object. After which, A GoogleAuthorizationCodeFlow object is set up
+using the GoogleClientSecrets, HttpTransport, JsonFactory objects and the scope of access desired to the user's Google Contacts data. In this implementation, we have chosen read-only as we are only importing
+contacts and no modification to the data on Google's side will be performed. A AuthorizationCodeInstalledApp object is then created using the previously mentioned GoogleAuthorizationCodeFlow object, and also a LocalServerReceiver object which allows the application to listen on the local
+web server for the authorization code that is provided when the user gives consent to access his/her data.
+
+After which, the authorization flow can finally begin. The following sequence diagram illustrates this process.
+
+image::https://developers.google.com/accounts/images/webflow.png[width="377"]
+(Diagram from: https://developers.google.com/identity/protocols/OAuth2, reused under Creative Commons Attribution 3.0 License)
+
+A token is first requested by the AuthorizationCodeInstalledApp object, and a page for the user to login to his/her Google account is shown in the System's default web browser.
+Once the user provides consent for the address book to access the data, an authorization code is sent back to the local web server where it is received by the LocalServerReceiver object and passed onto the GoogleAuthorizationCodeFlow
+object so that the code can be exchanged for a token. Once the token is received, a Credential object is created and returned to the executeUndoableCommand method.
+
+The Credential object is then passed to a `retrieveContacts` method that creates a `PeopleService` object that allows the application to interact with Google's People API.
+The parameters used to get the list of the user's connections (Google's term for contacts) are as follows:
+
+----
+PageSize: 1000
+PersonFields: Names, EmailAddresses, PhoneNumbers
+----
+
+A PageSize (the number of connections to fetch) of 1000 is chosen as it is the amount of contacts that the address book should be able to hold before it gets sluggish.
+The PersonFields chosen are the ones most relevant to storing a contact, and more fields such as addresses will be added in future updates.
+
+`retrieveContacts` will then pass the `List<Person>` of connections back to the caller and finally, a `importContacts` method will be called on the `List<Person>`.
+
+
+The `importContacts` method is implemented using the `Task` class from JavaFX and takes care of importing contacts to the address book. `importContacts` is run in a separate `Thread` from the main program.
+It parses every connection from the `List<Person>` using a `convertPerson` method that converts a `Person` object to a `seedu.address.model.person.Person` such that it can be added to the address book.
+A progress bar for importing is also shown to the user, implemented using the `progressProperty()` method of the `Task` class.
+
+
+
+The following sequence diagram shows how the import operation works:
+
+image::ImportSequenceDiagram.png[width="800"]
+
+The import mechanism is built upon an `UndoableCommand`, which means that any changes made by the command can be easily reversed by calling the
+`undo` command.
+
+==== Design Considerations
+
+**Aspect:** How import executes +
+**Alternative 1 (current choice):** Individually adds each contact. +
+**Pros:** User is able to see each contact being added. +
+**Cons:** Slower than adding retrieved contacts all at once as the data has to be written to disk every time a contact is added individually +
+**Alternative 2:** Contacts are only added after every single `Person` is parsed +
+**Pros:** Faster than adding as soon as each `Person` is parsed as data is written all at once, instead of multiple times +
+**Cons:** Requires a new method `addAllInList` to be implemented in model, which only has limited use as import is the only command doing a batch
+addition of contacts
+
+---
+
+**Aspect:** How import progress is shown to the user +
+**Alternative 1 (current choice):** Show a pop-up progress window indicating how many contacts have been added +
+**Pros:** Intuitive for the user to understand +
+**Cons:** Difficult to implement as importing contacts takes a (relatively) long time and thus, blocks the JavaFX thread from updating the UI in a timely manner. As such, the progress bar will not be updated until the `importContacts` function is completed.
+Threading has to be used to allow the progress bar to update as the `importContacts` method is running. +
+**Alternative 2:** Show the user how many contacts have been added in `ResultDisplay`  +
+**Pros:** Easy to implement as no new UI elements have to be added +
+**Cons:** Not as user-friendly as having a progress bar +
+
+---
+
+**Aspect:** Implementation of authorization +
+**Alternative 1 (current choice):** Pop-up the authorization page in the user's default browser +
+**Pros:** Easy for the user to authorize as they may already be logged in to their Google account on their browsers. +
+**Cons:** Takes the focus away from the main application to the user's default browser, which may be a jarring user experience. +
+**Alternative 2:** Use the existing browser panel to show the authorization page +
+**Pros:** Clearer for the user to understand and focus is kept on the main application. +
+**Cons:** Requires implementing a new class to listen on the local web server for the authorization code instead of using the provided `LocalServerReceiver` from the Google Client Library. +
+
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
@@ -1044,6 +1214,12 @@ Where interactions between the user and the Address Book
 occur through the form of graphical icons and visual indicators.
 ....
 
+Hypertext Markup Language (HTML)
+....
+A standardized system for tagging text files to achieve font, colour,
+graphic, and hyperlink effects on World Wide Web pages.
+....
+
 JavaFX
 ....
 Set of graphics and media packages that enables developers to
@@ -1093,6 +1269,12 @@ User Interface(UI)
 ....
 Space where interactions between the user and Address Book
 happens.
+....
+
+Uniform Resource Identifier(URI)
+....
+A string of characters used to identify a resource over a network, typically the World Wide Web, using specific protocols.
+Schemes specifying a concrete syntax and associated protocols define each URI.
 ....
 
 vCard

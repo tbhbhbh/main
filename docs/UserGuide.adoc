@@ -42,21 +42,26 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 == Features
 
 ====
+*Since v1.2*
+
+* Never forget a birthday again! Add birthdays to every contact
+* Email contacts quickly without copying and pasting
+* Import your contacts from Google Contacts/iCloud
+* Automatic list sorting
+====
+
+====
 *Coming in v2.0*
 
 * Simply add a person with their name and number!
 * Add pictures to every contact
-* Never forget a birthday again! Add birthdays to every contact
 * A powerful find command. Search by groups, keywords and more!
-* Import your contacts from Google Contacts/iCloud
 * View groups at a glance of the application
 * Export individual contacts to easily share with others
 * Easy access to social media profiles of each contact
 * Multiple themes to suit your needs
-* Email contacts quickly without copying and pasting
 * View your contacts' addresses quickly in Google Maps
 * Secure your application with a PIN
-* Automatic list sorting
 ====
 
 ====
@@ -172,6 +177,26 @@ Selects the 2nd person in the address book.
 `select 1` +
 Selects the 1st person in the results of the `find` command.
 
+=== Sending an email to one or more person: email
+Emails one or more person identified by the index number used in the last person listing. +
+Format: `email INDEX [INDEX]...`
+
+****
+* Opens a default email application and compose a new email with the email address(es)
+of the person at the specified `INDEX`.
+* The index refers to the index number shown in the most recent listing
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+Examples:
+
+* `list` +
+`email 2 3` +
+Send an email to the 2nd person and 3rd person in the address book.
+* `find Betsy` +
+`email 1` +
+Send an email to the 1st person in the results of the `find` command.
+
 === Listing entered commands : `history`
 
 Lists all the commands that you have entered in reverse chronological order. +
@@ -253,6 +278,7 @@ Assigns the alias 'a' to the add command. 'a' can now be used in place of add.
 'd' can now be used in place of exit. Initially, alias 'd' was assigned to delete, but since the alias was subsequently assigned to exit,
 it is no longer assigned to delete.
 
+<<<<<<< HEAD
 === Deleting a tag : `tagdelete`
 
 Allows you to delete a tag from all persons in the address book.
@@ -261,10 +287,22 @@ Format: `tagdelete TAG_NAME`
 
 ****
 * The tag must be a valid tag (eg. already existing)
+=======
+=== Importing contacts : `import`
+
+Allows you to import contacts from either Google Contacts or Apple iCloud.
+
+Format: `import SERVICE_NAME`
+
+****
+* The service name can only be "Google" or "Apple"
+* The service name is case-insensitive.
+>>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea
 ****
 
 Examples:
 
+<<<<<<< HEAD
 * `tagdelete friends` +
 Deletes the tag 'friends' from all persons with the 'friends' tag in the address book.
 
@@ -283,6 +321,12 @@ Examples:
 
 * `tagedit friends losers` +
 Changes the tag 'friends' into 'losers' for all persons with that tag.
+=======
+* `import google` +
+1. Opens the Google authentication page in your default web browser to allow access to your contacts
+2. Once access has been granted, a progress window will pop up indicating the progress of import.
+3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
+>>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea
 
 === Clearing all entries : `clear`
 
@@ -324,9 +368,14 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Alias* : `alias ALIAS COMMAND` +
 e.g. `alias a add`
+<<<<<<< HEAD
 * *Tag Delete*: `tagdelete TAG_NAME` +
 e.g. `tagdelete friends`
 * *Tag Edit*: `tagedit OLD_TAG_NAME NEW_TAG_NAME` +
 e.g. `tagedit friends losers`
 
 
+=======
+* *Email* : `email INDEX [INDEX]...` +
+e.g. `email 1 2`
+>>>>>>> 0b865e416220ae58ca32eca240a8b8a79cd9d0ea

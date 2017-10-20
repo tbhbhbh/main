@@ -77,7 +77,7 @@ public class AliasCommandTest {
     }
 
     /**
-     * Returns an {@code EditCommand} with parameters {@code index} and {@code descriptor}
+     * Returns an {@code AliasCommand} with parameters {@code alias} and {@code command}
      */
     private AliasCommand prepareCommand(String alias, String command) {
         AliasCommand aliasCommand = new AliasCommand(alias, command);
