@@ -514,6 +514,27 @@ Threading has to be used to allow the progress bar to update as the `importConta
 **Pros:** Clearer for the user to understand and focus is kept on the main application. +
 **Cons:** Requires implementing a new class to listen on the local web server for the authorization code instead of using the provided `LocalServerReceiver` from the Google Client Library. +
 
+=== Tag Edit
+This feature is implemented to provide users the ability to edit tags without having to update each person one at a time.
+
+The follow sequence diagram shows how the tag edit operation works:
+
+image::TagEditLogicDiagramv2.png[width="800"]
+
+The user will have to provide the command `tagedit friends losers` to change all persons with the tag `friends` to the
+tag `losers` in the address book. `TagEditCommandParser` will parse the 2 arguments given after `tagedit` (in this case,
+it is `friends` and `losers`) provided by the user and it will return `TagEditCommand`. Next, `TagEditCommand`
+will call its method `executeUndoableCommand()` and ensure that the tag `friends` specified is valid
+
+==== Design Considerations
+**Aspect:** Implementation of `TagEditCommand` +
+**Alternative 1 (current choice):** implement it by extending `UndoableCommand` +
+**Pros:** Editing tags is undoable/redoable +
+**Cons:** May be difficult for new developers to understand the flow +
+**Alternative 2:** just override `execute()` +
+**Pros:** Does not involve template pattern, easier to understand +
+**Cons:** Cannot undo/redo unless `super.execute()` is called
+
 
 === Logging
 
