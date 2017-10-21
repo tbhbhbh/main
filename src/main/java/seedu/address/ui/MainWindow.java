@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.net.URI;
 import java.util.logging.Logger;
 
@@ -23,6 +24,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.email.EmailRequestEvent;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.ExportRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.util.FxViewUtil;
@@ -244,6 +246,25 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
+     * Opens the export request window which shows the directory where
+     * contacts.vcf file is found.
+     */
+    @FXML
+    public void handleExport() {
+        try {
+            File file = new File("./data/");
+            if (Desktop.isDesktopSupported()) {
+                Desktop userDesktop = Desktop.getDesktop();
+                userDesktop.open(file);
+            } else {
+                throw new Exception("java Desktop is not supported");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Closes the application.
      */
     @FXML
@@ -283,5 +304,11 @@ public class MainWindow extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleCloseProgress();
 
+    }
+
+    @Subscribe
+    private void handleExportRequestEvent(ExportRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleExport();
     }
 }
