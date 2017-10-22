@@ -1,12 +1,17 @@
 package seedu.address.ui;
 
+import static seedu.address.MainApp.getAppHostServices;
+
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.application.HostServices;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +47,7 @@ public class MainWindow extends UiPart<Region> {
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
     private static final String EMAIL_URI_PREFIX = "mailTo:";
+    private static final String EXPORT_FILE_ABSOLUTE_PATH = "./data/";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -246,22 +252,12 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
-     * Opens the export request window which shows the directory where
-     * contacts.vcf file is found.
+     * Opens a file window which shows the directory where contacts.vcf file is found.
      */
-    @FXML
     public void handleExport() {
-        try {
-            File file = new File("./data/");
-            if (Desktop.isDesktopSupported()) {
-                Desktop userDesktop = Desktop.getDesktop();
-                userDesktop.open(file);
-            } else {
-                throw new Exception("java Desktop is not supported");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        File file = new File(EXPORT_FILE_ABSOLUTE_PATH);
+        HostServices hostServices = getAppHostServices();
+        hostServices.showDocument(file.getAbsolutePath());
     }
 
     /**
