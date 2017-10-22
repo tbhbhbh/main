@@ -345,13 +345,10 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
-=== Sending Emails To Contacts
+=== Email mechanism
 
-This feature is implemented to provide users the ability to email their contacts using the users' default mail client
-to launch an email application which will contain the email addresses of contacts specified by users. Users can compose or edit the email using their own default email application before sending it. +
-
-The java `Desktop` class allows java application to launch default email applications registered on the users' native desktop to handle a Uniform Resource Indentifier `URI`.
-In this case, `URI` is created as a reference to the mail command scheme and email addresses to mail to.
+The email mechanism is facilitated by java `Desktop` class which allows java application to launch default mail client registered on the users' native desktop to handle a Uniform Resource Indentifier `URI`.
+In this case, the link:#uri[URI] created is a reference to the mail command scheme and email addresses to mail to.
 
 ==== Email command implementation
 
@@ -359,7 +356,7 @@ image::3.2.1 Email Command Implementation.png[width="800"]
 
 pass:[<div align="center"><b>Figure 3.2.1 Email Command Implementation</b></div>]
 
-From the diagram above, when users enter the command `email 1` to email one or more person in their address book.
+From the diagram above, when users enter the command `email 1` to email a person in their address book.
 `EmailCommandParser` will parse the arguments, which are either a single index or multiple indices, provided by the users and store them
 in an array called `targetIndices` and return a `EmailCommand`. Next, `EmailCommand` will call its method `execute()`
 and ensure that `Index` specified is valid and construct a String `allEmaillAddress` which contains all the email addresses. Refer to code example below: +
@@ -368,19 +365,20 @@ and ensure that `Index` specified is valid and construct a String `allEmaillAddr
 +
 [source, java]
 -------------
-public CommandResult execute() throws CommandException {
-        //StringBuilder helps to append the email addresses of each person
+        // Do others in EmailCommand.execute()
+        // StringBuilder helps to append the email addresses of each person
         StringBuilder addresses = new StringBuilder();
-        for (Index targetIndex : targetIndexes) {
-            if (targetIndex.getZeroBased() >= lastShownList.size()) {
-                //Throw exception due to invalid index after checking
-            }
-            //Append the address of the person to addresses and do others
-            address.append(" ");
-            addresses.append(personToEmail.getEmail.toString());
+        for (Index targetIndex : targetIndices) {
+            // Throws exception if target index is out of bounds
         }
-        //Add a comma between email addresses
-        String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
+            addresses.append(" ");
+            addresses.append(personToEmail.getEmail().toString());
+        }
+// Add a comma between all email addresses
+String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
+// Return a CommandResult
+EventsCenter.getInstance().post(new EmailRequestEvent(allEmailAddresses));
+return new CommandResult(String.format(MESSAGE_EMAIL_PERSON_SUCCESS, allPersons));
 -------------
 [NOTE]
 The String `allEmailAddresses` is constructed by appending a comma after each email address of a contact. This is done to ensure that it follows the syntax required when
@@ -402,15 +400,15 @@ Refer to the code example below: +
 --------------
 private staic final String EMAIL_URI_PREFIX = "mailTo:";
 
-//rest of methods in MainWindow
+// Do others in MainWindow
 
 URI mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
-    //Checks if user native Desktop applications are supported
+    // Checks if Desktop class is supported
     if (Desktop.isDesktopSupported()) {
         Desktop userDesktop = Desktop.getDesktop();
         userDesktop.mail(mailTo);
     } else {
-        //throw Execepton
+        // Throws Execepton
     }
 --------------
 
@@ -419,7 +417,7 @@ To construct a valid `URI` instance, the scheme `EMAIL_URI_PREFIX` which specifi
 followed by the String `allEmailAddresses`.
 
 Lastly, users' desktop will launch a default mail client where they can compose the subject and message body of the email.
-In addition, users can also edit their recipients field to include carbon copy or blind carbon copy before sending out
+Moreover, users can also edit their recipients field to include carbon copy or blind carbon copy before sending out
 the email to their recipients.
 
 ==== Design consideration
@@ -1291,7 +1289,7 @@ User Interface(UI)
 Space where interactions between the user and Address Book
 happens.
 ....
-
+[[uri]]
 Uniform Resource Identifier(URI)
 ....
 A string of characters used to identify a resource over a network, typically the World Wide Web, using specific protocols.
