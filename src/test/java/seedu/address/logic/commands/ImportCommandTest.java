@@ -6,32 +6,17 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.google.api.services.people.v1.model.Person;
-
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.testutil.GooglePersonBuilder;
-import seedu.address.testutil.PersonBuilder;
 
 
 public class ImportCommandTest {
 
-    private Model model = new ModelManager(new AddressBook(), new UserPrefs());
-
-    @Test
-    public void convertFromGooglePerson_success() throws IllegalValueException {
-        Person typicalPerson = new GooglePersonBuilder().build();
-        seedu.address.model.person.Person typicalAddressBookPerson = new PersonBuilder().withTags("Google").build();
-        ImportCommand importCommand = prepareCommand("Google");
-
-        assertEquals(typicalAddressBookPerson, importCommand.convertPerson(typicalPerson));
-
-    }
+    Model model = new ModelManager(new AddressBook(), new UserPrefs());
 
     @Test
     public void equals() {
