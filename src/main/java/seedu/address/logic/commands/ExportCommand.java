@@ -25,7 +25,7 @@ public class ExportCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Export all contacts or specified person identified by the index number "
-            + "used in the last person listing.\n"
+            + "used in the last person listing into a VCard file.\n"
             + "Parameters: all or INDEX [INDEX]... (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1 2" + " or " + COMMAND_WORD + " all";
 
@@ -83,7 +83,7 @@ public class ExportCommand extends Command {
             e.printStackTrace();
         }
 
-        //Write each VCard information into the VCard format file.
+        //Write information from a list of VCards into the VCard format file.
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
@@ -105,7 +105,7 @@ public class ExportCommand extends Command {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof EmailCommand // instanceof handles nulls
+                || (other instanceof ExportCommand // instanceof handles nulls
                 && IndexArrayUtil.compareIndexArrays(this.targetIndices, (
                 (ExportCommand) other).targetIndices)); // state check
     }

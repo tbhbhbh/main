@@ -44,7 +44,7 @@ public class Vcard {
 
     /**
      * This method builds a valid birthday format for Vcard.
-     * {@code bday} is a String Builder that appends the Year, followed by Month and Day
+     * {@code bday} is a StringBuilder that appends the Year, followed by Month and Day
      * of a birthday string separated by a dash.
      * @param birthday is a valid birthday string of a person in the format: DD/MM/YYYY.
      * @return a new birthday string format: YYYY-MM-DD

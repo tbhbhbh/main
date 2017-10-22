@@ -1,5 +1,10 @@
 package seedu.address.commons.util;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+
 import java.util.Optional;
 
 import org.junit.Rule;
@@ -24,15 +29,27 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void compareIndexArrays_arraysContainsZeroElement_throwsIllegalArgumentException() {
-        assertExceptionThrown(IllegalArgumentException.class, new Index[0], new Index[0],
-                Optional.of("Both arrays must have at least one Index"));
+    public void compareIndexArrays_arraysContainsZeroElement_validComparison() {
+        assertTrue(assertComparison(new Index[0], new Index[0]));
     }
 
     @Test
-    public void compareIndexArrays_differentLengthArrays_throwsIllegalArgumentException() {
-        assertExceptionThrown(IllegalArgumentException.class, new Index[1], new Index[2],
-                Optional.of("Both arrays must have same number of Index"));
+    public void compareIndexArrays_differentLengthArrays_invalidComparison() {
+        assertFalse(assertComparison(new Index[0], new Index[1]));
+    }
+
+    @Test
+    public void compareIndexArrays_sameLengthArraysDiffElements_invalidComparison() {
+        Index[] arr1 = {INDEX_FIRST_PERSON};
+        Index[] arr2 = {INDEX_SECOND_PERSON};
+        assertFalse(assertComparison(arr1, arr2));
+    }
+
+    @Test
+    public void compareIndexArrays_sameLengthSameElements_validComparsion() {
+        Index[] arr1 = {INDEX_FIRST_PERSON};
+        Index[] arr2 = {INDEX_FIRST_PERSON};
+        assertTrue(assertComparison(arr1, arr2));
     }
 
     private void assertExceptionThrown(Class<? extends Throwable> exceptionClass, Index[] arr1, Index[] arr2,
@@ -40,5 +57,9 @@ public class IndexArrayUtilTest {
         thrown.expect(exceptionClass);
         errorMessage.ifPresent(message -> thrown.expectMessage(message));
         IndexArrayUtil.compareIndexArrays(arr1, arr2);
+    }
+
+    private boolean assertComparison(Index[] arr1, Index[] arr2) {
+        return IndexArrayUtil.compareIndexArrays(arr1, arr2);
     }
 }

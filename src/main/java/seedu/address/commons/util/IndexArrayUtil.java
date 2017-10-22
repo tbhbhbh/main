@@ -1,7 +1,6 @@
 package seedu.address.commons.util;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.util.AppUtil.checkArgument;
 
 import seedu.address.commons.core.index.Index;
 
@@ -13,17 +12,17 @@ public class IndexArrayUtil {
     /**
      * Compare two arrays {@code arr1} & {@code arr2} if they have the same Index number(s).
      * Index in both arrays do not have to be in ascending or descending order.
-     * @param arr1 cannot be null, cannot be empty, must be of same size as arr2
-     * @param arr2 cannot be null, cannot be empty, must be of same size as arr1
+     * @param arr1 cannot be null but can be empty
+     * @param arr2 cannot be null but can be empty
      * @return true if two arrays have the same Index number(s)
      */
     public static boolean compareIndexArrays(Index[] arr1, Index[] arr2) {
         requireNonNull(arr1);
         requireNonNull(arr2);
 
-        checkArgument(arr1.length > 0 && arr2.length > 0,
-                "Both arrays must have at least one Index");
-        checkArgument(arr1.length == arr2.length, "Both arrays must have same number of Index");
+        if (arr1.length != arr2.length) {
+            return false;
+        }
 
         Index[] sortedArr1 = sortArray(arr1);
         Index[] sortedArr2 = sortArray(arr2);
