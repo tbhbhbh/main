@@ -323,7 +323,7 @@ Examples:
 * `tagdelete friends` +
 Deletes the tag 'friends' from all persons with the 'friends' tag in the address book.
 
-==== Editing a tag : `tagedit`
+=== Editing a tag : `tagedit`
 
 Allows you to change the name of a tag belonging to all persons in the address book.
 
