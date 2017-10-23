@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import seedu.address.commons.core.LogsCenter;
 
 /**
@@ -31,6 +32,7 @@ public class ProgressWindow extends UiPart<Region> {
         Scene scene = new Scene(getRoot());
         //Null passed as the parent stage to make it non-modal.
         dialogStage = createDialogStage(TITLE, null, scene);
+        dialogStage.initStyle(StageStyle.UNDECORATED);
         dialogStage.setAlwaysOnTop(true);
         progBar = (ProgressBar) scene.lookup("#progressBar");
         bindListeners(progress);
