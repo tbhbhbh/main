@@ -1,11 +1,41 @@
 package seedu.address.logic.commands;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+
+import java.util.ArrayList;
 
 import org.junit.Test;
 
+import com.google.api.services.people.v1.model.Person;
+
+import seedu.address.logic.CommandHistory;
+import seedu.address.logic.UndoRedoStack;
+import seedu.address.model.AddressBook;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
+
 public class ImportCommandTest {
+
+    private Model model = new ModelManager(new AddressBook(), new UserPrefs());
+
+    @Test
+    public void execute_importContactsWithoutGoogleAuthorization_failure() {
+        ImportCommand importCommand = prepareCommand("Google");
+        assertCommandFailure(importCommand, model, ImportCommand.MESSAGE_FAILURE);
+    }
+
+    @Test
+    public void execute_importContactsFunction_failure() {
+        ImportCommand importCommand = prepareCommand("Google");
+        importCommand.importContacts(new ArrayList<Person>());
+        Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
+        assertEquals(expectedModel, model);
+    }
+
     @Test
     public void equals() {
         ImportCommand importGoogleCommand = new ImportCommand("Google");
@@ -31,4 +61,14 @@ public class ImportCommandTest {
         // different commands -> returns false
         assertFalse(importGoogleCommand.equals(importAppleCommand));
     }
+
+    /**
+     * Returns an {@code ImportCommand} with parameters {@code service}
+     */
+    private ImportCommand prepareCommand(String service) {
+        ImportCommand importCommand = new ImportCommand(service);
+        importCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return importCommand;
+    }
+
 }

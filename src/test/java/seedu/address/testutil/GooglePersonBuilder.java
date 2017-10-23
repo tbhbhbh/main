@@ -17,7 +17,7 @@ public class GooglePersonBuilder {
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_BIRTHDAY = "03/07/1990";
-    public static final String DEFAULT_TAGS = "friends";
+    public static final String DEFAULT_TAGS = "Google";
 
     private com.google.api.services.people.v1.model.Person person;
 

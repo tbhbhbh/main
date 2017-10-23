@@ -62,7 +62,7 @@ public class ImportCommand extends UndoableCommand {
         try {
             // Check for connectivity to Google
             if (!GoogleUtil.isReachable()) {
-                return new CommandResult(MESSAGE_CONNECTION_FAILURE);
+                throw new CommandException(MESSAGE_CONNECTION_FAILURE);
             }
             Thread thread = new Thread(() -> {
                 try {
@@ -72,7 +72,11 @@ public class ImportCommand extends UndoableCommand {
                 }
             });
             thread.start();
-            thread.join(30000);
+            thread.join(20000);
+
+            if (credential == null) {
+                throw new CommandException(MESSAGE_FAILURE);
+            }
 
             // Retrieve a list of Persons
             List<Person> connections = GoogleUtil.retrieveContacts(credential, httpTransport);
@@ -90,8 +94,6 @@ public class ImportCommand extends UndoableCommand {
      * Imports contacts into the application using the given {@code List<Person>}
      */
     public void importContacts(List<Person> connections) {
-
-
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -129,6 +131,7 @@ public class ImportCommand extends UndoableCommand {
         Thread importThread = new Thread(task);
         importThread.start();
     }
+
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
