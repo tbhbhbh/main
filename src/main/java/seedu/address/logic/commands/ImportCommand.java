@@ -111,8 +111,6 @@ public class ImportCommand extends UndoableCommand {
                         updateProgress(peopleAdded, amountToAdd);
 
                     });
-
-
                 }
                 return null;
             }
