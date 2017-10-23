@@ -12,7 +12,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class TagEditCommandParser {
     /**
-     * Parses the given {@code String} of arguments in the context of the TagDeleteCommand
+     * Parses the given {@code String} of arguments in the context of the TagEditCommand
      * and returns a TagEditCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
@@ -22,8 +22,8 @@ public class TagEditCommandParser {
 
         String oldTag = stringArr[1].trim();
         String newTag = stringArr[2].trim();
-        System.out.println("old: " + oldTag + " " + "new: " + newTag);
-        if (oldTag.isEmpty() || newTag.isEmpty()) {
+        if (stringArr.length < 2) {
+        //old code if (oldTag.isEmpty() || newTag.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagDeleteCommand.MESSAGE_USAGE));
         }
