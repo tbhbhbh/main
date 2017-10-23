@@ -14,7 +14,6 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.GoogleUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -36,7 +35,8 @@ public class ImportCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "%1$s contacts imported. %2$s contacts failed to import.";
     public static final String MESSAGE_IN_PROGRESS = "Importing in progress";
     public static final String MESSAGE_FAILURE = "Failed to import contacts.";
-    public static final String MESSAGE_CONNECTION_FAILURE = "Failed to access Google. Check your internet connection or try again in a few minutes.";
+    public static final String MESSAGE_CONNECTION_FAILURE = "Failed to access Google. Check your internet connection or"
+            + " try again in a few minutes.";
     public static final int ADDRESSBOOK_SIZE = 1000;
     private static int peopleAdded;
     private static Credential credential;
@@ -61,9 +61,9 @@ public class ImportCommand extends UndoableCommand {
         // authorization with Google
         try {
             // Check for connectivity to Google
-            if (!GoogleUtil.isReachable())
+            if (!GoogleUtil.isReachable()) {
                 return new CommandResult(MESSAGE_CONNECTION_FAILURE);
-
+            }
             Thread thread = new Thread(() -> {
                 try {
                     credential = GoogleUtil.authorize(httpTransport);
@@ -130,21 +130,7 @@ public class ImportCommand extends UndoableCommand {
         EventsCenter.getInstance().post(new ShowProgressEvent(task.progressProperty()));
         Thread importThread = new Thread(task);
         importThread.start();
-
     }
-
-    /**
-     * Converts a {@code Person} from Google to a {@code seedu.address.model.person.Person}
-     * Returns null if there is no name in the {@code Person}
-     * Returns {@code seedu.address.model.person.Person} if there is at least a name
-     */
-    public seedu.address.model.person.Person convertPerson(Person person) throws IllegalValueException {
-
-        // get first value for each list
-
-        return GoogleUtil.convertPerson(person);
-    }
-
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object

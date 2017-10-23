@@ -152,7 +152,8 @@ public class GoogleUtil {
         seedu.address.model.person.Person toAdd;
         toAdd = new seedu.address.model.person.Person(nameAdd,
                 new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
-                new seedu.address.model.person.Birthday(birthday), new DisplayPic(CommandBox.DEFAULT_DISPLAY_PIC), defaultTags);
+                new seedu.address.model.person.Birthday(birthday), new DisplayPic(CommandBox.DEFAULT_DISPLAY_PIC),
+                defaultTags);
         return toAdd;
     }
 }
