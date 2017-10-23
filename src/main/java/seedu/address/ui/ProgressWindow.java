@@ -73,5 +73,8 @@ public class ProgressWindow extends UiPart<Region> {
         return dialogStage;
     }
 
+    public ReadOnlyDoubleProperty getProgress() {
+        return progress;
+    }
 
 }
