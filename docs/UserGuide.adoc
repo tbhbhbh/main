@@ -49,13 +49,14 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Email contacts quickly without copying and pasting
 * Import your contacts from Google Contacts/iCloud
 * Automatic list sorting
+* Add pictures to every contact
+
 ====
 
 ====
 *Coming in v2.0*
 
 * Simply add a person with their name and number!
-* Add pictures to every contact
 * A powerful find command. Search by groups, keywords and more!
 * View groups at a glance of the application
 * Export individual contacts to easily share with others
@@ -195,7 +196,7 @@ Format: `email INDEX [INDEX]...`
 
 ****
 * Opens a default email application and compose a new email with the email address(es)
-of the person at the specified `INDEX`.
+of all the person at the specified `INDEX`.
 * The index refers to the index number shown in the most recent listing
 * The index *must be a positive integer* 1, 2, 3, ...
 ****
