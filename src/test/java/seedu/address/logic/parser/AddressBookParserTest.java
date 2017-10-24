@@ -24,6 +24,7 @@ import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.EmailCommand;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
@@ -161,5 +162,11 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_import() throws Exception {
         assertTrue(parser.parseCommand("import google") instanceof ImportCommand);
+    }
+
+    @Test
+    public void parseCommand_export() throws Exception {
+        assertTrue(parser.parseCommand("export 1") instanceof ExportCommand);
+        assertTrue(parser.parseCommand("export all") instanceof ExportCommand);
     }
 }

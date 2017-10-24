@@ -1,11 +1,15 @@
 package seedu.address.ui;
 
+import static seedu.address.MainApp.getAppHostServices;
+
 import java.awt.Desktop;
+import java.io.File;
 import java.net.URI;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.application.HostServices;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +27,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.email.EmailRequestEvent;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.ExportRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.util.FxViewUtil;
@@ -40,6 +45,7 @@ public class MainWindow extends UiPart<Region> {
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
     private static final String EMAIL_URI_PREFIX = "mailTo:";
+    private static final String EXPORT_FILE_ABSOLUTE_PATH = "./data/";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -245,6 +251,15 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
+     * Opens a file window which shows the directory where contacts.vcf file is found.
+     */
+    public void handleExport() {
+        File file = new File(EXPORT_FILE_ABSOLUTE_PATH);
+        HostServices hostServices = getAppHostServices();
+        hostServices.showDocument(file.getAbsolutePath());
+    }
+
+    /**
      * Closes the application.
      */
     @FXML
@@ -284,5 +299,11 @@ public class MainWindow extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleCloseProgress();
 
+    }
+
+    @Subscribe
+    private void handleExportRequestEvent(ExportRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleExport();
     }
 }
