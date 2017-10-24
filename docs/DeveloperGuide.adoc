@@ -424,7 +424,7 @@ the email to their recipients.
 **Alternative 2:** Use web browser to access user email services online. +
 **Pros:** Able to support more users to use this email feature as there are more options for different users. +
 **Cons:** Not all users use the same email services such as Gmail or Outlook. Moreover,
-it is difficult to authorize the web pages or API access for them since it is often dependent
+it is difficult to authorize every email services for all users since it is often dependent
 on the type of email services they need. +
 
 === Import mechanism
@@ -507,6 +507,57 @@ Threading has to be used to allow the progress bar to update as the `importConta
 **Alternative 2:** Use the existing browser panel to show the authorization page +
 **Pros:** Clearer for the user to understand and focus is kept on the main application. +
 **Cons:** Requires implementing a new class to listen on the local web server for the authorization code instead of using the provided `LocalServerReceiver` from the Google Client Library. +
+
+=== Export mechanism
+
+The export mechanism is facilitated by java `File` and `FileOutputStream` class. It supports writing contact information into a vCard format file.
+This file will be saved in the application data folder where user can import it into other applications such as Google Contacts.
+
+Firstly, a `Vcard` object has be to created for every person that user wants to export. `Vcard` of each person contains a unique
+String `cardDetails` that stores information about the person. The current version of vCard used is 3.0 as shown in the code example below:
+
+* vCard format:
++
+[source, java]
+--------------
+public Vcard(ReadOnlyPerson person) {
+    requireNonNull(person);
+    //get all information from the person
+    cardDetails = "BEGIN:VCARD\n"
+            + "VERSION:3.0\n"
+            + "FN:" + name + "\n"
+            + "TEL;TYPE=MOBILE:" + phone + "\n"
+            + "EMAIL;TYPE=WORK:" + email + "\n"
+            + "BDAY:" + birthday + "\n"
+            + "ADR;TYPE=HOME:;;" + address + "\n"
+            + "END:VCARD" + "\n";
+}
+--------------
+
+Next, a `File` will be created. In order to store all the `cardDetails` created earlier, `FileOutputStream` will call its
+method write to write and saved all information in the `File` named as "contacts.vcf". An example of how write method is execute is shown below:
+
+* FileOutputStream write method: +
+`cardDetails` are first encoded into a sequence of bytes and stored in a byte array, b.
+`FileOutputStream` calls write(byte[] b) in order to write the encoded string into the file.
+
++
+[source, java]
+---------------
+// Creating an instance of FileOutputStream
+fos = new FileOutputStream(file);
+// For each Vcard created earlier
+    try {
+        // FileOutputStream will write the string encoded as byte array into the file.
+        fos.write(vCard.getCardDetails().getBytes());
+    } catch (IOException e) {
+        // Print exception
+    }
+}
+---------------
+
+Finally, the directory for the "contacts.vcf" will be shown to the user and the file can be imported to other applications.
+
 
 === Tag Edit
 This feature is implemented to provide users the ability to edit tags without having to update each person one at a time.
@@ -773,17 +824,12 @@ Use case ends.
 
 *Extensions*
 
-[none]
-* 2a. The list is empty.
+* The list is empty.
 +
 Use case ends.
-
-* 3a. The given index is invalid.
+* The given index is invalid.
 +
-[none]
-** 3a1. System shows an error message.
-+
-Use case resumes at step 2.
+System shows an error message. Use case resumes at step 2.
 
 [discrete]
 === Use case: Email multiple persons
@@ -793,9 +839,21 @@ Use case resumes at step 2.
 1.  User requests to list persons
 2.  System shows a list of persons
 3.  User selects persons to email, then requests to email selected persons
-4.  System opens user's default mail application with persons' emails put into the "To:" field
+4.  System opens user's default mail application with with the "To:" field occupied by email addresses of selected persons.
 +
 Use case ends.
+
+*Extensions*
+
+* The list is empty.
++
+Use case ends.
+* The given index is invalid.
++
+System shows an error message. Use case resumes at step 2.
+* The person selected does not have any email address.
++
+System shows an error messsage. Use case resume at step 2.
 
 [discrete]
 === Use case: Access social media profile of a person
@@ -838,8 +896,8 @@ Use case ends.
 
 1.  User requests to list persons
 2.  System shows a list of persons
-3.  User requests to export contact
-4.  System creates a vCard file in the application directory
+3.  User requests to export contacts
+4.  System creates a vCard file in the application directory data folder.
 +
 Use case ends.
 
@@ -879,10 +937,8 @@ Use case ends
 
 *Extensions*
 
-[none]
-* 2a.   Key already aliased to other command
-* 2b.   Key's old mapping is overwritten to new command
-
+* Key already aliased to other command
+* Key's old mapping is overwritten to new command
 +
 Use case ends
 

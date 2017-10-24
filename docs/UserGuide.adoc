@@ -163,7 +163,7 @@ Examples:
 
 * `list` +
 `delete 2` +
-Deletes the 2nd person in the address book.
+Deletes the 2nd person from the list of contacts listed.
 * `find Betsy` +
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
@@ -183,12 +183,12 @@ Examples:
 
 * `list` +
 `select 2` +
-Selects the 2nd person in the address book.
+Selects the 2nd person from the list of contacts listed.
 * `find Betsy` +
 `select 1` +
 Selects the 1st person in the results of the `find` command.
 
-=== Sending an email to one or more person: email
+=== Sending an email to one or more person: `email`
 Emails one or more person identified by the index number used in the last person listing. +
 Format: `email INDEX [INDEX]...`
 
@@ -203,7 +203,7 @@ Examples:
 
 * `list` +
 `email 2 3` +
-Send an email to the 2nd person and 3rd person in the address book.
+Send an email to the 2nd person and 3rd person from the list of contacts listed.
 * `find Betsy` +
 `email 1` +
 Send an email to the 1st person in the results of the `find` command.
@@ -308,6 +308,27 @@ HitMeUp will wait for *20 seconds* for you to enter your credentials.
 will pop up to indicate progress of import.
 3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
 =======
+
+=== Exporting contacts : `export`
+
+Allows you to export contacts from the application.
+
+Format: `export all` or `export INDEX [INDEX]...`
+
+****
+* Exports all information of all contacts or at the specified INDEX into a vCard format file.
+* The input 'all' is case-sensitive.
+* The index refers to the index number shown in the most recent listing.
+* The index must be a positive integer 1, 2, 3, ...
+****
+
+Examples:
+
+* `export all` +
+Exports all contacts into a vCard format file.
+* `list` +
+`export 1 2` +
+Exports the 1st and 2nd person from the list of contacts listed.
 
 === Deleting a tag : `tagdelete`
 
