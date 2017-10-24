@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
+import static seedu.address.model.tag.Tag.isValidTagName;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class TagEditCommand extends UndoableCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Edits the tag identified by the tag name in the address book to a new tag name provided by the user.\n"
             + "Parameters: TAGNAME NEWTAGNAME\n"
-            + "Example: " + COMMAND_WORD + " groupmates " + " friends";
+            + "Example: " + COMMAND_WORD + " groupmates " + "friends";
 
     private final String oldTagName;
     private final String newTagName;
@@ -30,6 +32,8 @@ public class TagEditCommand extends UndoableCommand {
     public TagEditCommand(String oldTagName, String newTagName) {
         requireNonNull(oldTagName);
         requireNonNull(newTagName);
+
+
         this.oldTagName = oldTagName.trim();
         this.newTagName = newTagName.trim();
     }
@@ -37,22 +41,25 @@ public class TagEditCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
-
         List<Tag> tagList = model.getAddressBook().getTagList();
 
         try {
             newTag = new Tag(newTagName);
             tagToEdit = new Tag(oldTagName);
-            if (!tagList.contains(tagToEdit)) {
-                throw new CommandException(Messages.MESSAGE_INVALID_TAG_NAME);
+            if (!isValidTagName(newTag.tagName)) {
+                throw new IllegalValueException(MESSAGE_TAG_CONSTRAINTS);
             }
-
+            if (newTag.tagName.isEmpty() || tagToEdit.tagName.isEmpty()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_COMMAND_FORMAT);
+            }
+            if (!tagList.contains(tagToEdit)) {
+                throw new CommandException(Messages.MESSAGE_UNKNOWN_TAG_NAME);
+            }
             model.editTag(tagToEdit, newTag);
         } catch (IllegalValueException ive) {
-            assert false : "The target tag is invalid";
+            assert false : "The provided tag does not exist";
         } catch (PersonNotFoundException pnfe) {
             assert false : "The target person cannot be missing";
-
         }
 
         return new CommandResult(String.format(MESSAGE_EDIT_TAG_SUCCESS, tagToEdit, newTag));

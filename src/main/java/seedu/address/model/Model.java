@@ -52,7 +52,7 @@ public interface Model {
 
     void deleteTag(Tag tag) throws DuplicatePersonException, PersonNotFoundException;
 
-    void editTag(Tag oldTag, Tag newTag) throws DuplicatePersonException, PersonNotFoundException;
+    void editTag(Tag oldTag, Tag newTag) throws PersonNotFoundException, DuplicatePersonException;
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<ReadOnlyPerson> getFilteredPersonList();

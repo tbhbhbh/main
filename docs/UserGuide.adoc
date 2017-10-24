@@ -324,7 +324,7 @@ Examples:
 * `tagdelete friends` +
 Deletes the tag 'friends' from all persons with the 'friends' tag in the address book.
 
-==== Editing a tag : `tagedit`
+=== Editing a tag : `tagedit`
 
 Allows you to change the name of a tag belonging to all persons in the address book.
 
@@ -340,6 +340,32 @@ Examples:
 
 * `tagedit friends losers` +
 Changes the tag 'friends' into 'losers' for all persons with that tag.
+
+=== Search for persons : `search`
+
+Searches for persons whose names or tags contain any of the given keywords. +
+Format: `find KEYWORD [MORE_KEYWORDS]` +
+
+****
+- The search for names is case insensitive. e.g. `hans` will match `Hans`. However, the search for tags is
+case sensitive.
+- The order of the keywords does not matter. e.g. `Alex colleagues` and `colleagues Alex` will give you the same result.
+- Both names and tags are searched.
+- Only full words will be matched with names and tags. e.g. `Han` will not match `Hans` and `colleague` will not match
+`colleagues
+- When searching for one keyword, persons matching at least one keyword will be returned like in `find`
+- When searching for more than one keyword, only persons matching ALL keywords will be returned. eg. `search Alex` will
+return all persons with the name `Alex`, but `search Alex colleagues` will only return persons with both the word `Alex`
+in their names and the tag `colleagues`.
+****
+
+Examples:
+
+* `search alex` +
+returns `alex` and `Alex`
+
+* `search alex colleagues` +
+returns all persons with the name `Alex` or `alex` AND with the tag `colleagues`
 
 === Clearing all entries : `clear`
 

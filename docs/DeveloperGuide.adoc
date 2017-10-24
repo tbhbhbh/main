@@ -511,14 +511,14 @@ Threading has to be used to allow the progress bar to update as the `importConta
 === Tag Edit
 This feature is implemented to provide users the ability to edit tags without having to update each person one at a time.
 
-The follow sequence diagram shows how the tag edit operation works:
+The following sequence diagram shows how the tag edit operation works:
 
 image::TagEditLogicDiagramv2.png[width="800"]
 
 The user will have to provide the command `tagedit friends losers` to change all persons with the tag `friends` to the
 tag `losers` in the address book. `TagEditCommandParser` will parse the 2 arguments given after `tagedit` (in this case,
-it is `friends` and `losers`) provided by the user and it will return `TagEditCommand`. Next, `TagEditCommand`
-will call its method `executeUndoableCommand()` and ensure that the tag `friends` specified is valid
+they are `friends` and `losers`) provided by the user and it will return `TagEditCommand`. Next, `TagEditCommand`
+will call its method `executeUndoableCommand()` and ensure that the tag `friends` specified is valid.
 
 ==== Design Considerations
 **Aspect:** Implementation of `TagEditCommand` +
@@ -529,6 +529,30 @@ will call its method `executeUndoableCommand()` and ensure that the tag `friends
 **Pros:** Does not involve template pattern, easier to understand +
 **Cons:** Cannot undo/redo unless `super.execute()` is called
 
+=== Search
+This feature is implemented as an improvement to the default `find` feature. Currently, the user is able to find
+contacts based on a word in the name, tag, or both, without the need for prefixes as seen in the `add` or `edit`
+features.
+
+When using the search feature, there are 2 possible cases: +
+
+**Case 1: User input contains only 1 argument** +
+The user is searching either a keyword in the name OR a tag. Contacts with the matching name OR tag will be listed.
+
+**Case 2: User input contains more than 1 argument** +
+The user is searching for contacts with a keyword in the name AND a tag. Contacts with the matching name AND tag will
+be listed.
+
+The sequence diagram for the command `search Alex friends` is shown below:
+
+image::SearchLogicDiagram.png[width="800"]
+
+The user will have to provide the command `search Alex friends` to search for persons with the word `Alex` in their
+names and the tag `friends` under their tags. `SearchCommandParser` will parse the 2 arguments given after `search`
+(in this case, they are `Alex` and `friends`) provided by the user and it will return `SearchCommand`. In
+`SearchCommand`, the method `PersonContainsKeywordsPredicate` will check the arguments provided against the existing
+list of names and tags and return all persons with the matching keyword `Alex` in their names and tag `friends`.
+Finally, `execute()` will run `updateFilteredPersonList` to show the list of persons returned.
 
 === Logging
 
