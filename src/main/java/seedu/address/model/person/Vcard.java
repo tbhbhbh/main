@@ -18,7 +18,11 @@ public class Vcard {
 
     /**
      * Creates a Vcard using a given person.
-     * Enforces no nulls person. Store information of a given person in a string {@code cardDetails}
+     * @param person enforces no nulls person.
+     * Store information of a given person in a string {@code cardDetails}
+     * Note that using Vcard version 3.0:
+     * BEING, VERSION, FN, END fields in cardDetails are required.
+     * The rest of the fields are not required and can be empty Strings.
      */
     public Vcard(ReadOnlyPerson person) {
         requireNonNull(person);
@@ -45,7 +49,7 @@ public class Vcard {
     /**
      * This method builds a valid birthday format for Vcard.
      * {@code bday} is a StringBuilder that appends the Year, followed by Month and Day
-     * of a birthday string separated by a dash.
+     * of a particular birthday separated by a dash.
      * @param birthday is a valid birthday string of a person in the format: DD/MM/YYYY.
      * @return a new birthday string format: YYYY-MM-DD
      */
