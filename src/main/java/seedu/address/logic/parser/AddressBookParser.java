@@ -121,7 +121,7 @@ public class AddressBookParser {
 
         case ImportCommand.COMMAND_WORD:
             return new ImportCommandParser().parse(arguments);
-        
+
         case SearchCommand.COMMAND_WORD:
             return new SearchCommandParser().parse(arguments);
 
