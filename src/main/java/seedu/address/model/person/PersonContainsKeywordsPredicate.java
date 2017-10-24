@@ -9,7 +9,9 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.model.tag.Tag;
 
 /**
- * Tests that a {@code ReadOnlyPerson} {@code Tag} matches any of the keywords given.
+ * Tests that a {@code ReadOnlyPerson} matches any or all of the keywords given depending on the number of keywords.
+ * Case 1: Given only 1 keyword, {@code ReadOnlyPerson}'s {@code Name} OR {@code Tag} must match the keyword
+ * Case 2: Given >1 keywords, {@code ReadOnlyPerson}'s {@code Name} AND {@code Tag} must match the keywords
  * More to be added later including Birthday, Address
  */
 public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson> {
