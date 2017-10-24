@@ -1,12 +1,12 @@
 package seedu.address.model.person;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.StringUtil;
-import seedu.address.model.tag.Tag;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.StringUtil;
+import seedu.address.model.tag.Tag;
 
 /**
  * Tests that a {@code ReadOnlyPerson} {@code Tag} matches any of the keywords given.
@@ -30,10 +30,11 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
             }
         }
 
-        if (keywords.size() == 1)
+        if (keywords.size() == 1) {
             return keywords.stream()
-                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName,keyword))
+                    .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
                     || tagList.stream().anyMatch((tag -> person.getTags().contains(tag)));
+        }
 
         return keywords.stream()
                 .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))

@@ -22,8 +22,7 @@ public class TagEditCommandParser {
 
         String oldTag = stringArr[1].trim();
         String newTag = stringArr[2].trim();
-        if (stringArr.length < 2) {
-        //old code if (oldTag.isEmpty() || newTag.isEmpty()) {
+        if (oldTag.isEmpty() || newTag.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagDeleteCommand.MESSAGE_USAGE));
         }
