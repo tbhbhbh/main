@@ -1,4 +1,4 @@
-= AddressBook Level 4 - User Guide
+= HitMeUp - User Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -10,9 +10,9 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4
+:repoURL: https://github.com/CS2103AUG2017-W14-B3/main
 
-By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
+By: `Daniel, Jun Quan, Conant, Bing Hwang`      Since: `Jun 2016`      Licence: `MIT`
 
 == Quick Start
 
@@ -82,27 +82,25 @@ Format: `help`
 === Adding a person: `add`
 
 Adds a person to the address book +
-<<<<<<< HEAD
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS b/BIRTHDAY [t/TAG]...`
-=======
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS dp/CHOICE [t/TAG]...`
->>>>>>> ChooseDisplayPic
 
+Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [dp/CHOICE] [t/TAG]...`
+
+=======
 [TIP]
-<<<<<<< HEAD
-A person can have any number of tags (including 0). +
+A person can have any number of tags (including 0).
+=======
+=======
+[TIP]
+If you do not have a display picture to add, leave out the dp/ prefix.
+=======
+=======
+[TIP]
 The address book is sorted alphabetically after the person is added.
 =======
-If you do not have a display picture, input dp/N to assign default
-[TIP]
-A person can have any number of tags (including 0)
->>>>>>> 2ea87c7895aaba92c7ab14b7006a4c7d10331399
-
 Examples:
 
-<<<<<<< HEAD
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01, b/19/09/1999 dp/Y`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567, b/25/06/1994 dp/N t/criminal`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567, b/25/06/1994 t/criminal`
 
 === Listing all persons : `list`
 
@@ -293,19 +291,21 @@ it is no longer assigned to delete.
 
 === Importing contacts : `import`
 
-Allows you to import contacts from either Google Contacts or Apple iCloud.
+Allows you to import contacts from either Google Contacts.
 
 Format: `import SERVICE_NAME`
 
 ****
-* The service name can only be "Google" or "Apple"
+* The service name can only be "Google"
 * The service name is case-insensitive.
 ****
 
 =======
 * `import google` +
-1. Opens the Google authentication page in your default web browser to allow access to your contacts
-2. Once access has been granted, a progress window will pop up indicating the progress of import.
+1. Opens the Google authentication page in your default web browser to allow access to your contacts. +
+HitMeUp will wait for *20 seconds* for you to enter your credentials.
+2. Once access has been granted, HitMeUp will come to the front of the screen and a progress window +
+will pop up to indicate progress of import.
 3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
 =======
 

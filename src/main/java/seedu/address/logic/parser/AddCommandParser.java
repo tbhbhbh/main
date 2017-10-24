@@ -33,6 +33,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the AddCommand
      * and returns an AddCommand object for execution.
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCommand parse(String args) throws ParseException {
@@ -40,11 +41,11 @@ public class AddCommandParser implements Parser<AddCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
                         PREFIX_BIRTHDAY, PREFIX_DP, PREFIX_TAG);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE,
-                PREFIX_EMAIL, PREFIX_BIRTHDAY, PREFIX_DP)) {
-
+        if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_PHONE)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
+
+        fillEmptyPrefixes(argMultimap);
 
         try {
             Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME)).get();
@@ -71,4 +72,22 @@ public class AddCommandParser implements Parser<AddCommand> {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
+    /**
+     * Fills the prefixes that have not been specified by the user with an empty string in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static void fillEmptyPrefixes(ArgumentMultimap argumentMultimap) {
+        if (!argumentMultimap.getValue(PREFIX_EMAIL).isPresent()) {
+            argumentMultimap.put(PREFIX_EMAIL, "");
+        }
+        if (!argumentMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
+            argumentMultimap.put(PREFIX_ADDRESS, "");
+        }
+        if (!argumentMultimap.getValue(PREFIX_BIRTHDAY).isPresent()) {
+            argumentMultimap.put(PREFIX_BIRTHDAY, "");
+        }
+        if (!argumentMultimap.getValue(PREFIX_DP).isPresent()) {
+            argumentMultimap.put(PREFIX_DP, "N");
+        }
+    }
 }
