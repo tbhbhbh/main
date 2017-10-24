@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Supplier;
 
+import javafx.application.HostServices;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
@@ -29,10 +30,12 @@ public class TestApp extends MainApp {
 
     public static final String SAVE_LOCATION_FOR_TESTING = TestUtil.getFilePathInSandboxFolder("sampleData.xml");
     public static final String APP_TITLE = "Test App";
+    public static final String SAVE_EXPORT_LOCATION_FOR_TESTING = TestUtil.getFilePathInSandboxFolder("contacts.vcf");
 
     protected static final String DEFAULT_PREF_FILE_LOCATION_FOR_TESTING =
             TestUtil.getFilePathInSandboxFolder("pref_testing.json");
     protected static final String ADDRESS_BOOK_NAME = "Test";
+    protected static HostServices hostServices;
     protected Supplier<ReadOnlyAddressBook> initialDataSupplier = () -> null;
     protected String saveFileLocation = SAVE_LOCATION_FOR_TESTING;
 
@@ -49,6 +52,8 @@ public class TestApp extends MainApp {
             createDataFileWithData(new XmlSerializableAddressBook(this.initialDataSupplier.get()),
                     this.saveFileLocation);
         }
+
+        hostServices = super.getHostServices();
     }
 
     @Override
