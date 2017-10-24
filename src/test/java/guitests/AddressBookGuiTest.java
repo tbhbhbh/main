@@ -106,6 +106,10 @@ public abstract class AddressBookGuiTest {
         return TestApp.SAVE_LOCATION_FOR_TESTING;
     }
 
+    protected String getSavedExportLocation() {
+        return TestApp.SAVE_EXPORT_LOCATION_FOR_TESTING;
+    }
+
     @After
     public void cleanup() throws Exception {
         EventsCenter.clearSubscribers();

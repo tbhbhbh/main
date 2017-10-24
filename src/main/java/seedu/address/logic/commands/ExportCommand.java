@@ -11,6 +11,7 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.ExportRequestEvent;
+import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.IndexArrayUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -29,7 +30,8 @@ public class ExportCommand extends Command {
             + "Parameters: all or INDEX [INDEX]... (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1 2" + " or " + COMMAND_WORD + " all";
 
-    public static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Export Person: %1$s";
+    public static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Export Person: %1$s\n"
+            + " Please close the app before moving the vcf file to another location.";
 
     public static final String DEFAULT_FILE_DIR = "./data/";
     public static final String DEFAULT_FILE_NAME = "contacts.vcf";
@@ -74,11 +76,8 @@ public class ExportCommand extends Command {
 
         //Create a new VCard format file to store all the VCard information.
         File file = new File(DEFAULT_FILE_DIR, DEFAULT_FILE_NAME);
-        if (file.exists()) {
-            file.delete();
-        }
         try {
-            file.createNewFile();
+            FileUtil.createIfMissing(file);
         } catch (IOException e) {
             e.printStackTrace();
         }

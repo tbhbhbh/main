@@ -40,7 +40,7 @@ public class IndexArrayUtil {
      * @param arr is a given array, it cannot be null
      * @param pos is a valid position to be swap with the next element.
      */
-    private static void swapElements(Index[] arr, int pos) {
+    public static void swapElements(Index[] arr, int pos) {
 
         Index temp = arr[pos];
         arr[pos] = arr[pos + 1];
