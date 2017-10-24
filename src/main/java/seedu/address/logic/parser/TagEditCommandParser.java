@@ -21,10 +21,12 @@ public class TagEditCommandParser {
         requireNonNull(args);
         String[] stringArr = args.split(" ");
 
-        if (stringArr.length < 3)
+        if (stringArr.length < 3) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagEditCommand.MESSAGE_USAGE));
-        if (!isValidTagName(stringArr[1]) || !isValidTagName(stringArr[2]))
+        }
+        if (!isValidTagName(stringArr[1]) || !isValidTagName(stringArr[2])) {
             throw new ParseException(MESSAGE_TAG_CONSTRAINTS);
+        }
 
         String oldTag = stringArr[1].trim();
         String newTag = stringArr[2].trim();

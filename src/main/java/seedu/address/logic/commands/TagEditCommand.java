@@ -46,16 +46,19 @@ public class TagEditCommand extends UndoableCommand {
         try {
             newTag = new Tag(newTagName);
             tagToEdit = new Tag(oldTagName);
-            if (!isValidTagName(newTag.tagName))
+            if (!isValidTagName(newTag.tagName)) {
                 throw new IllegalValueException(MESSAGE_TAG_CONSTRAINTS);
-            if (newTag.tagName.isEmpty() || tagToEdit.tagName.isEmpty())
+            }
+            if (newTag.tagName.isEmpty() || tagToEdit.tagName.isEmpty()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_COMMAND_FORMAT);
-            if (!tagList.contains(tagToEdit))
+            }
+            if (!tagList.contains(tagToEdit)) {
                 throw new CommandException(Messages.MESSAGE_UNKNOWN_TAG_NAME);
-                model.editTag(tagToEdit, newTag);
+            }
+            model.editTag(tagToEdit, newTag);
         } catch (IllegalValueException ive) {
             assert false : "The provided tag does not exist";
-        }catch (PersonNotFoundException pnfe) {
+        } catch (PersonNotFoundException pnfe) {
             assert false : "The target person cannot be missing";
         }
 
