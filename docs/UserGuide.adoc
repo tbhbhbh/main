@@ -293,19 +293,21 @@ it is no longer assigned to delete.
 
 === Importing contacts : `import`
 
-Allows you to import contacts from either Google Contacts or Apple iCloud.
+Allows you to import contacts from either Google Contacts.
 
 Format: `import SERVICE_NAME`
 
 ****
-* The service name can only be "Google" or "Apple"
+* The service name can only be "Google"
 * The service name is case-insensitive.
 ****
 
 =======
 * `import google` +
-1. Opens the Google authentication page in your default web browser to allow access to your contacts
-2. Once access has been granted, a progress window will pop up indicating the progress of import.
+1. Opens the Google authentication page in your default web browser to allow access to your contacts. +
+HitMeUp will wait for *20 seconds* for you to enter your credentials.
+2. Once access has been granted, HitMeUp will come to the front of the screen and a progress window +
+will pop up to indicate progress of import.
 3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
 =======
 

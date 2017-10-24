@@ -228,6 +228,7 @@ public class MainWindow extends UiPart<Region> {
     @FXML
     public void handleProgress(ReadOnlyDoubleProperty progress) {
         pWindow = new ProgressWindow(progress);
+        primaryStage.toFront();
         pWindow.show();
     }
 
