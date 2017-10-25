@@ -54,14 +54,19 @@ public class Vcard {
      * @return a new birthday string format: YYYY-MM-DD
      */
     private String buildBirthdayString(String birthday) {
-        String[] birthdayField = birthday.split("/");
-        StringBuilder bday = new StringBuilder();
-        bday.append(birthdayField[2]);
-        bday.append("-");
-        bday.append(birthdayField[1]);
-        bday.append("-");
-        bday.append(birthdayField[0]);
-        return bday.toString();
+        if (!birthday.equals("")) {
+            String[] birthdayField = birthday.split("/");
+            StringBuilder bday = new StringBuilder();
+            bday.append(birthdayField[2]);
+            bday.append("-");
+            bday.append(birthdayField[1]);
+            bday.append("-");
+            bday.append(birthdayField[0]);
+            return bday.toString();
+        } else {
+            // If there is no birthday information, return empty string
+            return "";
+        }
     }
 
     @Override
