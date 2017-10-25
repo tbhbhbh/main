@@ -558,6 +558,62 @@ fos = new FileOutputStream(file);
 
 Finally, the directory for the "contacts.vcf" will be shown to the user and the file can be imported to other applications.
 
+=== Display Picture Mechanism
+This feature was implemented to facilitate users to remember their friends with ease. It allows user to select display picture for each of their contacts if they have a picture ready. Otherwise, they can simple assign a default display picture for them.
+
+JavaFX `FileChooser` class allows user to choose the display picture that they want to use for a contact and returns the path to that picture. The path to the picture is then stored as a field in `Persons`.
+
+When an event is raised from Storage to UI, the path will be used to make an image using JavaFX `Image` class and displayed using JavaFX `ImageView`.
+
+This feature is an add-on to the current `Add` and `Edit` command. The prefix for display picture is `dp/[CHOICE]`. The `[CHOICE]` is to indicate `y/n`.
+
+An example for an Add command:
+----
+add n/John Doe p/98142142 e/johndoe@gmail.com a/Clementi road b/28.01.1995 dp/Y t/friends
+----
+
+[TIP]
+If you do not have a display picture for your contact, indicate dp/N to give him/her a default display picture.
+
+A static class ImagePathUtil is used to detect `dp/[CHOICE]` when the user enters a command.
+The following function check for the users `[CHOICE]` and append the command input accordingly.
+
+* Code listing:
++
+[source, java]
+--------------
+public static String setPath(String arguments, CommandBox commandBox) throws ParseException {
+    try {
+        int prefixIndex = findPrefixPosition(arguments, PREFIX_DP.getPrefix(), 0);
+        StringBuilder sb = new StringBuilder(arguments);
+        String choice = sb.substring(prefixIndex + PREFIX_LENGTH, prefixIndex + PREFIX_LENGTH + 1);
+        if (requireFileChooser(choice)) {
+            String selectedPath = commandBox.getDisplayPicPath();
+            sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix() + selectedPath + " ");
+            arguments = sb.toString();
+        } else {
+            sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix()
+                    + DEFAULT_DISPLAY_PIC + " ");
+            arguments = sb.toString();
+        }
+        return arguments;
+    } catch (StringIndexOutOfBoundsException sioe) {
+        throw new ParseException(ERROR_MESSAGE, sioe);
+    }
+}
+--------------
+
+==== Design Considerations
+
+**Aspect:** How to select Display Picture +
+**Alternative 1 (current choice):** Use a FileChooser and allow Users to select the file +
+**Pros:** User only have to click to select the file. +
+**Cons:** No longer a CLI interface +
+**Alternative 2:** Users find the path of the file themselves and add it into the command +
+**Pros:** CLI interface +
+**Cons:** It is hard for users who are not tech-savvy to find know the path to the file
+
+---
 
 === Tag Edit
 This feature is implemented to provide users the ability to edit tags without having to update each person one at a time.
