@@ -27,7 +27,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
-    public static final String DEFAULT_DISPLAY_PIC = "data/images/defaultperson.png";
+    public static final String DEFAULT_DISPLAY_PIC = "/images/defaultperson.png";
     private static final String FXML = "CommandBox.fxml";
 
 

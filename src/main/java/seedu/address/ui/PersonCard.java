@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
@@ -13,6 +15,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import seedu.address.commons.util.AppUtil;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -89,10 +92,15 @@ public class PersonCard extends UiPart<Region> {
      * @param person
      */
     private void initImage(ReadOnlyPerson person) {
-        File personImg = new File(person.getDisplayPic().toString());
-        String imgUrl = personImg.toURI().toString();
-        Image displayPicture = new Image(imgUrl);
-        displayPic = new ImageView(displayPicture);
+        if (person.getDisplayPic().toString().equals(DEFAULT_DISPLAY_PIC)) {
+            Image displayPicture = AppUtil.getImage(DEFAULT_DISPLAY_PIC);
+            displayPic = new ImageView(displayPicture);
+        } else {
+            File personImg = new File(person.getDisplayPic().toString());
+            String imgUrl = personImg.toURI().toString();
+            Image displayPicture = new Image(imgUrl);
+            displayPic = new ImageView(displayPicture);
+        }
         displayPic.setFitHeight(50);
         displayPic.setFitWidth(50);
         imagePane.getChildren().add(displayPic);

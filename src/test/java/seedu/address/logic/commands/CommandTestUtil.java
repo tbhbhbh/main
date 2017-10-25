@@ -37,7 +37,7 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_BIRTHDAY_AMY = "11/07/1977";
     public static final String VALID_BIRTHDAY_BOB = "05/06/1994";
-    public static final String VALID_DISPLAYPIC = "data/images/defaultperson.png";
+    public static final String VALID_DISPLAYPIC = "/images/defaultperson.png";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
 

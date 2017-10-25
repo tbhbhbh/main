@@ -24,7 +24,7 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_BIRTHDAY = "03/07/1990";
-    public static final String DEFAULT_DISPLAYPIC = "data/images/defaultperson.png";
+    public static final String DEFAULT_DISPLAYPIC = "/images/defaultperson.png";
     public static final String DEFAULT_TAGS = "friends";
 
     private Person person;
