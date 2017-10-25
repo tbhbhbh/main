@@ -10,8 +10,8 @@ public class SearchCommand extends Command {
 
     public static final String COMMAND_WORD = "search";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Searches for all persons whose information contain " +
-            "any of the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Searches for all persons whose information contain "
+            + "any of the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice colleagues";
 
