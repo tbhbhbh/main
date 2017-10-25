@@ -31,7 +31,7 @@ public class PersonCard extends UiPart<Region> {
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
+     * or an exception will be thrown by JavaFX during runtime.sa
      *
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
@@ -46,12 +46,6 @@ public class PersonCard extends UiPart<Region> {
     private Label id;
     @FXML
     private Label phone;
-    @FXML
-    private Label address;
-    @FXML
-    private Label email;
-    @FXML
-    private Label birthday;
     @FXML
     private FlowPane tags;
     @FXML
@@ -75,9 +69,6 @@ public class PersonCard extends UiPart<Region> {
     private void bindListeners(ReadOnlyPerson person) {
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
         phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
-        address.textProperty().bind(Bindings.convert(person.addressProperty()));
-        email.textProperty().bind(Bindings.convert(person.emailProperty()));
-        birthday.textProperty().bind(Bindings.convert(person.birthdayProperty()));
         person.displayPicProperty().addListener((observable, oldValue, newValue) -> {
             initImage(person);
         });
