@@ -17,28 +17,30 @@ endif::[]
 == Features
 
 ====
-*Since v1.2*
+*Since v1.3*
 
+* Simply add a person with their name and number!
+* Export individual contacts to easily share with others
+* Search by groups and names
+* A more compact view for the list of contacts, showing only the name/display picture/phone number
 * Never forget a birthday again! Add birthdays to every contact
 * Email contacts quickly without copying and pasting
 * Import your contacts from Google Contacts/iCloud
 * Automatic list sorting
+* Add pictures to every contact
+
 ====
 
 ====
 *Coming in v2.0*
 
-* Simply add a person with their name and number!
-* Add pictures to every contact
-* A powerful find command. Search by groups, keywords and more!
+* Search by initials
 * View groups at a glance of the application
-* Export individual contacts to easily share with others
 * Easy access to social media profiles of each contact
 * Multiple themes to suit your needs
 * View your contacts' addresses quickly in Google Maps
 * Secure your application with a PIN
 ====
-
 == Site Map
 
 * <<UserGuide#, User Guide>>
