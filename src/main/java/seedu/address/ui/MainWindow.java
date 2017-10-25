@@ -152,7 +152,7 @@ public class MainWindow extends UiPart<Region> {
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
         personDescriptionPanel = new PersonDescription();
-        personDescriptionPlaceHolder.getChildren().add(personListPanel.getRoot());
+        personDescriptionPlaceHolder.getChildren().add(personDescriptionPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
