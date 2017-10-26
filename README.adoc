@@ -25,7 +25,7 @@ endif::[]
 * A more compact view for the list of contacts, showing only the name/display picture/phone number
 * Never forget a birthday again! Add birthdays to every contact
 * Email contacts quickly without copying and pasting
-* Import your contacts from Google Contacts/iCloud
+* Import your contacts from Google Contacts
 * Automatic list sorting
 * Add pictures to every contact
 
@@ -40,6 +40,8 @@ endif::[]
 * Multiple themes to suit your needs
 * View your contacts' addresses quickly in Google Maps
 * Secure your application with a PIN
+* Import your contacts from Apple iCloud
+
 ====
 == Site Map
 
