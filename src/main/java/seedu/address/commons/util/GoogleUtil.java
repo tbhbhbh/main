@@ -67,7 +67,7 @@ public class GoogleUtil {
     public static Credential authorize(HttpTransport httpTransport) throws IOException {
         // load client secrets
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-                new InputStreamReader(ImportCommand.class.getResourceAsStream("/client_secrets.json")));
+            new InputStreamReader(ImportCommand.class.getResourceAsStream("/client_secrets.json")));
 
         // set up authorization code flow
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
