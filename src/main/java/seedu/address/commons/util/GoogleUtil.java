@@ -30,6 +30,7 @@ import seedu.address.logic.commands.ImportCommand;
 import seedu.address.model.person.DisplayPic;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.UserName;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.ui.CommandBox;
@@ -152,7 +153,8 @@ public class GoogleUtil {
         seedu.address.model.person.Person toAdd;
         toAdd = new seedu.address.model.person.Person(nameAdd,
                 new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
-                new seedu.address.model.person.Birthday(birthday), new DisplayPic(CommandBox.DEFAULT_DISPLAY_PIC),
+                new seedu.address.model.person.Birthday(birthday), new UserName(""), new UserName(""),
+                new DisplayPic(CommandBox.DEFAULT_DISPLAY_PIC),
                 defaultTags);
         return toAdd;
     }

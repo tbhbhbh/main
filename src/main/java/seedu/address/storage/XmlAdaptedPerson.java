@@ -16,6 +16,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.UserName;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -31,6 +32,10 @@ public class XmlAdaptedPerson {
     private String email;
     @XmlElement(required = true)
     private String address;
+    @XmlElement(required = true)
+    private String twitterUserName;
+    @XmlElement(required = true)
+    private String instagramUserName;
     @XmlElement(required = true)
     private String birthday;
     @XmlElement(required = true)
@@ -57,6 +62,8 @@ public class XmlAdaptedPerson {
         email = source.getEmail().value;
         address = source.getAddress().value;
         birthday = source.getBirthday().value;
+        twitterUserName = source.getTwitterName().value;
+        instagramUserName = source.getInstagramName().value;
         displayPicPath = source.getDisplayPic().displayPicPath;
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
@@ -79,9 +86,12 @@ public class XmlAdaptedPerson {
         final Email email = new Email(this.email);
         final Address address = new Address(this.address);
         final Birthday birthday = new Birthday(this.birthday);
+        final UserName twitterUserName = new UserName(this.twitterUserName);
+        final UserName instagramUserName = new UserName(this.instagramUserName);
         final DisplayPic displayPic = new DisplayPic(this.displayPicPath);
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Person(name, phone, email, address, birthday, displayPic, tags);
+        return new Person(name, phone, email, address, birthday, twitterUserName,
+                instagramUserName, displayPic, tags);
 
     }
 }

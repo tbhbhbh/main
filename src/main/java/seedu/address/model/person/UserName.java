@@ -20,7 +20,7 @@ public class UserName {
      */
     public static final String USERNAME_VALIDATION_REGEX = "\\w+";
 
-    public final String userName;
+    public final String value;
 
     /**
      * Validates given username.
@@ -33,7 +33,7 @@ public class UserName {
         if (trimmedUserName.length() != 0 && !isValidUserName(trimmedUserName)) {
             throw new IllegalValueException(MESSAGE_USERNAME_CONSTRAINTS);
         }
-        this.userName = trimmedUserName;
+        this.value = trimmedUserName;
     }
 
     /**
@@ -45,19 +45,19 @@ public class UserName {
 
     @Override
     public String toString() {
-        return userName;
+        return value;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof UserName // instanceof handles nulls
-                && this.userName.equals(((UserName) other).userName)); // state check
+                && this.value.equals(((UserName) other).value)); // state check
     }
 
     @Override
     public int hashCode() {
-        return userName.hashCode();
+        return value.hashCode();
     }
 
 }
