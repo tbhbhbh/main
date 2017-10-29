@@ -145,7 +145,7 @@ public class GoogleUtil {
                 StringBuilder sb = new StringBuilder();
                 sb.append(String.format("%02d", googleBirthday.getDay()));
                 sb.append("/");
-                sb.append(googleBirthday.getMonth());
+                sb.append(String.format("%02d", googleBirthday.getMonth()));
                 sb.append("/");
                 sb.append(googleBirthday.getYear());
                 birthday = sb.toString();
