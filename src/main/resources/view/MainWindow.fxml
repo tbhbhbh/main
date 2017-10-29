@@ -36,7 +36,15 @@
     </padding>
   </StackPane>
 
-  <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4, 0.5" VBox.vgrow="ALWAYS">
+  <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4, 0.5, 0.5" VBox.vgrow="ALWAYS">
+      <VBox fx:id="tagList" layoutX="10.0" layoutY="10.0" minWidth="150.0" prefWidth="150.0" SplitPane.resizableWithParent="false">
+         <padding>
+            <Insets bottom="10" left="10" right="10" top="10" />
+         </padding>
+         <children>
+            <StackPane fx:id="tagListPanelPlaceholder" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
     <VBox fx:id="personList" minWidth="340.0" prefWidth="340.0" SplitPane.resizableWithParent="false">
       <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
