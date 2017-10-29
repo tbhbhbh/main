@@ -13,9 +13,11 @@ import static seedu.address.logic.commands.CommandTestUtil.INSTAGRAM_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_BIRTHDAY_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_INSTAGRAM_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TAG_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TWITTER_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
@@ -62,6 +64,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.UserName;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
@@ -175,6 +178,24 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
+        /* Case: no twitter username -> added */
+        toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
+                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY).withTwitter("")
+                .withInstagram(VALID_INSTAGRAM_AMY)
+                .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + BIRTHDAY_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+        assertCommandSuccess(command, toAdd);
+
+        /* Case: no instagram username -> added */
+        toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
+                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY).withTwitter(VALID_TWITTER_AMY)
+                .withInstagram("")
+                .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+        assertCommandSuccess(command, toAdd);
+
         /* Case: filters the person list before adding -> added */
         executeCommand(FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER);
         assert getModel().getFilteredPersonList().size()
@@ -235,6 +256,19 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
                 + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY
                 + INVALID_BIRTHDAY_DESC + DISPLAYPIC_DEFAULT;
         assertCommandFailure(command, Birthday.MESSAGE_BIRTHDAY_CONSTRAINTS);
+
+        /* Case: invalid twitter username -> rejected */
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + INSTAGRAM_DESC_AMY + INVALID_TWITTER_DESC
+                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
+        assertCommandFailure(command, UserName.MESSAGE_USERNAME_CONSTRAINTS);
+
+        /* Case: invalid instagram username -> rejected */
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + INVALID_INSTAGRAM_DESC + TWITTER_DESC_AMY
+                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
+        assertCommandFailure(command, UserName.MESSAGE_USERNAME_CONSTRAINTS);
+
 
         /* Case: invalid tag -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY

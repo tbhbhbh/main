@@ -11,7 +11,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class UserName {
 
     public static final String MESSAGE_USERNAME_CONSTRAINTS =
-            "Social media username should only contain alphanumeric characters.";
+            "Social media username should only contain alphanumeric characters and underscores.";
 
     /*
      * The first character of the username must not be a whitespace,
