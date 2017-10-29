@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.api.client.auth.oauth2.Credential;
@@ -34,12 +35,14 @@ public class ImportCommand extends UndoableCommand {
 
     public static final String MESSAGE_SUCCESS = "%1$s contacts imported. %2$s contacts failed to import.";
     public static final String MESSAGE_IN_PROGRESS = "Importing in progress";
+    public static final String MESSAGE_INVALID_PEOPLE = "The contacts unable to be imported are: ";
     public static final String MESSAGE_FAILURE = "Failed to import contacts.";
     public static final String MESSAGE_FAILURE_EMPTY = "0 contacts imported as you have zero Google contacts.";
     public static final String MESSAGE_CONNECTION_FAILURE = "Failed to access Google. Check your internet connection or"
             + " try again in a few minutes.";
     public static final int ADDRESSBOOK_SIZE = 1000;
     private static int peopleAdded;
+    private static ArrayList<String> invalidPeople;
     private static Credential credential;
     private static HttpTransport httpTransport;
     private final String service;
@@ -59,7 +62,6 @@ public class ImportCommand extends UndoableCommand {
 
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
-        // authorization with Google
         // Check for connectivity to Google
         try {
             if (!GoogleUtil.isReachable()) {
@@ -112,9 +114,11 @@ public class ImportCommand extends UndoableCommand {
             @Override
             protected Void call() throws Exception {
                 int amountToAdd = connections.size();
+                invalidPeople = new ArrayList<String>();
                 for (Person person : connections) {
                     seedu.address.model.person.Person toAdd = GoogleUtil.convertPerson(person);
                     if (toAdd == null) {
+                        invalidPeople.add(person.getNames().get(0).getDisplayName());
                         continue;
                     }
                     try {
@@ -134,8 +138,16 @@ public class ImportCommand extends UndoableCommand {
 
         task.setOnSucceeded(t -> {
             EventsCenter.getInstance().post(new CloseProgressEvent());
-            EventsCenter.getInstance().post(new NewResultAvailableEvent(
-                    String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded), false));
+            StringBuilder sb = new StringBuilder();
+            if (connections.size() - peopleAdded > 0) {
+                sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded));
+                sb.append(" ");
+                sb.append(MESSAGE_INVALID_PEOPLE);
+                sb.append(invalidPeople.toString());
+            } else {
+                sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded));
+            }
+            EventsCenter.getInstance().post(new NewResultAvailableEvent(sb.toString(), false));
         });
 
         task.setOnFailed(t -> {
