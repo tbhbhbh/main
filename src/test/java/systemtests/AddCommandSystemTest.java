@@ -8,6 +8,8 @@ import static seedu.address.logic.commands.CommandTestUtil.BIRTHDAY_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.DISPLAYPIC_DEFAULT;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.INSTAGRAM_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.INSTAGRAM_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_BIRTHDAY_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
@@ -20,6 +22,8 @@ import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.TWITTER_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.TWITTER_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_BIRTHDAY_AMY;
@@ -27,11 +31,13 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_BIRTHDAY_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DISPLAYPIC;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_INSTAGRAM_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_TWITTER_AMY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.AMY;
@@ -70,9 +76,9 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
          * -> added
          */
         ReadOnlyPerson toAdd = AMY;
-        String command = "   " + AddCommand.COMMAND_WORD + "  " + NAME_DESC_AMY + "  " + PHONE_DESC_AMY + " "
-                + EMAIL_DESC_AMY + "   " + ADDRESS_DESC_AMY + " " + BIRTHDAY_DESC_AMY + "  "
-                + DISPLAYPIC_DEFAULT + " " + TAG_DESC_FRIEND + " ";
+        String command = "   " + AddCommand.COMMAND_WORD + "  " + NAME_DESC_AMY + "  " + PHONE_DESC_AMY
+                + " " + EMAIL_DESC_AMY + "   " + ADDRESS_DESC_AMY + " " + BIRTHDAY_DESC_AMY + "  " + TWITTER_DESC_AMY
+                + " " + INSTAGRAM_DESC_AMY + " " + DISPLAYPIC_DEFAULT + " " + TAG_DESC_FRIEND + " ";
         assertCommandSuccess(command, toAdd);
 
         /* Case: undo adding Amy to the list -> Amy deleted */
@@ -88,7 +94,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
 
         /* Case: add a duplicate person -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_PERSON);
 
         /* Case: add a duplicate person except with different tags -> rejected */
@@ -96,70 +102,77 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         // This test will fail is a new tag that is not in the model is used, see the bug documented in
         // AddressBook#addPerson(ReadOnlyPerson)
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + " " + PREFIX_TAG.getPrefix() + "friends";
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
+                + DISPLAYPIC_DEFAULT + " " + PREFIX_TAG.getPrefix() + "friends";
         assertCommandFailure(command, AddCommand.MESSAGE_DUPLICATE_PERSON);
 
         /* Case: add a person with all fields same as another person in the address book except name -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY)
-                .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
+                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY).withTwitter(VALID_TWITTER_AMY)
+                .withInstagram(VALID_INSTAGRAM_AMY).withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
+                + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person with all fields same as another person in the address book except phone -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY)
-                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY)
-                .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
+                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY).withTwitter(VALID_TWITTER_AMY)
+                .withInstagram(VALID_INSTAGRAM_AMY).withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_BOB + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person with all fields same as another person in the address book except email -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_BOB)
-                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY)
-                .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
+                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY).withTwitter(VALID_TWITTER_AMY)
+                .withInstagram(VALID_INSTAGRAM_AMY).withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_BOB + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person with all fields same as another person in the address book except address -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withAddress(VALID_ADDRESS_BOB).withBirthday(VALID_BIRTHDAY_AMY).withTags(VALID_TAG_FRIEND).build();
+                .withAddress(VALID_ADDRESS_BOB).withBirthday(VALID_BIRTHDAY_AMY)
+                .withTwitter(VALID_TWITTER_AMY).withInstagram(VALID_INSTAGRAM_AMY).withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_BOB
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: add a person with all fields same as another person in the address book except birthday -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
                 .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_BOB)
+                .withTwitter(VALID_TWITTER_AMY).withInstagram(VALID_INSTAGRAM_AMY)
                 .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_BOB + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + BIRTHDAY_DESC_BOB + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: no address -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withAddress("").withBirthday(VALID_BIRTHDAY_AMY)
-                .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
+                .withAddress("").withBirthday(VALID_BIRTHDAY_AMY).withTwitter(VALID_TWITTER_AMY)
+                .withInstagram(VALID_INSTAGRAM_AMY).withDisplayPic(VALID_DISPLAYPIC)
+                .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + INVALID_ADDRESS_DESC
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: no email -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail("")
-                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY)
-                .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
+                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_AMY).withTwitter(VALID_TWITTER_AMY)
+                .withInstagram(VALID_INSTAGRAM_AMY).withDisplayPic(VALID_DISPLAYPIC)
+                .withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY
-                + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: no birthday -> added */
         toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
-                .withAddress(VALID_ADDRESS_AMY).withBirthday("")
+                .withAddress(VALID_ADDRESS_AMY).withBirthday("").withTwitter(VALID_TWITTER_AMY)
+                .withInstagram(VALID_INSTAGRAM_AMY)
                 .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND).build();
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
+                + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY + DISPLAYPIC_DEFAULT + TAG_DESC_FRIEND;
         assertCommandSuccess(command, toAdd);
 
         /* Case: filters the person list before adding -> added */
@@ -176,7 +189,8 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
         /* Case: add a person with tags, command with parameters in random order -> added */
         toAdd = BOB;
         command = AddCommand.COMMAND_WORD + TAG_DESC_FRIEND + PHONE_DESC_BOB + ADDRESS_DESC_BOB + NAME_DESC_BOB
-                + TAG_DESC_HUSBAND + EMAIL_DESC_BOB + BIRTHDAY_DESC_BOB + DISPLAYPIC_DEFAULT;
+                + TAG_DESC_HUSBAND + EMAIL_DESC_BOB + BIRTHDAY_DESC_BOB + TWITTER_DESC_BOB + INSTAGRAM_DESC_BOB
+                + DISPLAYPIC_DEFAULT;
         assertCommandSuccess(command, toAdd);
 
         /* Case: selects first card in the person list, add a person -> added, card selection remains unchanged */
@@ -189,12 +203,12 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
 
         /* Case: missing name -> rejected */
         command = AddCommand.COMMAND_WORD + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY
-                + DISPLAYPIC_DEFAULT;
+                + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY + DISPLAYPIC_DEFAULT;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         /* Case: missing phone -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY
-                + DISPLAYPIC_DEFAULT;
+                + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY + DISPLAYPIC_DEFAULT;
         assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         /* Case: invalid keyword -> rejected */
@@ -203,27 +217,28 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
 
         /* Case: invalid name -> rejected */
         command = AddCommand.COMMAND_WORD + INVALID_NAME_DESC + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
+                + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
         assertCommandFailure(command, Name.MESSAGE_NAME_CONSTRAINTS);
 
         /* Case: invalid phone -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + INVALID_PHONE_DESC + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
+                + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
         assertCommandFailure(command, Phone.MESSAGE_PHONE_CONSTRAINTS);
 
         /* Case: invalid email -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + INVALID_EMAIL_DESC + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
+                + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT;
         assertCommandFailure(command, Email.MESSAGE_EMAIL_CONSTRAINTS);
 
         /* Case: invalid birthday -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY
                 + INVALID_BIRTHDAY_DESC + DISPLAYPIC_DEFAULT;
         assertCommandFailure(command, Birthday.MESSAGE_BIRTHDAY_CONSTRAINTS);
 
         /* Case: invalid tag -> rejected */
         command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
-                + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + INVALID_TAG_DESC;
+                + INSTAGRAM_DESC_AMY + TWITTER_DESC_AMY + BIRTHDAY_DESC_AMY + DISPLAYPIC_DEFAULT + INVALID_TAG_DESC;
         assertCommandFailure(command, Tag.MESSAGE_TAG_CONSTRAINTS);
     }
 

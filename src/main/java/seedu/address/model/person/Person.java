@@ -151,6 +151,10 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
         return twitterName.get();
     }
 
+    public void setTwitterName(UserName twitterName) {
+        this.twitterName.set(requireNonNull(twitterName));
+    }
+
     @Override
     public ObjectProperty<UserName> instagramNameProperty() {
         return instagramName;
@@ -159,6 +163,10 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     @Override
     public UserName getInstagramName() {
         return instagramName.get();
+    }
+
+    public void setInstagramName(UserName instagramName) {
+        this.instagramName.set(requireNonNull(instagramName));
     }
 
     /**

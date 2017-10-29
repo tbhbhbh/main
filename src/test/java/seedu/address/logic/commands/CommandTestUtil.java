@@ -6,9 +6,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BIRTHDAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_INSTAGRAM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TWITTER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +39,10 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_BIRTHDAY_AMY = "11/07/1977";
     public static final String VALID_BIRTHDAY_BOB = "05/06/1994";
+    public static final String VALID_TWITTER_AMY = "amy_bee";
+    public static final String VALID_TWITTER_BOB = "choo_bob";
+    public static final String VALID_INSTAGRAM_AMY = "amy_bee";
+    public static final String VALID_INSTAGRAM_BOB = "choo_bob";
     public static final String VALID_DISPLAYPIC = "/images/defaultperson.png";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
@@ -51,6 +57,10 @@ public class CommandTestUtil {
     public static final String ADDRESS_DESC_BOB = " " + PREFIX_ADDRESS + VALID_ADDRESS_BOB;
     public static final String BIRTHDAY_DESC_AMY = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_AMY;
     public static final String BIRTHDAY_DESC_BOB = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_BOB;
+    public static final String TWITTER_DESC_AMY = " " + PREFIX_TWITTER + VALID_TWITTER_AMY;
+    public static final String TWITTER_DESC_BOB = " " + PREFIX_TWITTER + VALID_TWITTER_BOB;
+    public static final String INSTAGRAM_DESC_AMY = " " + PREFIX_INSTAGRAM + VALID_INSTAGRAM_AMY;
+    public static final String INSTAGRAM_DESC_BOB = " " + PREFIX_INSTAGRAM + VALID_INSTAGRAM_BOB;
     public static final String DISPLAYPIC_DESC = " " + PREFIX_DP + VALID_DISPLAYPIC;
     public static final String DISPLAYPIC_DEFAULT = " " + PREFIX_DP + "N";
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
