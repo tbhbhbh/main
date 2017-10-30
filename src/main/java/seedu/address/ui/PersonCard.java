@@ -15,6 +15,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import seedu.address.commons.util.AppUtil;
 import seedu.address.model.person.ReadOnlyPerson;
 
@@ -31,7 +33,7 @@ public class PersonCard extends UiPart<Region> {
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
      * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.sa
+     * or an exception will be thrown by JavaFX during runtime.sax
      *
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
      */
@@ -49,9 +51,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private StackPane imagePane;
-    @FXML
-    private ImageView displayPic;
+    private Circle displayPic;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
@@ -83,18 +83,15 @@ public class PersonCard extends UiPart<Region> {
      * @param person
      */
     private void initImage(ReadOnlyPerson person) {
+        Image displayPicture;
         if (person.getDisplayPic().toString().equals(DEFAULT_DISPLAY_PIC)) {
-            Image displayPicture = AppUtil.getImage(DEFAULT_DISPLAY_PIC);
-            displayPic = new ImageView(displayPicture);
+            displayPicture = AppUtil.getImage(DEFAULT_DISPLAY_PIC);
         } else {
             File personImg = new File(person.getDisplayPic().toString());
             String imgUrl = personImg.toURI().toString();
-            Image displayPicture = new Image(imgUrl);
-            displayPic = new ImageView(displayPicture);
+            displayPicture = new Image(imgUrl);
         }
-        displayPic.setFitHeight(50);
-        displayPic.setFitWidth(50);
-        imagePane.getChildren().add(displayPic);
+        displayPic.setFill(new ImagePattern(displayPicture));
     }
 
     /**
