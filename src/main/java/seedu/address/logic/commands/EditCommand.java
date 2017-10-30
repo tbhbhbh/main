@@ -5,9 +5,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BIRTHDAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_INSTAGRAM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TWITTER;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.UserName;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -46,6 +49,8 @@ public class EditCommand extends UndoableCommand {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_BIRTHDAY + "BIRTHDAY] "
+            + "[" + PREFIX_TWITTER  + "TWITTER] "
+            + "[" + PREFIX_INSTAGRAM + "INSTAGRAM] "
             + "[" + PREFIX_DP + "CHOICE] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -107,11 +112,13 @@ public class EditCommand extends UndoableCommand {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Birthday updatedBirthday = editPersonDescriptor.getBirthday().orElse(personToEdit.getBirthday());
+        UserName updatedTwitter = editPersonDescriptor.getTwitterName().orElse(personToEdit.getTwitterName());
+        UserName updatedInstagram = editPersonDescriptor.getInstagramName().orElse(personToEdit.getInstagramName());
         DisplayPic updatedDisplayPic = editPersonDescriptor.getDisplayPic().orElse(personToEdit.getDisplayPic());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedBirthday,
-                updatedDisplayPic, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedBirthday, updatedTwitter,
+                updatedInstagram, updatedDisplayPic, updatedTags);
     }
 
     @Override
@@ -142,6 +149,8 @@ public class EditCommand extends UndoableCommand {
         private Email email;
         private Address address;
         private Birthday birthday;
+        private UserName twitterName;
+        private UserName instagramName;
         private DisplayPic displayPic;
         private Set<Tag> tags;
 
@@ -153,6 +162,8 @@ public class EditCommand extends UndoableCommand {
             this.email = toCopy.email;
             this.address = toCopy.address;
             this.birthday = toCopy.birthday;
+            this.twitterName = toCopy.twitterName;
+            this.instagramName = toCopy.instagramName;
             this.displayPic = toCopy.displayPic;
             this.tags = toCopy.tags;
         }
@@ -162,7 +173,7 @@ public class EditCommand extends UndoableCommand {
          */
         public boolean isAnyFieldEdited() {
             return CollectionUtil.isAnyNonNull(this.name, this.phone, this.email, this.address,
-                    this.birthday, this.displayPic, this.tags);
+                    this.birthday, this.twitterName, this.instagramName, this.displayPic, this.tags);
         }
 
         public void setName(Name name) {
@@ -203,6 +214,22 @@ public class EditCommand extends UndoableCommand {
 
         public Optional<Birthday> getBirthday() {
             return Optional.ofNullable(birthday);
+        }
+
+        public void setTwitterName(UserName twitterName) {
+            this.twitterName = twitterName;
+        }
+
+        public Optional<UserName> getTwitterName() {
+            return Optional.ofNullable(twitterName);
+        }
+
+        public void setInstagramName(UserName instagramName) {
+            this.instagramName = instagramName;
+        }
+
+        public Optional<UserName> getInstagramName() {
+            return Optional.ofNullable(instagramName);
         }
 
         public void setDisplayPic(DisplayPic displayPic) {

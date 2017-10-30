@@ -28,6 +28,7 @@ endif::[]
 * Import your contacts from Google Contacts
 * Automatic list sorting
 * Add pictures to every contact
+* Add your contacts' Instagram and Twitter accounts
 
 ====
 
