@@ -5,7 +5,6 @@ import static seedu.address.MainApp.getAppHostServices;
 import java.awt.Desktop;
 import java.io.File;
 import java.net.URI;
-import java.net.URL;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
@@ -251,9 +250,8 @@ public class MainWindow extends UiPart<Region> {
      * or Instagram).
      * @param userName is a UserName of the person
      */
-    public void handleSocial(UserName userName, String socialMediaURL) {
-        System.out.println("" + socialMediaURL + userName);
-           browserPanel.loadPage(socialMediaURL + userName);
+    public void handleSocial(UserName userName, String socialMediaLink) {
+        browserPanel.loadPage(socialMediaLink + userName);
     }
 
 
@@ -319,7 +317,7 @@ public class MainWindow extends UiPart<Region> {
     @Subscribe
     private void handleSocialEvent(SocialRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        handleSocial(event.getUserName(), event.getSocialMediaURL());
+        handleSocial(event.getUserName(), event.getSocialMediaLink());
     }
 
     @Subscribe

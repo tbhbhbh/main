@@ -9,19 +9,23 @@ import seedu.address.model.person.UserName;
 public class SocialRequestEvent extends BaseEvent {
 
     private final UserName userName;
-    private final String socialMediaURL;
+    private final String socialMediaLink;
 
-    public SocialRequestEvent(UserName userName, String socialMediaURL) {
+    public SocialRequestEvent(UserName userName, String socialMediaLink) {
         this.userName = userName;
-        this.socialMediaURL = socialMediaURL;
+        this.socialMediaLink = socialMediaLink;
     }
 
-    public UserName getUserName() { return userName; }
+    public UserName getUserName() {
+        return userName;
+    }
 
-    public String getSocialMediaURL() { return socialMediaURL; }
+    public String getSocialMediaLink() {
+        return socialMediaLink;
+    }
 
     @Override
     public String toString() {
-            return this.getClass().getSimpleName();
-        }
+        return this.getClass().getSimpleName();
+    }
 }

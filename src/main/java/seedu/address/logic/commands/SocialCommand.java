@@ -9,12 +9,15 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.UserName;
 
+/**
+ * Accesses the person's social media profile on the browser.
+ */
+
 public class SocialCommand extends Command {
     public static final String COMMAND_WORD = "social";
     public static final String MESSAGE_SOCIAL_FAILED = "Chosen social media not supported";
-    public static final String MESSAGE_IF_MISSING = "(Check the person's username fields if his/her page does not " +
-            "exist)";
-    public String MESSAGE_SOCIAL_SUCCESS = "Successfully loaded %1$s";
+    public static final String MESSAGE_IF_MISSING = "(Check the person's username fields if his/her page does not "
+            + "exist)";
     public static final String MESSAGE_INSTAGRAM = "'s Instagram profile\n";
     public static final String MESSAGE_TWITTER = "'s Twitter profile\n";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Opens up the target index's Twitter or Instagram "
@@ -29,7 +32,7 @@ public class SocialCommand extends Command {
     private final Index index;
     private final String socialMedia;
 
-    public static final String MESSAGE_TO_SHOW = "aa";
+    private String messageSocialSuccess = "Successfully loaded %1$s";
     private String url;
     private UserName userName;
     private Name realName;
@@ -47,18 +50,17 @@ public class SocialCommand extends Command {
         if (this.isInstagramName()) {
             userName = lastShownList.get(index.getZeroBased()).getInstagramName();
             url = INSTAGRAM_URL_PREFIX;
-            MESSAGE_SOCIAL_SUCCESS = MESSAGE_SOCIAL_SUCCESS + MESSAGE_INSTAGRAM + MESSAGE_IF_MISSING;
-        }
-
-        else if (this.isTwitterName()) {
+            messageSocialSuccess = messageSocialSuccess + MESSAGE_INSTAGRAM + MESSAGE_IF_MISSING;
+        } else if (this.isTwitterName()) {
             userName = lastShownList.get(index.getZeroBased()).getTwitterName();
             url = TWITTER_URL_PREFIX;
-            MESSAGE_SOCIAL_SUCCESS = MESSAGE_SOCIAL_SUCCESS + MESSAGE_TWITTER + MESSAGE_IF_MISSING;
+            messageSocialSuccess = messageSocialSuccess + MESSAGE_TWITTER + MESSAGE_IF_MISSING;
+        } else {
+            return new CommandResult (String.format(MESSAGE_SOCIAL_FAILED, socialMedia));
         }
-            else return new CommandResult (String.format(MESSAGE_SOCIAL_FAILED, socialMedia));
 
         EventsCenter.getInstance().post(new SocialRequestEvent(userName, url));
-        return new CommandResult(String.format(MESSAGE_SOCIAL_SUCCESS, realName));
+        return new CommandResult(String.format(messageSocialSuccess, realName));
     }
 
     @Override
