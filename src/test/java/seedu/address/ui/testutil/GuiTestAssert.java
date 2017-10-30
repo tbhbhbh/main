@@ -8,7 +8,10 @@ import java.util.stream.Collectors;
 import guitests.guihandles.PersonCardHandle;
 import guitests.guihandles.PersonListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
+import guitests.guihandles.TagBoxHandle;
+import guitests.guihandles.TagListPanelHandle;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.tag.Tag;
 
 /**
  * A set of assertion methods useful for writing GUI tests.
@@ -53,6 +56,21 @@ public class GuiTestAssert {
     }
 
     /**
+     * Asserts that the list in {@code tagListPanelHandle} displays the name of the {@code tags} correctly.
+     */
+    public static void assertTagListMatching(TagListPanelHandle tagListPanelHandle, List<Tag> tags) {
+        assertTagListMatching(tagListPanelHandle, tags.toArray(new Tag[0]));
+    }
+
+    /**
+     * Asserts that the list in {@code tagListPanelHandle} displays the name of the {@code tags} correctly.
+     */
+    public static void assertTagListMatching(TagListPanelHandle tagListPanelHandle, Tag... tags) {
+        for (int i = 0; i < tags.length; i++) {
+            assertBoxDisplayTag(tags[i], tagListPanelHandle.getTagBoxHandle(tags[i]));
+        }
+    }
+    /**
      * Asserts the size of the list in {@code personListPanelHandle} equals to {@code size}.
      */
     public static void assertListSize(PersonListPanelHandle personListPanelHandle, int size) {
@@ -65,5 +83,9 @@ public class GuiTestAssert {
      */
     public static void assertResultMessage(ResultDisplayHandle resultDisplayHandle, String expected) {
         assertEquals(expected, resultDisplayHandle.getText());
+    }
+
+    public static void assertBoxDisplayTag(Tag expectedTag, TagBoxHandle tagBox) {
+        assertEquals(expectedTag.tagName, tagBox.getTag());
     }
 }

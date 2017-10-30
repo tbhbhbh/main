@@ -86,13 +86,9 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void addPerson(ReadOnlyPerson p) throws DuplicatePersonException {
         Person newPerson = new Person(p);
-        syncMasterTagListWith(newPerson);
-        // TODO: the tags master list will be updated even though the below line fails.
-        // This can cause the tags master list to have additional tags that are not tagged to any person
-        // in the person list.
         persons.add(newPerson);
         persons.sortByName();
-
+        syncMasterTagListWith(persons);
     }
 
     /**
@@ -111,12 +107,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         requireNonNull(editedReadOnlyPerson);
 
         Person editedPerson = new Person(editedReadOnlyPerson);
-        syncMasterTagListWith(editedPerson);
-        // TODO: the tags master list will be updated even though the below line fails.
-        // This can cause the tags master list to have additional tags that are not tagged to any person
-        // in the person list.
+        Person targetPerson = new Person(target);
         persons.setPerson(target, editedPerson);
         persons.sortByName();
+        deleteMasterTagListWith(targetPerson);
+        syncMasterTagListWith(persons);
     }
 
     /**
@@ -150,11 +145,21 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
+     * Ensures that all tags of a {@code person} is deleted away from the master list.
+     */
+    private void deleteMasterTagListWith(Person person) {
+        final UniqueTagList personTags = new UniqueTagList(person.getTags());
+        tags.deleteFrom(personTags);
+    }
+
+    /**
      * Removes {@code key} from this {@code AddressBook}.
      * @throws PersonNotFoundException if the {@code key} is not in this {@code AddressBook}.
      */
     public boolean removePerson(ReadOnlyPerson key) throws PersonNotFoundException {
         if (persons.remove(key)) {
+            deleteMasterTagListWith((Person) key);
+            syncMasterTagListWith(persons);
             return true;
         } else {
             throw new PersonNotFoundException();
