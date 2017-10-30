@@ -1,15 +1,14 @@
 package seedu.address.ui;
 
-import static seedu.address.MainApp.getAppHostServices;
-
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
-import javafx.application.HostServices;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,7 +46,7 @@ public class MainWindow extends UiPart<Region> {
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
     private static final String EMAIL_URI_PREFIX = "mailTo:";
-    private static final String EXPORT_FILE_ABSOLUTE_PATH = "./data/";
+    private static final String EXPORT_FILE_PATH = "./data/";
 
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
@@ -226,22 +225,26 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
-     * This method will invoke the user's default email client and set the recipients field with all the
+     * This method will invoke the user's default mail client and set the recipients field with all the
      * email addresses specified by the user.
      * @param allEmailAddresses is a string of all valid email addresses user request to email to.
-     * @throws Exception when user's OS cannot support Desktop operations.
+     * @throws IOException when user's desktop cannot support Desktop operations.
      */
-    public void handleEmail(String allEmailAddresses) throws Exception {
+    public void handleEmail(String allEmailAddresses) {
+        URI mailTo = null;
         try {
-            URI mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
-            if (Desktop.isDesktopSupported()) {
-                Desktop userDesktop = Desktop.getDesktop();
+            mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        if (Desktop.isDesktopSupported()) {
+            Desktop userDesktop = Desktop.getDesktop();
+            logger.info("Showing user's default mail client");
+            try {
                 userDesktop.mail(mailTo);
-            } else {
-                throw new Exception("Desktop is not supported");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            throw new Exception("User default mail application is not found or failed to launch");
         }
     }
 
@@ -278,12 +281,21 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
-     * Opens a file window which shows the directory where contacts.vcf file is found.
+     * Opens a file folder which shows the directory where contacts.vcf file is found.
+     * Folder is is guaranteed to exist before showing.
+     * @throws IOException when user's desktop cannot support Desktop operations.
      */
     public void handleExport() {
-        File file = new File(EXPORT_FILE_ABSOLUTE_PATH);
-        HostServices hostServices = getAppHostServices();
-        hostServices.showDocument(file.getAbsolutePath());
+        File file = new File(EXPORT_FILE_PATH);
+        try {
+            if (Desktop.isDesktopSupported()) {
+                Desktop userDesktop = Desktop.getDesktop();
+                logger.info("Showing user's folder for contacts.vcf");
+                userDesktop.open(file);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
