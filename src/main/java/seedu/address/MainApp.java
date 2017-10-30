@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import com.google.common.eventbus.Subscribe;
 
 import javafx.application.Application;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
@@ -44,7 +43,6 @@ public class MainApp extends Application {
     public static final Version VERSION = new Version(0, 6, 0, true);
 
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
-    private static HostServices hostServices;
 
     protected Ui ui;
     protected Logic logic;
@@ -73,13 +71,7 @@ public class MainApp extends Application {
 
         ui = new UiManager(logic, config, userPrefs);
 
-        hostServices = getHostServices();
-
         initEventsCenter();
-    }
-
-    public static HostServices getAppHostServices() {
-        return hostServices;
     }
 
     private String getApplicationParameter(String parameterName) {
