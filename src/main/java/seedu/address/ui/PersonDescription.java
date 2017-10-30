@@ -25,36 +25,40 @@ import seedu.address.model.person.ReadOnlyPerson;
 /**
  *
  */
-public class PersonDescription extends UiPart<Region> {
+public class PersonDescription extends UiPart<StackPane> {
 
     private static final String FXML = "PersonDescription.fxml";
-    private static final String BIRTHDAY_ICON = "/images/birthday_icon.png";
-    private static final String PHONE_ICON = "/images/phone_icon.png";
-    private static final String EMAIL_ICON = "/images/email_icon.png";
-    private static final String AVATAR = "/images/avatar.png";
+    private static final String DEFAULT_DP = "/images/defaultperson.png";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
     @FXML
-    private StackPane avatarPane;
-    @FXML
-    private ImageView avatar;
-    @FXML
     private Circle displayPic;
+
     @FXML
-    private TextFlow name;
+    private Label name;
+
     @FXML
-    private Label birthdayIcon;
+    private Label group;
+
+    @FXML
+    private Label mobile;
+
     @FXML
     private Label birthday;
-    @FXML
-    private Label phoneIcon;
-    @FXML
-    private Label phone;
-    @FXML
-    private Label emailIcon;
+
     @FXML
     private Label email;
+
+    @FXML
+    private Label address;
+
+    @FXML
+    private Label instagram;
+
+    @FXML
+    private Label twitter;
+
 
     public PersonDescription() {
         super(FXML);
@@ -67,11 +71,11 @@ public class PersonDescription extends UiPart<Region> {
      * @param person
      */
     private void loadPersonDescription(ReadOnlyPerson person) {
-        name.getChildren().clear();
-        name.getChildren().add(new Text(person.getName().fullName));
+        name.setText(person.getName().fullName);
+        mobile.setText(person.getPhone().value);
         birthday.setText(person.getBirthday().value);
-        phone.setText(person.getPhone().value);
         email.setText(person.getEmail().value);
+        address.setText(person.getAddress().value);
         initDisplayPic(person);
     }
 
@@ -95,15 +99,7 @@ public class PersonDescription extends UiPart<Region> {
      *
      */
     private void initIcons() {
-        //Image avatarPic = AppUtil.getImage(AVATAR);
-        Image phoneIconPic = AppUtil.getImage(PHONE_ICON);
-        Image birthdayIconPic = AppUtil.getImage(BIRTHDAY_ICON);
-        Image emailIconPic = AppUtil.getImage(EMAIL_ICON);
-        //avatar = new ImageView(avatarPic);
-        //avatarPane.getChildren().add(avatar);
-        phoneIcon.setGraphic(new ImageView(birthdayIconPic));
-        birthdayIcon.setGraphic(new ImageView(phoneIconPic));
-        emailIcon.setGraphic(new ImageView(emailIconPic));
+
     }
 
     @Subscribe
