@@ -24,7 +24,10 @@ public interface ReadOnlyPerson {
     Birthday getBirthday();
     ObjectProperty<DisplayPic> displayPicProperty();
     DisplayPic getDisplayPic();
-
+    ObjectProperty<UserName> twitterNameProperty();
+    UserName getTwitterName();
+    ObjectProperty<UserName> instagramNameProperty();
+    UserName getInstagramName();
     ObjectProperty<UniqueTagList> tagProperty();
     Set<Tag> getTags();
 
@@ -39,7 +42,9 @@ public interface ReadOnlyPerson {
                 && other.getEmail().equals(this.getEmail())
                 && other.getAddress().equals(this.getAddress()))
                 && other.getBirthday().equals(this.getBirthday())
-                && other.getDisplayPic().equals(this.getDisplayPic());
+                && other.getDisplayPic().equals(this.getDisplayPic())
+                && other.getTwitterName().equals(this.getTwitterName())
+                && other.getInstagramName().equals(this.getInstagramName());
     }
 
     /**
@@ -56,6 +61,10 @@ public interface ReadOnlyPerson {
                 .append(getAddress())
                 .append(" Birthday: ")
                 .append(getBirthday())
+                .append(" Twitter: ")
+                .append(getTwitterName())
+                .append(" Instagram: ")
+                .append(getTwitterName())
                 .append(" DisplayPic Path: ")
                 .append(getDisplayPic())
                 .append(" Tags: ");

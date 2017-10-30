@@ -9,13 +9,13 @@ import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.testfx.api.FxToolkit;
 
-import guitests.guihandles.BrowserPanelHandle;
 import guitests.guihandles.CommandBoxHandle;
 import guitests.guihandles.MainMenuHandle;
 import guitests.guihandles.MainWindowHandle;
 import guitests.guihandles.PersonListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.StatusBarFooterHandle;
+import guitests.guihandles.TagListPanelHandle;
 import javafx.stage.Stage;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
@@ -78,11 +78,11 @@ public abstract class AddressBookGuiTest {
     protected MainMenuHandle getMainMenu() {
         return mainWindowHandle.getMainMenu();
     }
-
+    /* Unused in current TestApp due to display resolution size.
     protected BrowserPanelHandle getBrowserPanel() {
         return mainWindowHandle.getBrowserPanel();
     }
-
+    */
     protected StatusBarFooterHandle getStatusBarFooter() {
         return mainWindowHandle.getStatusBarFooter();
     }
@@ -91,6 +91,9 @@ public abstract class AddressBookGuiTest {
         return mainWindowHandle.getResultDisplay();
     }
 
+    protected TagListPanelHandle getTagListPanel() {
+        return mainWindowHandle.getTagListPanel();
+    }
     /**
      * Runs {@code command} in the application's {@code CommandBox}.
      * @return true if the command was executed successfully.

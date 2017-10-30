@@ -16,6 +16,7 @@ import seedu.address.model.person.DisplayPic;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.UserName;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -88,6 +89,27 @@ public class ParserUtil {
     public static Optional<Birthday> parseBirthday(Optional<String> birthday) throws IllegalValueException {
         requireNonNull(birthday);
         return birthday.isPresent() ? Optional.of(new Birthday(birthday.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code Optional<String> twitterUserName} into an {@code Optional<UserName>} if {@code twitterUserName}
+     * is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<UserName> parseTwitterName(Optional<String> twitterUserName) throws IllegalValueException {
+        requireNonNull(twitterUserName);
+        return twitterUserName.isPresent() ? Optional.of(new UserName(twitterUserName.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code Optional<String> twitterUserName} into an {@code Optional<UserName>} if {@code twitterUserName}
+     * is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<UserName> parseInstagramName(Optional<String> instagramUserName)
+            throws IllegalValueException {
+        requireNonNull(instagramUserName);
+        return instagramUserName.isPresent() ? Optional.of(new UserName(instagramUserName.get())) : Optional.empty();
     }
 
     /**

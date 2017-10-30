@@ -3,6 +3,8 @@ package seedu.address.testutil;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.api.services.people.v1.model.Birthday;
+import com.google.api.services.people.v1.model.Date;
 import com.google.api.services.people.v1.model.EmailAddress;
 import com.google.api.services.people.v1.model.PhoneNumber;
 
@@ -16,7 +18,9 @@ public class GooglePersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "alice@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
-    public static final String DEFAULT_BIRTHDAY = "03/07/1990";
+    public static final String DEFAULT_BIRTHDAY_DAY = "3";
+    public static final String DEFAULT_BIRTHDAY_MONTH = "7";
+    public static final String DEFAULT_BIRTHDAY_YEAR = "1990";
     public static final String DEFAULT_TAGS = "Google";
 
     private com.google.api.services.people.v1.model.Person person;
@@ -34,7 +38,11 @@ public class GooglePersonBuilder {
         phone.add(new PhoneNumber().setCanonicalForm(DEFAULT_PHONE));
         emails.add(new EmailAddress().setValue(DEFAULT_EMAIL));
         addresses.add(new com.google.api.services.people.v1.model.Address().setFormattedValue(DEFAULT_ADDRESS));
-        birthday.add(new com.google.api.services.people.v1.model.Birthday().setText(DEFAULT_BIRTHDAY));
+        Birthday convertedBirthday = new Birthday();
+        convertedBirthday.setDate(new Date().setDay(Integer.parseInt(DEFAULT_BIRTHDAY_DAY))
+                .setMonth(Integer.parseInt(DEFAULT_BIRTHDAY_MONTH))
+                .setYear(Integer.parseInt(DEFAULT_BIRTHDAY_YEAR)));
+        birthday.add(convertedBirthday);
 
         this.person = new com.google.api.services.people.v1.model.Person().setNames(names).setAddresses(addresses)
                 .setEmailAddresses(emails).setPhoneNumbers(phone).setBirthdays(birthday);
