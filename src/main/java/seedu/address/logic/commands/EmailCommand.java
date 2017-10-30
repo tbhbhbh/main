@@ -45,6 +45,9 @@ public class EmailCommand extends Command {
             persons.append(", ");
             persons.append(personToEmail.getName().toString());
             addresses.append(" ");
+            if (personToEmail.getEmail().toString().isEmpty()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL + ": " + targetIndex.getOneBased());
+            }
             addresses.append(personToEmail.getEmail().toString());
         }
 

@@ -43,7 +43,7 @@ public class EmailCommandTest {
     }
 
     @Test
-    public void execute_validIndexUnfilteredList_success() throws Exception {
+    public void execute_validIndexUnfilteredList_success() throws CommandException {
         ReadOnlyPerson personToEmail = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         EmailCommand emailCommand = prepareCommand(INDEX_FIRST_PERSON);
 
@@ -55,7 +55,7 @@ public class EmailCommandTest {
     }
 
     @Test
-    public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
+    public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         EmailCommand emailCommand = prepareCommand(outOfBoundIndex);
         String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
@@ -65,7 +65,7 @@ public class EmailCommandTest {
     }
 
     @Test
-    public void execute_validIndexFilteredList_success() throws Exception {
+    public void execute_validIndexFilteredList_success() throws CommandException {
         showFirstPersonOnly(model);
 
         ReadOnlyPerson personToEmail = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
@@ -94,7 +94,7 @@ public class EmailCommandTest {
     }
 
     @Test
-    public void execute_multipleValidIndex_success() throws Exception {
+    public void execute_multipleValidIndex_success() throws CommandException {
         ReadOnlyPerson firstPersonToEmail = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         ReadOnlyPerson secondPersonToEmail = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
         EmailCommand emailCommand = prepareCommand(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON);
@@ -140,7 +140,7 @@ public class EmailCommandTest {
     }
 
     /**
-     * Returns a {@code EmailCommand} using one index parameter {@code index1}
+     * Returns a {@code EmailCommand} using one index parameter {@code index}
      */
     private EmailCommand prepareCommand(Index index) {
         indexArray = new Index[1];

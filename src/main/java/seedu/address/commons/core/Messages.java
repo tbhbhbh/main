@@ -11,5 +11,7 @@ public class Messages {
     public static final String MESSAGE_INVALID_TAG_NAME = "The tag name provided is invalid";
     public static final String MESSAGE_UNKNOWN_TAG_NAME = "The tag to edit does not exist";
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
+    public static final String MESSAGE_INVALID_PERSON_TO_EMAIL = "The person may have missing email address "
+            + "at specified index provided ";
 
 }
