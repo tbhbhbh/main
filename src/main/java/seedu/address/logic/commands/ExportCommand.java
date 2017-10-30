@@ -30,8 +30,8 @@ public class ExportCommand extends Command {
             + "Parameters: all or INDEX [INDEX]... (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1 2" + " or " + COMMAND_WORD + " all";
 
-    public static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Export Person: %1$s\n"
-            + " Please close the app before moving the vcf file to another location.";
+    public static final String MESSAGE_EXPORT_PERSON_SUCCESS = "Export Person: %1$s\n"
+            + "Please close the app before moving the vcf file to another location.";
 
     public static final String DEFAULT_FILE_DIR = "./data/";
     public static final String DEFAULT_FILE_NAME = "contacts.vcf";
@@ -98,7 +98,7 @@ public class ExportCommand extends Command {
         }
 
         EventsCenter.getInstance().post(new ExportRequestEvent());
-        return new CommandResult(String.format(MESSAGE_EMAIL_PERSON_SUCCESS, allPersons));
+        return new CommandResult(String.format(MESSAGE_EXPORT_PERSON_SUCCESS, allPersons));
     }
 
     @Override
