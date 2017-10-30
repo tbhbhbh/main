@@ -70,6 +70,14 @@ public class UniqueTagList implements Iterable<Tag> {
     }
 
     /**
+     * Deletes the Tags in this list with those in the argument tag list.
+     */
+    public void deleteFrom(UniqueTagList from) {
+        from.internalList.stream()
+                .forEach(internalList::remove);
+        assert CollectionUtil.elementsAreUnique(internalList);
+    }
+    /**
      * Returns true if the list contains an equivalent Tag as the given argument.
      */
     public boolean contains(Tag toCheck) {

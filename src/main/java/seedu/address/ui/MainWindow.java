@@ -55,6 +55,7 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
+    private TagListPanel tagListPanel;
     private PersonDescription personDescriptionPanel;
     private Config config;
     private UserPrefs prefs;
@@ -79,6 +80,9 @@ public class MainWindow extends UiPart<Region> {
 
     @FXML
     private StackPane statusbarPlaceholder;
+
+    @FXML
+    private StackPane tagListPanelPlaceholder;
 
     private ProgressWindow pWindow;
 
@@ -163,6 +167,9 @@ public class MainWindow extends UiPart<Region> {
 
         CommandBox commandBox = new CommandBox(logic, primaryStage);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+
+        tagListPanel = new TagListPanel(logic.getAllTags());
+        tagListPanelPlaceholder.getChildren().add(tagListPanel.getRoot());
     }
 
     void hide() {
