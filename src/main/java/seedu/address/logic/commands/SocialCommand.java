@@ -3,8 +3,10 @@ package seedu.address.logic.commands;
 import java.util.List;
 
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.SocialRequestEvent;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.UserName;
@@ -15,7 +17,8 @@ import seedu.address.model.person.UserName;
 
 public class SocialCommand extends Command {
     public static final String COMMAND_WORD = "social";
-    public static final String MESSAGE_SOCIAL_FAILED = "Chosen social media not supported";
+    public static final String MESSAGE_SOCIAL_EMPTY = " does not have chosen social media: ";
+    public static final String MESSAGE_SOCIAL_UNSUPPORTED = "Chosen social media not supported: ";
     public static final String MESSAGE_IF_MISSING = "(Check the person's username fields if his/her page does not "
             + "exist)";
     public static final String MESSAGE_INSTAGRAM = "'s Instagram profile\n";
@@ -26,8 +29,8 @@ public class SocialCommand extends Command {
             + "CHOSEN_SOCIAL_MEDIA: ig or tw\n"
             + "Example: " + COMMAND_WORD + " 1 ig";
 
-    private static final String INSTAGRAM_URL_PREFIX = "https://instagram.com/";
-    private static final String TWITTER_URL_PREFIX = "https://twitter.com/";
+    public static final String INSTAGRAM_URL_PREFIX = "https://instagram.com/";
+    public static final String TWITTER_URL_PREFIX = "https://twitter.com/";
 
     private final Index index;
     private final String socialMedia;
@@ -43,8 +46,14 @@ public class SocialCommand extends Command {
     }
 
     @Override
-    public CommandResult execute() {
+    public CommandResult execute() throws CommandException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+
+        if (index.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+                    + index.getOneBased());
+        }
+
         realName = lastShownList.get(index.getZeroBased()).getName();
 
         if (this.isInstagramName()) {
@@ -56,9 +65,13 @@ public class SocialCommand extends Command {
             url = TWITTER_URL_PREFIX;
             messageSocialSuccess = messageSocialSuccess + MESSAGE_TWITTER + MESSAGE_IF_MISSING;
         } else {
-            return new CommandResult (String.format(MESSAGE_SOCIAL_FAILED, socialMedia));
+            throw new CommandException(MESSAGE_SOCIAL_UNSUPPORTED
+                    + socialMedia);
         }
 
+        if (url.equals(TWITTER_URL_PREFIX + userName) || url.equals(INSTAGRAM_URL_PREFIX + userName)) {
+            throw new CommandException(realName + MESSAGE_SOCIAL_EMPTY + convertToActualName(socialMedia));
+        }
         EventsCenter.getInstance().post(new SocialRequestEvent(userName, url));
         return new CommandResult(String.format(messageSocialSuccess, realName));
     }
@@ -67,7 +80,12 @@ public class SocialCommand extends Command {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof SocialCommand // instanceof handles nulls
+                && this.socialMedia.equals(((SocialCommand) other).socialMedia)
                 && this.index.equals(((SocialCommand) other).index)); // state check
+    }
+
+    public String getMessageSocialSuccess() {
+        return this.messageSocialSuccess;
     }
 
     public boolean isInstagramName() {
@@ -77,4 +95,9 @@ public class SocialCommand extends Command {
     public boolean isTwitterName() {
         return this.socialMedia.equals("tw");
     }
+
+    public String convertToActualName(String socialMedia) {
+        return (socialMedia.equals("tw") ? "Twitter" : "Instagram");
+    }
+
 }
