@@ -19,6 +19,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.people.v1.PeopleService;
 import com.google.api.services.people.v1.model.Address;
 import com.google.api.services.people.v1.model.Birthday;
+import com.google.api.services.people.v1.model.Date;
 import com.google.api.services.people.v1.model.EmailAddress;
 import com.google.api.services.people.v1.model.ListConnectionsResponse;
 import com.google.api.services.people.v1.model.Name;
@@ -30,6 +31,7 @@ import seedu.address.logic.commands.ImportCommand;
 import seedu.address.model.person.DisplayPic;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.UserName;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.ui.CommandBox;
@@ -67,7 +69,7 @@ public class GoogleUtil {
     public static Credential authorize(HttpTransport httpTransport) throws IOException {
         // load client secrets
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-                new InputStreamReader(ImportCommand.class.getResourceAsStream("/client_secrets.json")));
+            new InputStreamReader(ImportCommand.class.getResourceAsStream("/client_secrets.json")));
 
         // set up authorization code flow
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
@@ -89,7 +91,7 @@ public class GoogleUtil {
         try {
             response = peopleService.people().connections().list("people/me")
                     .setPageSize(ImportCommand.ADDRESSBOOK_SIZE)
-                    .setPersonFields("names,emailAddresses,phoneNumbers")
+                    .setPersonFields("names,emailAddresses,phoneNumbers,addresses,birthdays")
                     .execute();
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,7 +139,18 @@ public class GoogleUtil {
             email = "";
         }
         if (birthdays != null && birthdays.size() > 0) {
-            birthday = birthdays.get(0).getText();
+            Date googleBirthday = birthdays.get(0).getDate();
+            if (googleBirthday == null) {
+                birthday = "";
+            } else {
+                StringBuilder sb = new StringBuilder();
+                sb.append(String.format("%02d", googleBirthday.getDay()));
+                sb.append("/");
+                sb.append(String.format("%02d", googleBirthday.getMonth()));
+                sb.append("/");
+                sb.append(googleBirthday.getYear());
+                birthday = sb.toString();
+            }
         } else {
             birthday = "";
         }
@@ -152,7 +165,8 @@ public class GoogleUtil {
         seedu.address.model.person.Person toAdd;
         toAdd = new seedu.address.model.person.Person(nameAdd,
                 new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
-                new seedu.address.model.person.Birthday(birthday), new DisplayPic(CommandBox.DEFAULT_DISPLAY_PIC),
+                new seedu.address.model.person.Birthday(birthday), new UserName(""), new UserName(""),
+                new DisplayPic(CommandBox.DEFAULT_DISPLAY_PIC),
                 defaultTags);
         return toAdd;
     }

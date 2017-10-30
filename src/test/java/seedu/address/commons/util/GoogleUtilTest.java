@@ -15,7 +15,8 @@ public class GoogleUtilTest {
     @Test
     public void convertFromGooglePerson_success() throws IllegalValueException {
         Person typicalPerson = new GooglePersonBuilder().build();
-        seedu.address.model.person.Person typicalAddressBookPerson = new PersonBuilder().withTags("Google").build();
+        seedu.address.model.person.Person typicalAddressBookPerson = new PersonBuilder().withTags("Google")
+                .withTwitter("").withInstagram("").build();
         assertEquals(typicalAddressBookPerson, GoogleUtil.convertPerson(typicalPerson));
 
     }

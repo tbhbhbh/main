@@ -33,6 +33,8 @@ public class EditPersonDescriptorBuilder {
         descriptor.setEmail(person.getEmail());
         descriptor.setAddress(person.getAddress());
         descriptor.setBirthday(person.getBirthday());
+        descriptor.setTwitterName(person.getTwitterName());
+        descriptor.setInstagramName(person.getInstagramName());
         descriptor.setDisplayPic(person.getDisplayPic());
         descriptor.setTags(person.getTags());
     }
