@@ -46,7 +46,7 @@
                   <MaterialDesignIconView glyphName="GMAIL" size="20" />
                </graphic>
             </Label>
-            <Label fx:id="address" graphicTextGap="15.0" prefHeight="25.0" prefWidth="237.0" text="Address" textAlignment="CENTER">
+            <Label fx:id="address" graphicTextGap="15.0" prefHeight="20.0" prefWidth="265.0" text="Address" textAlignment="CENTER" wrapText="true">
                <graphic>
                   <MaterialDesignIconView glyphName="MAP" size="20" />
                </graphic>

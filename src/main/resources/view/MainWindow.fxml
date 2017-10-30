@@ -18,7 +18,6 @@
       <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
     </Menu>
   </MenuBar>
-    
   <StackPane fx:id="commandBoxPlaceholder" prefHeight="30.0" prefWidth="1022.0" style="-fx-background-color: #C1D3DD;" VBox.vgrow="NEVER">
       <padding>
          <Insets bottom="5.0" left="10.0" right="10.0" top="20.0" />
@@ -34,7 +33,7 @@
       <children>
          <VBox minWidth="150.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="NEVER">
             <children>
-               <StackPane VBox.vgrow="ALWAYS" />
+               <StackPane fx:id="tagListPanelPlaceholder" VBox.vgrow="ALWAYS" />
             </children>
          </VBox>
        <VBox fx:id="personList" minWidth="270.0" prefWidth="270.0" HBox.hgrow="NEVER">
@@ -52,6 +51,9 @@
             </HBox.margin>
          </StackPane>
       </children>
+      <padding>
+         <Insets left="10.0" right="10.0" />
+      </padding>
    </HBox>
 
   <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />

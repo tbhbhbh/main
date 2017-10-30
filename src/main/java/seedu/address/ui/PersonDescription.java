@@ -76,6 +76,8 @@ public class PersonDescription extends UiPart<StackPane> {
         birthday.setText(person.getBirthday().value);
         email.setText(person.getEmail().value);
         address.setText(person.getAddress().value);
+        instagram.setText(person.getInstagramName().value);
+        twitter.setText(person.getTwitterName().value);
         initDisplayPic(person);
     }
 
