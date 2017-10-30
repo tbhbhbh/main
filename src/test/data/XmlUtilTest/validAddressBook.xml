@@ -6,6 +6,8 @@
         <email isPrivate="false">hans@example.com</email>
         <address isPrivate="false">4th street</address>
         <birthday isPrivate="false">20/08/1991</birthday>
+        <twitterName isPrivate="false">muster_91</twitterName>
+        <instagramName isPrivate="false"></instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -14,6 +16,8 @@
         <email isPrivate="false">ruth@example.com</email>
         <address isPrivate="false">81th street</address>
         <birthday isPrivate="false">15/04/1899</birthday>
+        <twitterName isPrivate="false">mueller_ruth</twitterName>
+        <instagramName isPrivate="false">ruth_mueller</instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -22,6 +26,8 @@
         <email isPrivate="false">heinz@example.com</email>
         <address isPrivate="false">wall street</address>
         <birthday isPrivate="false">22/12/1990</birthday>
+        <twitterName isPrivate="false">heinz</twitterName>
+        <instagramName isPrivate="false">heinz_kurz</instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -30,6 +36,8 @@
         <email isPrivate="false">cornelia@example.com</email>
         <address isPrivate="false">10th street</address>
         <birthday isPrivate="false">03/11/1997</birthday>
+        <twitterName isPrivate="false"></twitterName>
+        <instagramName isPrivate="false"></instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -38,6 +46,8 @@
         <email isPrivate="false">werner@example.com</email>
         <address isPrivate="false">michegan ave</address>
         <birthday isPrivate="false">19/05/1995</birthday>
+        <twitterName isPrivate="false"></twitterName>
+        <instagramName isPrivate="false"></instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -46,6 +56,8 @@
         <email isPrivate="false">lydia@example.com</email>
         <address isPrivate="false">little tokyo</address>
         <birthday isPrivate="false">11/02/1911</birthday>
+        <twitterName isPrivate="false"></twitterName>
+        <instagramName isPrivate="false"></instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -54,6 +66,8 @@
         <email isPrivate="false">anna@example.com</email>
         <address isPrivate="false">4th street</address>
         <birthday isPrivate="false">19/04/1959</birthday>
+        <twitterName isPrivate="false"></twitterName>
+        <instagramName isPrivate="false"></instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -62,6 +76,8 @@
         <email isPrivate="false">stefan@example.com</email>
         <address isPrivate="false">little india</address>
         <birthday isPrivate="false">16/06/1985</birthday>
+        <twitterName isPrivate="false"></twitterName>
+        <instagramName isPrivate="false"></instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
     <persons>
@@ -70,6 +86,8 @@
         <email isPrivate="false">hans@example.com</email>
         <address isPrivate="false">chicago ave</address>
         <birthday isPrivate="false">14/08/1980</birthday>
+        <twitterName isPrivate="false"></twitterName>
+        <instagramName isPrivate="false"></instagramName>
         <displayPicPath>/Users/JunQuan/Desktop/CS2103/AB4-main/data/images/defaultperson.png</displayPicPath>
     </persons>
 </addressbook>

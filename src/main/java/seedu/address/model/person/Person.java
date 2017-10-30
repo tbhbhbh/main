@@ -24,6 +24,8 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     private ObjectProperty<Email> email;
     private ObjectProperty<Address> address;
     private ObjectProperty<Birthday> birthday;
+    private ObjectProperty<UserName> twitterName;
+    private ObjectProperty<UserName> instagramName;
     private ObjectProperty<DisplayPic> displayPic;
 
     private ObjectProperty<UniqueTagList> tags;
@@ -31,8 +33,8 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Birthday birthday,
-                  DisplayPic displayPic, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Birthday birthday, UserName twitterName,
+                  UserName instagramName, DisplayPic displayPic, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, birthday, tags);
 
         this.name = new SimpleObjectProperty<>(name);
@@ -40,6 +42,8 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
         this.birthday = new SimpleObjectProperty<>(birthday);
+        this.twitterName = new SimpleObjectProperty<>(twitterName);
+        this.instagramName = new SimpleObjectProperty<>(instagramName);
         this.displayPic = new SimpleObjectProperty<>(displayPic);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
@@ -50,7 +54,7 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getBirthday(),
-                source.getDisplayPic(), source.getTags());
+                source.getTwitterName(), source.getInstagramName(), source.getDisplayPic(), source.getTags());
     }
 
     public void setName(Name name) {
@@ -135,6 +139,34 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     @Override
     public DisplayPic getDisplayPic() {
         return displayPic.get();
+    }
+
+    @Override
+    public ObjectProperty<UserName> twitterNameProperty() {
+        return twitterName;
+    }
+
+    @Override
+    public UserName getTwitterName() {
+        return twitterName.get();
+    }
+
+    public void setTwitterName(UserName twitterName) {
+        this.twitterName.set(requireNonNull(twitterName));
+    }
+
+    @Override
+    public ObjectProperty<UserName> instagramNameProperty() {
+        return instagramName;
+    }
+
+    @Override
+    public UserName getInstagramName() {
+        return instagramName.get();
+    }
+
+    public void setInstagramName(UserName instagramName) {
+        this.instagramName.set(requireNonNull(instagramName));
     }
 
     /**
