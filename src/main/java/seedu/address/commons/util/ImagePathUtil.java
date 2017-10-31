@@ -17,7 +17,6 @@ public class ImagePathUtil {
     private static final int PREFIX_LENGTH = PREFIX_DP.getPrefix().length();
 
     public static String setPath(String arguments, CommandBox commandBox) throws ParseException {
-        System.out.println("Before append: " + arguments);
         try {
             int prefixIndex = findPrefixPosition(arguments, PREFIX_DP.getPrefix(), 0);
             StringBuilder sb = new StringBuilder(arguments);

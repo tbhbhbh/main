@@ -17,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -39,7 +40,7 @@ import seedu.address.model.UserPrefs;
  */
 public class MainWindow extends UiPart<Region> {
 
-    private static final String ICON = "/images/address_book_32.png";
+    private static final String ICON = "/images/Icon.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
@@ -63,7 +64,7 @@ public class MainWindow extends UiPart<Region> {
     private StackPane browserPlaceholder;
 
     @FXML
-    private StackPane commandBoxPlaceholder;
+    private Pane commandBoxPlaceholder;
 
     @FXML
     private MenuItem helpMenuItem;
@@ -75,7 +76,7 @@ public class MainWindow extends UiPart<Region> {
     private StackPane personDescriptionPlaceHolder;
 
     @FXML
-    private StackPane resultDisplayPlaceholder;
+    private Pane resultDisplayPlaceholder;
 
     @FXML
     private StackPane statusbarPlaceholder;

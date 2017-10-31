@@ -40,7 +40,7 @@ public class AddCommand extends UndoableCommand {
             + PREFIX_BIRTHDAY + "25/06/1997 "
             + PREFIX_TWITTER + "john.doe "
             + PREFIX_INSTAGRAM + "john.doe "
-            + PREFIX_DP + "YES "
+            + PREFIX_DP + "Y "
             + PREFIX_TAG + "friends "
             + PREFIX_TAG + "owesMoney";
 
