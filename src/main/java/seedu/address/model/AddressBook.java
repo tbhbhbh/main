@@ -143,7 +143,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     private void syncMasterTagListWith(UniquePersonList persons) {
         persons.forEach(this::syncMasterTagListWith);
     }
-
+    //@@author conantteo
     /**
      * Ensures that all tags of a {@code person} is deleted away from the master list.
      */
@@ -151,7 +151,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         final UniqueTagList personTags = new UniqueTagList(person.getTags());
         tags.deleteFrom(personTags);
     }
-
+    //@@author
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * @throws PersonNotFoundException if the {@code key} is not in this {@code AddressBook}.
