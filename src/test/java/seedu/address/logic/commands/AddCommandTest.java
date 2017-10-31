@@ -104,6 +104,7 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
+        //@@author danielbrzn
         @Override
         public void addAlias(String alias, String command) {
             fail("This method should not be called.");
@@ -115,28 +116,33 @@ public class AddCommandTest {
             return null;
         }
 
+        //@@author
         @Override
         public void resetData(ReadOnlyAddressBook newData) {
             fail("This method should not be called.");
         }
 
+        //@@author danielbrzn
         @Override
         public void resetAlias(HashMap<String, String> prevAliasMap) {
             fail("This method should not be called.");
         }
 
+        //@@author
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             fail("This method should not be called.");
             return null;
         }
 
+        //@@author danielbrzn
         @Override
         public UserPrefs getUserPrefs() {
             fail("This method should not be called.");
             return null;
         }
 
+        //@@author
         @Override
         public void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
             fail("This method should not be called.");

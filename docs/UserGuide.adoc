@@ -273,6 +273,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 `redo` (reapplies the `clear` command) +
 // end::undoredo[]
 
+// tag::alias[]
 === Adding an alias for a command : `alias`
 
 Allows you to add an alias for any command used in the address book.
@@ -293,7 +294,9 @@ Assigns the alias 'a' to the add command. 'a' can now be used in place of add.
 `alias d exit` +
 'd' can now be used in place of exit. Initially, alias 'd' was assigned to delete, but since the alias was subsequently assigned to exit,
 it is no longer assigned to delete.
+// end::alias[]
 
+//tag::import[]
 === Importing contacts : `import`
 
 Allows you to import contacts from either Google Contacts.
@@ -313,6 +316,7 @@ HitMeUp will wait for *20 seconds* for you to enter your credentials.
 will pop up to indicate progress of import.
 3. After import has completed, the application will show the number of contacts successfully imported and the number of failures.
 =======
+//end::import[]
 
 === Exporting contacts : `export`
 

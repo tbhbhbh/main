@@ -72,11 +72,13 @@ public class StorageManagerTest {
         assertNotNull(storageManager.getAddressBookFilePath());
     }
 
+    //@@author danielbrzn
     @Test
     public void getUserPrefsFilePath() {
         assertNotNull(storageManager.getUserPrefsFilePath());
     }
 
+    //@@author
     @Test
     public void handleAddressBookChangedEvent_exceptionThrown_eventRaised() {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called

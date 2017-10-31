@@ -91,6 +91,7 @@ public class ParserUtil {
         return birthday.isPresent() ? Optional.of(new Birthday(birthday.get())) : Optional.empty();
     }
 
+    //@@author danielbrzn
     /**
      * Parses a {@code Optional<String> twitterUserName} into an {@code Optional<UserName>} if {@code twitterUserName}
      * is present.
@@ -112,6 +113,7 @@ public class ParserUtil {
         return instagramUserName.isPresent() ? Optional.of(new UserName(instagramUserName.get())) : Optional.empty();
     }
 
+    //@@author
     /**
      * Parses a {@code Optional<String> displayPic} into an {@code Optional<DisplayPic>}
      * if {@code displayPic} is present.

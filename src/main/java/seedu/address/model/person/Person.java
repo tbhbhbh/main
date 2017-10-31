@@ -141,6 +141,7 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
         return displayPic.get();
     }
 
+    //@@author danielbrzn
     @Override
     public ObjectProperty<UserName> twitterNameProperty() {
         return twitterName;
@@ -169,6 +170,7 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
         this.instagramName.set(requireNonNull(instagramName));
     }
 
+    //@@author
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.

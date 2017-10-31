@@ -37,6 +37,7 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage {
      */
     void handleAddressBookChangedEvent(AddressBookChangedEvent abce);
 
+    //@@author danielbrzn
     /**
      * Saves the current version of the User Preferences to the hard disk.
      *   Creates the data file if it is missing.

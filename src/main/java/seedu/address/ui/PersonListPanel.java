@@ -67,6 +67,7 @@ public class PersonListPanel extends UiPart<Region> {
         scrollTo(event.targetIndex);
     }
 
+    //@@author danielbrzn
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
      */
