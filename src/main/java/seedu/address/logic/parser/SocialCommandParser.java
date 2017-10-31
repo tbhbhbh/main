@@ -24,6 +24,11 @@ public class SocialCommandParser implements Parser<SocialCommand> {
         Index index;
         String socialMedia;
 
+        if (argsArr.length == 1 || argsArr.length == 0) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SocialCommand.MESSAGE_USAGE));
+        }
+
         try {
             index = ParserUtil.parseIndex(argsArr[0]);
             socialMedia = argsArr[1];

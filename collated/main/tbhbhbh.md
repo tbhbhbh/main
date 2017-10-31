@@ -279,7 +279,6 @@ public class TagEditCommand extends UndoableCommand {
         requireNonNull(oldTagName);
         requireNonNull(newTagName);
 
-
         this.oldTagName = oldTagName.trim();
         this.newTagName = newTagName.trim();
     }
@@ -308,7 +307,13 @@ public class TagEditCommand extends UndoableCommand {
             assert false : "The target person cannot be missing";
         }
 
-        return new CommandResult(String.format(MESSAGE_EDIT_TAG_SUCCESS, tagToEdit, newTag));
+        return new CommandResult(
+                String.format(
+                        MESSAGE_EDIT_TAG_SUCCESS,
+                        tagToEdit.toString(),
+                        newTag.toString()
+                )
+        );
     }
 
     @Override
@@ -369,7 +374,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments and creates a new SocialCommand object
  */
-public class SocialCommandParser {
+public class SocialCommandParser implements Parser<SocialCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the SocialCommand
      * and returns an SocialCommand object for execution.
@@ -381,9 +386,15 @@ public class SocialCommandParser {
         Index index;
         String socialMedia;
 
+        if (argsArr.length == 1 || argsArr.length == 0) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SocialCommand.MESSAGE_USAGE));
+        }
+
         try {
             index = ParserUtil.parseIndex(argsArr[0]);
             socialMedia = argsArr[1];
+
         } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SocialCommand.MESSAGE_USAGE));

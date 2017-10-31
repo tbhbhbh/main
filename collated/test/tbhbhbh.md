@@ -89,6 +89,9 @@ public class SearchCommandTest {
         assertCommandSuccess(command, expectedMessage, Collections.singletonList(BENSON));
     }
 
+    /**
+     * Parses {@code userInput} into a {@code SearchCommand}.
+     */
     public SearchCommand prepareCommand(String userInput) {
         SearchCommand command =
                 new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+"))));
@@ -96,7 +99,14 @@ public class SearchCommandTest {
         return command;
     }
 
-    private void assertCommandSuccess(SearchCommand command, String expectedMessage, List<ReadOnlyPerson> expectedList) {
+    /**
+     * Asserts that {@code command} is successfully executed, and<br>
+     *     - the command feedback is equal to {@code expectedMessage}<br>
+     *     - the {@code FilteredList<ReadOnlyPerson>} is equal to {@code expectedList}<br>
+     *     - the {@code AddressBook} in model remains the same after executing the {@code command}
+     */
+    private void assertCommandSuccess(SearchCommand command,
+                                      String expectedMessage, List<ReadOnlyPerson> expectedList) {
         AddressBook expectedAddressBook = new AddressBook(model.getAddressBook());
         CommandResult commandResult = command.execute();
 
@@ -317,7 +327,8 @@ public class TagEditCommandTest {
 
     @Test
     public void execute_editValidTagUnfilteredList_success() throws Exception {
-        Set<Tag> tagSet = new HashSet<>(model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased()).getTags());
+        Set<Tag> tagSet = new HashSet<>(model.getFilteredPersonList()
+                .get(INDEX_SECOND_PERSON.getZeroBased()).getTags());
         String oldTagName = tagSet.toArray()[0].toString().substring(1, 10);
         Tag oldTag = new Tag(oldTagName);
         String newTagName = DUMMY_TAG;
@@ -335,7 +346,8 @@ public class TagEditCommandTest {
 
     @Test
     public void execute_editInvalidTagUnfilteredList_throwsCommandException() throws Exception {
-        Set<Tag> tagSet = new HashSet<>(model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased()).getTags());
+        Set<Tag> tagSet = new HashSet<>(model.getFilteredPersonList()
+                .get(INDEX_SECOND_PERSON.getZeroBased()).getTags());
         String oldTagName = DUMMY_TAG;
         Tag oldTag = new Tag(oldTagName);
         String newTagName = DUMMY_TAG_TWO;
@@ -402,24 +414,25 @@ import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 public class SearchCommandParserTest {
 
-        private SearchCommandParser parser = new SearchCommandParser();
+    private SearchCommandParser parser = new SearchCommandParser();
 
-        @Test
-        public void parse_emptyArg_throwsParseException() {
-            assertParseFailure(parser, "     ", String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
-        }
-
-        @Test
-        public void parse_validArgs_returnsSearchCommand() {
-            // no leading and trailing whitespaces
-            SearchCommand expectedSearchCommand =
-                    new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "friends")));
-            assertParseSuccess(parser, "Alice friends", expectedSearchCommand);
-
-            // multiple whitespaces between keywords
-            assertParseSuccess(parser, " \n Alice \n \t friends  \t", expectedSearchCommand);
-        }
+    @Test
+    public void parse_emptyArg_throwsParseException() {
+        assertParseFailure(parser, "     ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
     }
+
+    @Test
+    public void parse_validArgs_returnsSearchCommand() {
+        // no leading and trailing whitespaces
+        SearchCommand expectedSearchCommand =
+                new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "friends")));
+        assertParseSuccess(parser, "Alice friends", expectedSearchCommand);
+
+        // multiple whitespaces between keywords
+        assertParseSuccess(parser, " \n Alice \n \t friends  \t", expectedSearchCommand);
+    }
+}
 ```
 ###### \java\seedu\address\logic\parser\SocialCommandParserTest.java
 ``` java
@@ -447,7 +460,8 @@ public class SocialCommandParserTest {
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "", String.format((MESSAGE_INVALID_COMMAND_FORMAT + SocialCommand.MESSAGE_USAGE), ""));
+        assertParseFailure(parser, "",
+                String.format((MESSAGE_INVALID_COMMAND_FORMAT + SocialCommand.MESSAGE_USAGE), ""));
     }
 
     /**
