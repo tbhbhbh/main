@@ -661,6 +661,11 @@ names and the tag `friends` under their tags. `SearchCommandParser` will parse t
 list of names and tags and return all persons with the matching keyword `Alex` in their names and tag `friends`.
 Finally, `execute()` will run `updateFilteredPersonList` to show the list of persons returned.
 
+=== Social
+
+This feature is a way for users to quickly access their contacts' social media profiles via the built in browser,
+provided that they have their usernames stored. Currently, HitMeUp supports Twitter and Instagram.
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
