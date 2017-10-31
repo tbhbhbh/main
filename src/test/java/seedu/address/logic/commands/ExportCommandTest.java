@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertEquals;
@@ -58,7 +59,7 @@ public class ExportCommandTest {
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         ExportCommand exportCommand = prepareCommand(outOfBoundIndex);
-        String expectedMessage = String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+        String expectedMessage = String.format(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
                 + outOfBoundIndex.getOneBased());
 
         assertCommandFailure(exportCommand, model, expectedMessage);
@@ -87,7 +88,7 @@ public class ExportCommandTest {
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
         ExportCommand exportCommand = prepareCommand(outOfBoundIndex);
-        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
                 + outOfBoundIndex.getOneBased();
 
         assertCommandFailure(exportCommand, model, expectedMessage);
@@ -111,7 +112,7 @@ public class ExportCommandTest {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         ExportCommand exportCommand = prepareCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
 
-        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
                 + outOfBoundIndex.getOneBased();
 
         assertCommandFailure(exportCommand, model, expectedMessage);

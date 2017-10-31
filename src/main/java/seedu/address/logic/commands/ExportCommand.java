@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.logic.commands;
 
 import java.io.File;
@@ -55,7 +56,7 @@ public class ExportCommand extends Command {
         if (targetIndices.length > 0) {
             for (Index targetIndex : targetIndices) {
                 if (targetIndex.getZeroBased() >= lastShownList.size()) {
-                    throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+                    throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
                             + targetIndex.getOneBased());
                 }
                 ReadOnlyPerson personToExport = lastShownList.get(targetIndex.getZeroBased());
