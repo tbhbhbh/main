@@ -1,3 +1,4 @@
+//@@author tbhbhbh
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -33,7 +34,6 @@ public class TagEditCommand extends UndoableCommand {
         requireNonNull(oldTagName);
         requireNonNull(newTagName);
 
-
         this.oldTagName = oldTagName.trim();
         this.newTagName = newTagName.trim();
     }
@@ -62,7 +62,13 @@ public class TagEditCommand extends UndoableCommand {
             assert false : "The target person cannot be missing";
         }
 
-        return new CommandResult(String.format(MESSAGE_EDIT_TAG_SUCCESS, tagToEdit, newTag));
+        return new CommandResult(
+                String.format(
+                        MESSAGE_EDIT_TAG_SUCCESS,
+                        tagToEdit.toString(),
+                        newTag.toString()
+                )
+        );
     }
 
     @Override

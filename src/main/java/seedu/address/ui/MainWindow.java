@@ -350,7 +350,7 @@ public class MainWindow extends UiPart<Region> {
 
     }
 
-    //@@author connatteo
+    //@@author conantteo
     @Subscribe
     private void handleExportRequestEvent(ExportRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));

@@ -148,6 +148,7 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
+        //@@author tbhbhbh
         @Override
         public void deleteTag(Tag tag) {
             fail("This method should not be called.");
@@ -157,6 +158,7 @@ public class AddCommandTest {
         public void editTag(Tag oldTag, Tag newTag) {
             fail("This method should not be called.");
         }
+        //@@author
 
         @Override
         public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)

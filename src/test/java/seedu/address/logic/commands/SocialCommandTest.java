@@ -1,3 +1,4 @@
+//@@author tbhbhbh
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertEquals;
@@ -87,9 +88,6 @@ public class SocialCommandTest {
 
     @Test
     public void equals() {
-        ReadOnlyPerson firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        ReadOnlyPerson secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_PERSON.getZeroBased());
-
         SocialCommand socialFirstInstagramCommand = prepareCommand(INDEX_FIRST_PERSON, "ig");
         SocialCommand socialSecondInstagramCommand = prepareCommand(INDEX_SECOND_PERSON, "ig");
         SocialCommand socialFirstTwitterCommand = prepareCommand(INDEX_FIRST_PERSON, "tw");

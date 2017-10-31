@@ -1,3 +1,4 @@
+//@@author tbhbhbh
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -11,7 +12,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input arguments and creates a new SocialCommand object
  */
-public class SocialCommandParser {
+public class SocialCommandParser implements Parser<SocialCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the SocialCommand
      * and returns an SocialCommand object for execution.
@@ -26,6 +27,7 @@ public class SocialCommandParser {
         try {
             index = ParserUtil.parseIndex(argsArr[0]);
             socialMedia = argsArr[1];
+
         } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SocialCommand.MESSAGE_USAGE));
