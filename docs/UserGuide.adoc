@@ -45,7 +45,16 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 ====
 *Since v1.4*
 
-* Simply add a person with their name and number!
+* Add your contacts' Instagram/Twitter accounts
+* View your groups at a glance with new groups tab
+* New Material Design inspired UI, and an improved PersonCard
+* Directly access your contacts' Instagram/Twitter accounts with the new *social* command
+====
+
+====
+*Key Features*
+
+* Add a person with just their name and number
 * Export individual contacts to easily share with others
 * Search by groups and names
 * A more compact view for the list of contacts, showing only the name/display picture/phone number
@@ -54,7 +63,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Import your contacts from Google Contacts
 * Automatic list sorting
 * Add pictures to every contact
-* Add your contacts' Instagram and Twitter accounts
+*
 
 ====
 
@@ -62,12 +71,11 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 *Coming in v2.0*
 
 * Search by initials
-* View groups at a glance of the application
-* Easy access to social media profiles of each contact
 * Multiple themes to suit your needs
 * View your contacts' addresses quickly in Google Maps
 * Secure your application with a PIN
-* Import your contacts from Apple's iCloud
+* Import your contacts from Apple iCloud
+
 ====
 
 ====

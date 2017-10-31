@@ -7,19 +7,25 @@ https://ci.appveyor.com/project/danielbrzn/main[image:https://ci.appveyor.com/ap
 https://coveralls.io/github/CS2103AUG2017-W14-B3/main?branch=master[image:https://coveralls.io/repos/github/CS2103AUG2017-W14-B3/main/badge.svg?branch=master[Coverage Status]]
 
 ifdef::env-github[]
-image::docs/images/AddressBookUi.png[width="600"]
-endif::[]
-
-ifndef::env-github[]
-image::images/AddressBookUi.png[width="600"]
+image::docs/images/Ui.png[width="600"]
 endif::[]
 
 == Features
 
 ====
-*Since v1.3*
+*Since v1.4*
 
-* Simply add a person with their name and number!
+* Add your contacts' Instagram/Twitter accounts
+* View your groups at a glance with new groups tab
+* New Material Design inspired UI, and an improved PersonCard
+* Directly access your contacts' Instagram/Twitter accounts with the new *social* command
+====
+
+
+====
+*Key Features*
+
+* Add a person with just their name and number
 * Export individual contacts to easily share with others
 * Search by groups and names
 * A more compact view for the list of contacts, showing only the name/display picture/phone number
@@ -28,7 +34,7 @@ endif::[]
 * Import your contacts from Google Contacts
 * Automatic list sorting
 * Add pictures to every contact
-* Add your contacts' Instagram and Twitter accounts
+*
 
 ====
 
@@ -36,8 +42,6 @@ endif::[]
 *Coming in v2.0*
 
 * Search by initials
-* View groups at a glance of the application
-* Easy access to social media profiles of each contact
 * Multiple themes to suit your needs
 * View your contacts' addresses quickly in Google Maps
 * Secure your application with a PIN
