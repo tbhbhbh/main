@@ -216,6 +216,7 @@ public class EditCommand extends UndoableCommand {
             return Optional.ofNullable(birthday);
         }
 
+        //@@author danielbrzn
         public void setTwitterName(UserName twitterName) {
             this.twitterName = twitterName;
         }
@@ -232,6 +233,7 @@ public class EditCommand extends UndoableCommand {
             return Optional.ofNullable(instagramName);
         }
 
+        //@@author
         public void setDisplayPic(DisplayPic displayPic) {
             this.displayPic = displayPic;
         }

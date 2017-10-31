@@ -245,6 +245,7 @@ public class MainWindow extends UiPart<Region> {
         }
     }
 
+    //@@author danielbrzn
     /**
      * Opens the progress window.
      */
@@ -263,6 +264,7 @@ public class MainWindow extends UiPart<Region> {
         pWindow.getDialogStage().close();
     }
 
+    //@@author
     void show() {
         primaryStage.show();
     }
@@ -313,6 +315,7 @@ public class MainWindow extends UiPart<Region> {
         handleEmail(event.getAllEmailAddresses());
     }
 
+    //@@author danielbrzn
     @Subscribe
     private void handleShowProgressEvent(ShowProgressEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -327,6 +330,7 @@ public class MainWindow extends UiPart<Region> {
 
     }
 
+    //@@author
     @Subscribe
     private void handleExportRequestEvent(ExportRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));

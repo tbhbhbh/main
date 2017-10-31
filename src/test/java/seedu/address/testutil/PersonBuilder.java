@@ -141,6 +141,7 @@ public class PersonBuilder {
         return this;
     }
 
+    //@@author danielbrzn
     /**
      * Sets the Twitter {@code UserName} of the {@code Person} that we are building.
      */
@@ -165,6 +166,7 @@ public class PersonBuilder {
         return this;
     }
 
+    //@@author
     public Person build() {
         return this.person;
     }

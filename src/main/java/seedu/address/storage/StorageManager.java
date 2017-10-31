@@ -94,6 +94,7 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+    //@@author danielbrzn
     @Override
     @Subscribe
     public void handleUserPrefsChangedEvent(UserPrefsChangedEvent event) {

@@ -56,22 +56,26 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    //@@author danielbrzn
     @Override
     public void resetAlias(HashMap<String, String> prevAliasMap) {
         userPrefs.resetAlias(prevAliasMap);
         indicateUserPrefsChanged();
     }
+    //@@author
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
     }
 
+    //@@author danielbrzn
     @Override
     public UserPrefs getUserPrefs() {
         return userPrefs;
     }
 
+    //@@author
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
@@ -90,6 +94,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    //@@author danielbrzn
     @Override
     public void addAlias(String alias, String command) {
         userPrefs.addAlias(alias, command);
@@ -101,11 +106,13 @@ public class ModelManager extends ComponentManager implements Model {
         return userPrefs.getAlias(alias);
     }
 
+
     /** Raises an event to indicate the model has changed */
     private void indicateUserPrefsChanged() {
         raise(new UserPrefsChangedEvent(userPrefs));
     }
 
+    //@@author
     @Override
     public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
             throws DuplicatePersonException, PersonNotFoundException {
