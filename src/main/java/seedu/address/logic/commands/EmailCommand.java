@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.logic.commands;
 
 import java.util.List;
@@ -5,7 +6,7 @@ import java.util.List;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.email.EmailRequestEvent;
+import seedu.address.commons.events.ui.EmailRequestEvent;
 import seedu.address.commons.util.IndexArrayUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -38,7 +39,7 @@ public class EmailCommand extends Command {
         StringBuilder persons = new StringBuilder();
         for (Index targetIndex : targetIndices) {
             if (targetIndex.getZeroBased() >= lastShownList.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
                         + targetIndex.getOneBased());
             }
             ReadOnlyPerson personToEmail = lastShownList.get(targetIndex.getZeroBased());
@@ -46,7 +47,7 @@ public class EmailCommand extends Command {
             persons.append(personToEmail.getName().toString());
             addresses.append(" ");
             if (personToEmail.getEmail().toString().isEmpty()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL + ": " + targetIndex.getOneBased());
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL + targetIndex.getOneBased());
             }
             addresses.append(personToEmail.getEmail().toString());
         }

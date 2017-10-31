@@ -90,10 +90,11 @@ public abstract class AddressBookGuiTest {
     protected ResultDisplayHandle getResultDisplay() {
         return mainWindowHandle.getResultDisplay();
     }
-
+    //@@author conantteo
     protected TagListPanelHandle getTagListPanel() {
         return mainWindowHandle.getTagListPanel();
     }
+    //@@author
     /**
      * Runs {@code command} in the application's {@code CommandBox}.
      * @return true if the command was executed successfully.
@@ -107,10 +108,6 @@ public abstract class AddressBookGuiTest {
      */
     protected String getDataFileLocation() {
         return TestApp.SAVE_LOCATION_FOR_TESTING;
-    }
-
-    protected String getSavedExportLocation() {
-        return TestApp.SAVE_EXPORT_LOCATION_FOR_TESTING;
     }
 
     @After

@@ -112,7 +112,7 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     public Address getAddress() {
         return address.get();
     }
-
+    //@@author conantteo
     @Override
     public ObjectProperty<Birthday> birthdayProperty() {
         return birthday;
@@ -126,7 +126,7 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
     public void setBirthday(Birthday birthday) {
         this.birthday.set(requireNonNull(birthday));
     }
-
+    //@@author
     public void setDisplayPic(DisplayPic displayPic) {
         this.displayPic.set(requireNonNull(displayPic));
     }

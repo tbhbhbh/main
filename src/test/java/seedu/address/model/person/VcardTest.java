@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.model.person;
 
 import static org.junit.Assert.assertFalse;
@@ -13,12 +14,12 @@ public class VcardTest {
 
     @Test
     public void valid_buildBirthdayString() {
-        // invalid birthday string
+        // invalid birthday string built
         assertFalse("".matches(vCardBirthdayRegex)); // empty string
         assertFalse(" ".matches(vCardBirthdayRegex)); // spaces only
         assertFalse("03071990".matches(vCardBirthdayRegex)); // only numeric characters
         assertFalse("03/07/1990".matches(vCardBirthdayRegex)); // contains invalid characters.
-        assertFalse("03-07-1990".matches(vCardBirthdayRegex)); // DD-MM-YYYY format
+        assertFalse("03-07-1990".matches(vCardBirthdayRegex)); // wrong DD-MM-YYYY format
         assertFalse("03-07-199000".matches(vCardBirthdayRegex)); // contains invalid number of digits
 
         // valid birthday string

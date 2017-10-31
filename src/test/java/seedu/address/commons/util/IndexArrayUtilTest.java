@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.commons.util;
 
 import static org.junit.Assert.assertFalse;
@@ -47,7 +48,7 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void compareIndexArrays_sameLengthSameElements_validComparsion() {
+    public void compareIndexArrays_sameLengthSameElements_validComparison() {
         Index[] arr1 = {INDEX_FIRST_PERSON};
         Index[] arr2 = {INDEX_FIRST_PERSON};
         assertTrue(assertComparison(arr1, arr2));

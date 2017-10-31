@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -11,13 +12,6 @@ import org.junit.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.EmailCommand;
 
-/**
- * As we are only doing white-box testing, our test cases do not cover path variations
- * outside of the EmailCommand code. For example, inputs "1" and "1 abc" take the
- * same path through the EmailCommand, and therefore we test only one of them.
- * The path variation for those two cases occur inside the ParserUtil, and
- * therefore should be covered by the ParserUtilTest.
- */
 public class EmailCommandParserTest {
 
     private EmailCommandParser parser = new EmailCommandParser();
