@@ -11,8 +11,8 @@ import seedu.address.commons.core.GuiSettings;
 public class UserPrefs {
 
     private GuiSettings guiSettings;
-    private String addressBookFilePath = "data/addressbook.xml";
-    private String addressBookName = "MyAddressBook";
+    private String addressBookFilePath = "data/HitMeUp.xml";
+    private String addressBookName = "HitMeUp";
     private HashMap<String, String> aliasMap;
 
     public UserPrefs() {
@@ -20,10 +20,12 @@ public class UserPrefs {
         aliasMap = new HashMap<>();
     }
 
+    //@@author danielbrzn
     public void resetAlias(HashMap<String, String> prevAliasMap) {
         this.aliasMap = prevAliasMap;
     }
 
+    //@@author
     public GuiSettings getGuiSettings() {
         return guiSettings == null ? new GuiSettings() : guiSettings;
     }
@@ -52,6 +54,7 @@ public class UserPrefs {
         this.addressBookName = addressBookName;
     }
 
+    //@@author danielbrzn
     public HashMap<String, String> getAliasMap() {
         return aliasMap;
     }
@@ -64,6 +67,7 @@ public class UserPrefs {
         return aliasMap.get(alias);
     }
 
+    //@@author
     @Override
     public boolean equals(Object other) {
         if (other == this) {

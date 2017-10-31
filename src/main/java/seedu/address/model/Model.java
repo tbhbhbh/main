@@ -19,27 +19,34 @@ public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyAddressBook newData);
 
+    //@@author danielbrzn
     /** Clears existing aliases from UserPrefs and replaces with the provided new data */
     void resetAlias(HashMap<String, String> prevAliasMap);
 
+    //@@author
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
+    //@@author danielbrzn
     /** Returns the User Preferences */
     UserPrefs getUserPrefs();
 
+    //@@author
     /** Deletes the given person. */
     void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;
 
     /** Adds the given person */
     void addPerson(ReadOnlyPerson person) throws DuplicatePersonException;
 
+    //@@author danielbrzn
     /** Adds the given alias */
     void addAlias(String alias, String command);
 
+    //@@author danielbrzn
     /** Gets the command mapping for an alias */
     String getAlias(String alias);
 
+    //@@author
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

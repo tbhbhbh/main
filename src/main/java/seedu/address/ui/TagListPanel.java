@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.ui;
 
 import org.fxmisc.easybind.EasyBind;
@@ -14,7 +15,7 @@ import seedu.address.model.tag.Tag;
  * Panel containing the list of unique tags
  */
 public class TagListPanel extends UiPart<Region> {
-    private static final String FXML = "TagListPanel.fxml";
+    private static final String FXML = "GroupList.fxml";
 
     @FXML
     private ListView tagListView;

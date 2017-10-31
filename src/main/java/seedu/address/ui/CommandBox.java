@@ -115,7 +115,6 @@ public class CommandBox extends UiPart<Region> {
             if (arguments.contains(PREFIX_DP.getPrefix())) {
                 arguments = ImagePathUtil.setPath(arguments, this);
             }
-            System.out.println(arguments);
             CommandResult commandResult = logic.execute(arguments);
             initHistory();
             historySnapshot.next();

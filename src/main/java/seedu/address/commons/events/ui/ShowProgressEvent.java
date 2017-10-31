@@ -1,3 +1,4 @@
+//@@author danielbrzn
 package seedu.address.commons.events.ui;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;

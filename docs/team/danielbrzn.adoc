@@ -8,8 +8,39 @@ AddressBook - Level 4 is a desktop address book application used for teaching So
 
 *Code contributed*: to be updated
 
-=== Enhancement Added: to be updated
+=== Enhancement Added: Google Contacts Import
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=import]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+{Justify the need for, and the current design (i.e. external behavior) of, the feature}
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=import]
+
+#End of Extract#
+
+---
 
 === Enhancement Proposed: to be updated
 
 === Other contributions
+* Added alias command (Pull requests https://github.com/CS2103AUG2017-W14-B3/main/pull/19[#19], https://github.com/CS2103AUG2017-W14-B3/main/pull/21[#21])
+* Made fields other than person name and phone number optional (Pull request https://github.com/CS2103AUG2017-W14-B3/main/pull/71[#71])
+* Added fields for Instagram and Twitter accounts (Pull request https://github.com/CS2103AUG2017-W14-B3/main/pull/85[#85])
+* Responsible for managing weekly milestones and releases
+

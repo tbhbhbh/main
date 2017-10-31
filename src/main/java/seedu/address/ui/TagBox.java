@@ -1,3 +1,4 @@
+//@@author conantteo
 package seedu.address.ui;
 
 import javafx.fxml.FXML;
@@ -17,7 +18,7 @@ public class TagBox extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
-    private Label tags;
+    private Label tagsName;
 
     public TagBox(Tag tag) {
         super(FXML);
@@ -26,7 +27,7 @@ public class TagBox extends UiPart<Region> {
     }
 
     private void initTags(Tag tag) {
-        tags.setText(tag.tagName);
+        tagsName.setText(tag.tagName);
     }
 
     @Override

@@ -427,6 +427,7 @@ the email to their recipients.
 it is difficult to authorize every email services for all users since it is often dependent
 on the type of email services they need. +
 
+// tag::import[]
 === Import mechanism
 
 The import mechanism is facilitated by Google's People API. It supports reading contacts from the user's personal Google account and parsing them into a format that can be added to the address book. The import mechanism only supports
@@ -507,6 +508,7 @@ Threading has to be used to allow the progress bar to update as the `importConta
 **Alternative 2:** Use the existing browser panel to show the authorization page +
 **Pros:** Clearer for the user to understand and focus is kept on the main application. +
 **Cons:** Requires implementing a new class to listen on the local web server for the authorization code instead of using the provided `LocalServerReceiver` from the Google Client Library. +
+// end::import[]
 
 === Export mechanism
 

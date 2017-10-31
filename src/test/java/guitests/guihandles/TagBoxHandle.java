@@ -1,3 +1,4 @@
+//@@author conantteo
 package guitests.guihandles;
 
 import javafx.scene.Node;
@@ -7,7 +8,7 @@ import javafx.scene.control.Label;
  * Provides a handle to a tag box in the tag list panel.
  */
 public class TagBoxHandle extends NodeHandle<Node> {
-    private static final String TAG_FIELD_ID = "#tags";
+    private static final String TAG_FIELD_ID = "#tagsName";
 
     private final Label tagLabel;
 

@@ -17,14 +17,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.email.EmailRequestEvent;
 import seedu.address.commons.events.ui.CloseProgressEvent;
+import seedu.address.commons.events.ui.EmailRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ExportRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
@@ -41,7 +42,7 @@ import seedu.address.model.person.UserName;
  */
 public class MainWindow extends UiPart<Region> {
 
-    private static final String ICON = "/images/address_book_32.png";
+    private static final String ICON = "/images/Icon.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
@@ -66,7 +67,7 @@ public class MainWindow extends UiPart<Region> {
     private StackPane browserPlaceholder;
 
     @FXML
-    private StackPane commandBoxPlaceholder;
+    private Pane commandBoxPlaceholder;
 
     @FXML
     private MenuItem helpMenuItem;
@@ -78,7 +79,7 @@ public class MainWindow extends UiPart<Region> {
     private StackPane personDescriptionPlaceHolder;
 
     @FXML
-    private StackPane resultDisplayPlaceholder;
+    private Pane resultDisplayPlaceholder;
 
     @FXML
     private StackPane statusbarPlaceholder;
@@ -223,7 +224,7 @@ public class MainWindow extends UiPart<Region> {
         HelpWindow helpWindow = new HelpWindow();
         helpWindow.show();
     }
-
+    //@@author conantteo
     /**
      * This method will invoke the user's default mail client and set the recipients field with all the
      * email addresses specified by the user.
@@ -248,6 +249,7 @@ public class MainWindow extends UiPart<Region> {
         }
     }
 
+    //@@author danielbrzn
     /**
      * This method will use the built-in browser to open the selected index's social media profile (either Twitter
      * or Instagram).
@@ -276,10 +278,11 @@ public class MainWindow extends UiPart<Region> {
         pWindow.getDialogStage().close();
     }
 
+    //@@author
     void show() {
         primaryStage.show();
     }
-
+    //@@author conantteo
     /**
      * Opens a file folder which shows the directory where contacts.vcf file is found.
      * Folder is is guaranteed to exist before showing.
@@ -297,7 +300,7 @@ public class MainWindow extends UiPart<Region> {
             e.printStackTrace();
         }
     }
-
+    //@@author
     /**
      * Closes the application.
      */
@@ -319,13 +322,14 @@ public class MainWindow extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
     }
-
+    //@@author conantteo
     @Subscribe
     private void handleEmailRequestEvent(EmailRequestEvent event) throws Exception {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleEmail(event.getAllEmailAddresses());
     }
 
+    //@@author danielbrzn
     @Subscribe
     private void handleSocialEvent(SocialRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -346,6 +350,7 @@ public class MainWindow extends UiPart<Region> {
 
     }
 
+    //@@author connatteo
     @Subscribe
     private void handleExportRequestEvent(ExportRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
