@@ -1,3 +1,4 @@
+//@@author danielbrzn
 package guitests.guihandles;
 
 import guitests.GuiRobot;
