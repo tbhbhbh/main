@@ -31,7 +31,7 @@
   </StackPane>
    <HBox prefWidth="1150.0" spacing="10.0" style="-fx-background-color: #F5F9FA;" VBox.vgrow="ALWAYS">
       <children>
-         <VBox minWidth="150.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="NEVER">
+         <VBox fx:id="tagList" minWidth="150.0" prefHeight="200.0" prefWidth="150.0" HBox.hgrow="NEVER">
             <children>
                <StackPane fx:id="tagListPanelPlaceholder" VBox.vgrow="ALWAYS" />
             </children>
