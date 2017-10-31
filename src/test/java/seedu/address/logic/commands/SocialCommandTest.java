@@ -28,11 +28,11 @@ import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class SocialCommandTest {
 
-    //Model provides required names of recipients and are not modified in any way
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
+
+    //Model provides required names of recipients and are not modified in any way
+    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
     public void execute_socialRequestInstagramEvent_success() throws CommandException {
@@ -92,8 +92,7 @@ public class SocialCommandTest {
 
         SocialCommand socialFirstInstagramCommand = prepareCommand(INDEX_FIRST_PERSON, "ig");
         SocialCommand socialSecondInstagramCommand = prepareCommand(INDEX_SECOND_PERSON, "ig");
-        SocialCommand socialFirstTwitterCommand = prepareCommand(INDEX_FIRST_PERSON,"tw");
-        SocialCommand socialSecondTwitterCommand = prepareCommand(INDEX_SECOND_PERSON, "tw");
+        SocialCommand socialFirstTwitterCommand = prepareCommand(INDEX_FIRST_PERSON, "tw");
 
         // same object -> returns true
         assertTrue(socialFirstInstagramCommand.equals(socialFirstInstagramCommand));
