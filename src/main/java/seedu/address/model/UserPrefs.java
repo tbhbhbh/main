@@ -11,8 +11,8 @@ import seedu.address.commons.core.GuiSettings;
 public class UserPrefs {
 
     private GuiSettings guiSettings;
-    private String addressBookFilePath = "data/addressbook.xml";
-    private String addressBookName = "MyAddressBook";
+    private String addressBookFilePath = "data/HitMeUp.xml";
+    private String addressBookName = "HitMeUp";
     private HashMap<String, String> aliasMap;
 
     public UserPrefs() {

@@ -2,44 +2,61 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
-  <GridPane prefHeight="105.0" prefWidth="221.0" HBox.hgrow="ALWAYS">
-    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-    </columnConstraints>
-    <VBox alignment="CENTER_LEFT" minHeight="105.0" prefHeight="105.0" prefWidth="160.0" GridPane.columnIndex="0">
-      <padding>
-        <Insets bottom="5" left="15" right="5" top="5" />
-      </padding>
-      <HBox alignment="CENTER_LEFT" spacing="5">
-        <Label fx:id="id" styleClass="cell_big_label">
-          <minWidth>
-            <!-- Ensures that the label text is never truncated -->
-            <Region fx:constant="USE_PREF_SIZE" />
-          </minWidth>
-        </Label>
-        <Label fx:id="name" styleClass="cell_big_label" text="\$first" />
+
+<VBox xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox id="cardPane" fx:id="cardPane" prefHeight="90.0" prefWidth="230.0" style="-fx-background-color: transparent;">
+         <children>
+            <Pane minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="30.0" HBox.hgrow="NEVER">
+               <children>
+                  <Circle fx:id="displayPic" fill="WHITE" layoutX="35.0" layoutY="45.0" radius="25.0" stroke="WHITE" strokeType="INSIDE" />
+               </children>
+            </Pane>
+            <VBox alignment="CENTER_LEFT" minHeight="90.0" prefHeight="90.0" prefWidth="166.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="5">
+                     <children>
+                        <Label fx:id="id" styleClass="cell_big_label">
+                           <minWidth>
+                              <Region fx:constant="USE_PREF_SIZE" />
+                           </minWidth>
+                        </Label>
+                        <Label fx:id="name" styleClass="cell_big_label" text="\$first">
+                           <font>
+                              <Font name="NanumGothic ExtraBold" size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <FlowPane fx:id="tags" />
+                  <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" textFill="#797777">
+                     <font>
+                        <Font name="Material Design Icons" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </VBox>
+         </children>
       </HBox>
-      <FlowPane fx:id="tags" />
-      <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
-    </VBox>
-      <StackPane fx:id="imagePane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1">
-         <GridPane.margin>
-            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-         </GridPane.margin>
-      </StackPane>
-      <rowConstraints>
-         <RowConstraints />
-      </rowConstraints>
-  </GridPane>
-</HBox>
+      <Separator prefWidth="200.0">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+      </Separator>
+   </children>
+</VBox>
