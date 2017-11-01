@@ -3,11 +3,14 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
+
+import com.google.common.eventbus.Subscribe;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,8 +18,10 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.SearchTagEvent;
 import seedu.address.commons.events.model.UserPrefsChangedEvent;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -150,6 +155,13 @@ public class ModelManager extends ComponentManager implements Model {
                 addressBook.updatePerson(oldPerson, newPerson);
             }
         }
+    }
+
+    @Subscribe
+    private void handleSearchTagEvent(SearchTagEvent event)  {
+        String[] arr = {event.tag.tagName};
+        Predicate<ReadOnlyPerson> predicate = new PersonContainsKeywordsPredicate(Arrays.asList(arr));
+        updateFilteredPersonList(predicate);
     }
 
     //=========== Filtered Person List Accessors =============================================================
