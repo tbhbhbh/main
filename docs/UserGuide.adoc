@@ -385,14 +385,14 @@ Searches for persons whose names or tags contain any of the given keywords. +
 Format: `find KEYWORD [MORE_KEYWORDS]` +
 
 ****
-- The search for names is case insensitive. e.g. `hans` will match `Hans`. However, the search for tags is
+* The search for names is case insensitive. e.g. `hans` will match `Hans`. However, the search for tags is
 case sensitive.
-- The order of the keywords does not matter. e.g. `Alex colleagues` and `colleagues Alex` will give you the same result.
-- Both names and tags are searched.
-- Only full words will be matched with names and tags. e.g. `Han` will not match `Hans` and `colleague` will not match
-`colleagues
-- When searching for one keyword, persons matching at least one keyword will be returned like in `find`
-- When searching for more than one keyword, only persons matching ALL keywords will be returned. eg. `search Alex` will
+* The order of the keywords does not matter. e.g. `Alex colleagues` and `colleagues Alex` will give you the same result.
+* Both names and tags are searched.
+* Only full words will be matched with names and tags. e.g. `Han` will not match `Hans` and `colleague` will not match
+`colleagues`
+* When searching for one keyword, persons matching at least one keyword will be returned like in `find`
+* When searching for more than one keyword, only persons matching ALL keywords will be returned. eg. `search Alex` will
 return all persons with the name `Alex`, but `search Alex colleagues` will only return persons with both the word `Alex`
 in their names and the tag `colleagues`.
 ****
@@ -404,6 +404,28 @@ returns `alex` and `Alex`
 
 * `search alex colleagues` +
 returns all persons with the name `Alex` or `alex` AND with the tag `colleagues`
+
+=== Viewing a contact's Twitter/Instagram profile : `social`
+
+Opens up a person's Twitter or Instagram profile in browser panel. +
+Format: `social INDEX SOCIAL_MEDIA` +
+
+****
+* Uses the built-in browser panel to open up the chosen `SOCIAL_MEDIA` profile of person at the specified `INDEX`.
+* The chosen `SOCIAL_MEDIA` must either be `ig` (Instagram) or `tw` (Twitter).
+* The index refers to the index number shown in the most recent listing.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+Examples:
+
+* `social 1 ig` +
+Opens up the Instagram profile of the person at index 1. +
+
+* `social 2 tw` +
+Opens up the Twitter profile of the person at index 2.
+
+
 
 === Clearing all entries : `clear`
 
@@ -449,7 +471,7 @@ e.g. `alias a add`
 e.g. `tagdelete friends`
 * *Tag Edit*: `tagedit OLD_TAG_NAME NEW_TAG_NAME` +
 e.g. `tagedit friends losers`
-
-
 * *Email* : `email INDEX [INDEX]...` +
 e.g. `email 1 2`
+* *Social* : `social INDEX SOCIAL_MEDIA` +
+e.g. `social 1 ig`

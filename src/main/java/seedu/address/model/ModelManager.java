@@ -122,6 +122,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
     }
 
+    //@@author tbhbhbh
     @Override
     public void deleteTag(Tag tag) throws PersonNotFoundException, DuplicatePersonException {
         for (int i = 0; i < addressBook.getPersonList().size(); i++) {
@@ -151,6 +152,7 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
     }
+    //@@author
 
     //=========== Filtered Person List Accessors =============================================================
 
