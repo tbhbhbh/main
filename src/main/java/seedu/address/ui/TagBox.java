@@ -36,7 +36,7 @@ public class TagBox extends UiPart<Region> {
     }
 
     /**
-     * Register the Label {@tagsName} for MouseEvent to display the persons with the tag that people want to see.
+     * Register the Label {@tagsName} for MouseEvent to display the persons with the tag that user wants to see.
      */
     private void setEventHandlerForMouseClick() {
         tagsName.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -46,6 +46,7 @@ public class TagBox extends UiPart<Region> {
             }
         });
     }
+
     @Override
     public boolean equals(Object other) {
         // short circuit if same object
