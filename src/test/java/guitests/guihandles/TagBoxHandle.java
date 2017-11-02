@@ -18,7 +18,7 @@ public class TagBoxHandle extends NodeHandle<Node> {
         this.tagLabel = getChildNode(TAG_FIELD_ID);
     }
 
-    public String getTag() {
+    public String getTagName() {
         return tagLabel.getText();
     }
 }

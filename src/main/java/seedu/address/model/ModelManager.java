@@ -161,8 +161,9 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Subscribe
     private void handleSearchTagEvent(SearchTagEvent event)  {
-        String[] arr = {event.tag.tagName};
-        Predicate<ReadOnlyPerson> predicate = new PersonContainsKeywordsPredicate(Arrays.asList(arr));
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        String[] tagNameArr = {event.tag.tagName};
+        Predicate<ReadOnlyPerson> predicate = new PersonContainsKeywordsPredicate(Arrays.asList(tagNameArr));
         updateFilteredPersonList(predicate);
     }
 
