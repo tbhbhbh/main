@@ -12,13 +12,26 @@ public class TagBoxHandle extends NodeHandle<Node> {
 
     private final Label tagLabel;
 
+    private boolean isTagBoxClicked = false;
+
     public TagBoxHandle(Node boxNode) {
         super(boxNode);
-
+        this.isTagBoxClicked = false;
         this.tagLabel = getChildNode(TAG_FIELD_ID);
     }
 
-    public String getTag() {
+    // isTagBoxClicked returns true after guiRobot has click the rootNode
+    @Override
+    public void click() {
+        guiRobot.clickOn(getRootNode());
+        this.isTagBoxClicked = true;
+    }
+
+    public boolean isClicked() {
+        return isTagBoxClicked;
+    }
+
+    public String getTagName() {
         return tagLabel.getText();
     }
 }

@@ -18,11 +18,13 @@ public class TypicalTags {
 
     public static final Tag CLASSMATES = new TagBuilder().withSpecifiedTagName("Classmates");
 
-    public static final Tag FAMILY = new TagBuilder().withSpecifiedTagName("Family");
+    public static final Tag FRIENDS = new TagBuilder().withSpecifiedTagName("friends");
+
+    public static final Tag OWE_MONEY = new TagBuilder().withSpecifiedTagName("owesMoney");
 
     private TypicalTags() {} // prevents instantiation
 
     public static List<Tag> getTypicalTags() {
-        return new ArrayList<>(Arrays.asList(GOOGLE, FACEBOOK, CLASSMATES, FAMILY));
+        return new ArrayList<>(Arrays.asList(GOOGLE, FACEBOOK, CLASSMATES, FRIENDS, OWE_MONEY));
     }
 }

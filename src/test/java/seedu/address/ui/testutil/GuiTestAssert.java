@@ -86,6 +86,6 @@ public class GuiTestAssert {
     }
 
     public static void assertBoxDisplayTag(Tag expectedTag, TagBoxHandle tagBox) {
-        assertEquals(expectedTag.tagName, tagBox.getTag());
+        assertEquals(expectedTag.tagName, tagBox.getTagName());
     }
 }
