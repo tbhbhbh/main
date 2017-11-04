@@ -1,10 +1,13 @@
 //@@author conantteo
 package seedu.address.ui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.commons.events.model.SearchTagEvent;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -24,10 +27,24 @@ public class TagBox extends UiPart<Region> {
         super(FXML);
         this.tag = tag;
         initTags(tag);
+        registerAsAnEventHandler(this);
+        setEventHandlerForMouseClick();
     }
 
     private void initTags(Tag tag) {
         tagsName.setText(tag.tagName);
+    }
+
+    /**
+     * Register the Label {@tagsName} for MouseEvent to display the persons with the tag that user wants to see.
+     */
+    private void setEventHandlerForMouseClick() {
+        tagsName.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                raise(new SearchTagEvent(tag));
+            }
+        });
     }
 
     @Override
