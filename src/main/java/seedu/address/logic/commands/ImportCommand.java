@@ -64,13 +64,8 @@ public class ImportCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         // Check for connectivity to Google
-        try {
-            if (!GoogleUtil.isReachable()) {
-                throw new CommandException(MESSAGE_CONNECTION_FAILURE);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new CommandException(MESSAGE_FAILURE);
+        if (!GoogleUtil.isReachable()) {
+            throw new CommandException(MESSAGE_CONNECTION_FAILURE);
         }
         Thread thread = new Thread(() -> {
             try {
