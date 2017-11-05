@@ -10,8 +10,8 @@ public class ShowLocationEvent extends BaseEvent {
 
     private final String googleMapsUrl;
 
-    public ShowLocationEvent(String Url) {
-        this.googleMapsUrl = Url;
+    public ShowLocationEvent(String mapsUrl) {
+        this.googleMapsUrl = mapsUrl;
     }
 
     public String getGoogleMapsUrl() {

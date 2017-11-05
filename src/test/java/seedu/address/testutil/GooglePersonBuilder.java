@@ -4,9 +4,11 @@ package seedu.address.testutil;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.api.services.people.v1.model.Address;
 import com.google.api.services.people.v1.model.Birthday;
 import com.google.api.services.people.v1.model.Date;
 import com.google.api.services.people.v1.model.EmailAddress;
+import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.PhoneNumber;
 
 
@@ -29,11 +31,11 @@ public class GooglePersonBuilder {
 
     public GooglePersonBuilder() {
 
-        List names = new ArrayList<>();
-        List phone = new ArrayList<>();
-        List emails = new ArrayList<>();
-        List addresses = new ArrayList<>();
-        List birthday = new ArrayList<>();
+        ArrayList<com.google.api.services.people.v1.model.Name> names = new ArrayList<>();
+        ArrayList<PhoneNumber> phone = new ArrayList<>();
+        ArrayList<EmailAddress> emails = new ArrayList<>();
+        ArrayList<com.google.api.services.people.v1.model.Address> addresses = new ArrayList<>();
+        ArrayList<Birthday> birthday = new ArrayList<>();
 
         names.add(new com.google.api.services.people.v1.model.Name().setDisplayName(DEFAULT_NAME));
         phone.add(new PhoneNumber().setCanonicalForm(DEFAULT_PHONE));
@@ -54,7 +56,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Name} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withName(String name) {
-        List names = new ArrayList<>();
+        List<Name> names = new ArrayList<>();
         names.add(new com.google.api.services.people.v1.model.Name().setDisplayName(name));
         this.person.setNames(names);
 
@@ -65,7 +67,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Address} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withAddress(String address) {
-        List addresses = new ArrayList<>();
+        List<Address> addresses = new ArrayList<>();
         addresses.add(new com.google.api.services.people.v1.model.Address().setFormattedValue(address));
         this.person.setAddresses(addresses);
         return this;
@@ -75,7 +77,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Phone} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withPhone(String phone) {
-        List phoneNumbers = new ArrayList<>();
+        List<PhoneNumber> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(new PhoneNumber().setValue(phone));
         this.person.setPhoneNumbers(phoneNumbers);
         return this;
@@ -85,7 +87,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Email} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withEmail(String email) {
-        List emails = new ArrayList<>();
+        List<EmailAddress> emails = new ArrayList<>();
         emails.add(new EmailAddress().setValue(email));
         this.person.setEmailAddresses(emails);
         return this;
@@ -95,7 +97,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Birthday} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withBirthday(String birthday) {
-        List birthdays = new ArrayList<>();
+        List<Birthday> birthdays = new ArrayList<>();
         birthdays.add(new com.google.api.services.people.v1.model.Birthday().setText(birthday));
         this.person.setBirthdays(birthdays);
 

@@ -10,6 +10,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.util.GoogleUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.person.Address;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -59,7 +60,7 @@ public class LocationCommand extends Command {
             throw new CommandException(String.format(MESSAGE_NO_ADDRESS, current.getName().toString()));
         }
 
-        String finalUrl = GOOGLE_MAPS_URL_PREFIX + parseAddressForUrl(current.getAddress().toString());
+        String finalUrl = GOOGLE_MAPS_URL_PREFIX + parseAddressForUrl(current.getAddress());
         EventsCenter.getInstance().post(new ShowLocationEvent(finalUrl));
         return new CommandResult(String.format(MESSAGE_SUCCESS, current.getName().toString()));
     }
@@ -67,10 +68,10 @@ public class LocationCommand extends Command {
     /**
      * Parses address into a URL-appendable string
      */
-    public String parseAddressForUrl(String address) {
+    public String parseAddressForUrl(Address address) {
         StringBuilder sb = new StringBuilder();
         String prefix = "";
-        String[] addressArray = address.split(" ");
+        String[] addressArray = address.toString().split(" ");
 
         for (String part : addressArray) {
             sb.append(prefix);
@@ -80,5 +81,13 @@ public class LocationCommand extends Command {
 
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof LocationCommand // instanceof handles nulls
+                && this.index.equals(((LocationCommand) other).index)); // state check
+    }
+
 }
 
