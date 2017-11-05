@@ -4,8 +4,10 @@ package seedu.address.logic.commands;
 
 import java.util.List;
 
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.util.GoogleUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -57,6 +59,8 @@ public class LocationCommand extends Command {
             throw new CommandException(String.format(MESSAGE_NO_ADDRESS, current.getName().toString()));
         }
 
+        String finalUrl = GOOGLE_MAPS_URL_PREFIX + parseAddressForUrl(current.getAddress().toString());
+        EventsCenter.getInstance().post(new ShowLocationEvent(finalUrl));
         return new CommandResult(String.format(MESSAGE_SUCCESS, current.getName().toString()));
     }
 

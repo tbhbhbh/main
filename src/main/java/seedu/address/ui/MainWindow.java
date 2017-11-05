@@ -29,6 +29,7 @@ import seedu.address.commons.events.ui.EmailRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ExportRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
+import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.events.ui.SocialRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
@@ -259,7 +260,17 @@ public class MainWindow extends UiPart<Region> {
         browserPanel.loadPage(socialMediaLink + userName);
     }
 
+
     //@@author danielbrzn
+
+    /**
+     * Opens the provided Google Maps URL in the built-in browser
+     * @param googleMapsUrl is the full URL of a person's location
+     */
+    public void handleLocation(String googleMapsUrl) {
+        browserPanel.loadPage(googleMapsUrl);
+    }
+
     /**
      * Opens the progress window.
      */
@@ -330,6 +341,13 @@ public class MainWindow extends UiPart<Region> {
     }
 
     //@@author danielbrzn
+
+    @Subscribe
+    private void handleShowLocationEvent(ShowLocationEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleLocation(event.getGoogleMapsUrl());
+    }
+
     @Subscribe
     private void handleSocialEvent(SocialRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
