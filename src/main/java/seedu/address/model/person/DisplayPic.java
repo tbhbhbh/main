@@ -4,8 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
@@ -14,7 +12,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class DisplayPic {
 
-    public static final String MESSAGE_DISPLAYPIC_CONSTRAINT = "When choosing the choice or display picture, ensure that you enter either dp/Y or dp/N";
+    public static final String MESSAGE_DISPLAYPIC_CONSTRAINT =
+            "When choosing the choice or display picture, ensure that you enter either dp/Y or dp/N";
     public final String displayPicPath;
 
     public DisplayPic(String displayPicPath) throws IllegalValueException {
@@ -26,6 +25,9 @@ public class DisplayPic {
         this.displayPicPath = trimmedDisplayPicPath;
     }
 
+    /**
+     *  Returns if the given display pic path is a valid path
+     */
     public static boolean isValidPath(String displayPicPath) {
         File picture = new File(displayPicPath);
         return displayPicPath.equals(DEFAULT_DISPLAY_PIC) || picture.exists();
