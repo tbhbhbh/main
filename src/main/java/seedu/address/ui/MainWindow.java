@@ -249,7 +249,7 @@ public class MainWindow extends UiPart<Region> {
         }
     }
 
-    //@@author danielbrzn
+    //@@author tbhbhbh
     /**
      * This method will use the built-in browser to open the selected index's social media profile (either Twitter
      * or Instagram).
@@ -259,7 +259,7 @@ public class MainWindow extends UiPart<Region> {
         browserPanel.loadPage(socialMediaLink + userName);
     }
 
-
+    //@@author danielbrzn
     /**
      * Opens the progress window.
      */
