@@ -50,7 +50,7 @@ public class GoogleUtil {
     /**
      * Returns true if Google is reachable
      */
-    public static boolean isReachable() throws IOException {
+    public static boolean isReachable() {
         Socket socket = new Socket();
         InetSocketAddress googleAddr = new InetSocketAddress(GOOGLE_ADDRESS, HTTP_PORT);
 

@@ -22,7 +22,8 @@ public class AliasCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New alias added: %1$s for %2$s";
     public static final String MESSAGE_OVERRIDE = "Alias %1$s is now mapped to %2$s instead of %3$s";
     public static final String MESSAGE_INVALID_COMMAND = "Command entered is invalid.";
-
+    public static final String MESSAGE_RESTRICTED_ALIAS = "Alias entered is a command name and cannot be mapped. "
+            + "Choose a different alias.";
     private final String alias;
     private final String actualCommand;
 
@@ -37,6 +38,9 @@ public class AliasCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         if (AddressBookParser.checkValidCommand(actualCommand)) {
+            if (AddressBookParser.checkValidCommand(alias)) {
+                throw new CommandException(MESSAGE_RESTRICTED_ALIAS);
+            }
             String mapping = model.getAlias(this.alias);
             model.addAlias(this.alias, actualCommand);
             if (mapping == null) {
