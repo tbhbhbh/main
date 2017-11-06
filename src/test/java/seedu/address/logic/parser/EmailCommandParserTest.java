@@ -18,7 +18,7 @@ public class EmailCommandParserTest {
     private Index[] indexArray;
 
     @Test
-    public void parse_validArgs_returnsEmailCommand() {
+    public void parse_singleValidArgs_returnsEmailCommand() {
         assertParseSuccess(parser, "1", prepareCommand(INDEX_FIRST_PERSON));
     }
 
@@ -30,6 +30,12 @@ public class EmailCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_duplicatedArgs_throwsParseException() {
+        assertParseFailure(parser, "1 1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                EmailCommand.MESSAGE_INDEX_DUPLICATES));
     }
 
     /**

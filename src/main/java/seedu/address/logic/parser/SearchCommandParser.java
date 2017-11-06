@@ -32,7 +32,7 @@ public class SearchCommandParser implements Parser<SearchCommand> {
         String[] nameKeywords = trimmedArgs.split("\\s+");
         // Single keyword as argument and check that it contains an non-zero integer and is a valid birthday month
         if (nameKeywords.length == 1 && StringUtil.isNonZeroUnsignedInteger(nameKeywords[0])) {
-            if (Birthday.isValidBirthdayMonth(nameKeywords[0])) {
+            if (Birthday.isValidMonth(nameKeywords[0])) {
                 return new SearchCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
             } else {
                 throw new ParseException(

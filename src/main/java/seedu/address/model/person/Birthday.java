@@ -42,13 +42,16 @@ public class Birthday {
 
 
     /**
-     * Returns true if a given string is a valid person phone number.
+     * Returns true if a given string is a valid person birthday.
      */
     public static boolean isValidBirthday(String test) {
         return test.matches(BIRTHDAY_VALIDATION_REGEX);
     }
 
-    public static boolean isValidBirthdayMonth(String test) {
+    /**
+     * Returns true if a given String matches exactly 2 digits from 01 to 12 which is a valid birthday month.
+     */
+    public static boolean isValidMonth(String test) {
         return test.matches(BIRTHDAY_MONTH_REGEX);
     }
 

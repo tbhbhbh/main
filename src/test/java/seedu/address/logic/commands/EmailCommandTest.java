@@ -108,17 +108,6 @@ public class EmailCommandTest {
     }
 
     @Test
-    public void execute_multipleIndexWithInvalidIndex_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        EmailCommand emailCommand = prepareCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
-
-        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
-                + outOfBoundIndex.getOneBased();
-
-        assertCommandFailure(emailCommand, model, expectedMessage);
-    }
-
-    @Test
     public void equals() {
         EmailCommand emailFirstCommand = prepareCommand(INDEX_FIRST_PERSON);
         EmailCommand emailSecondCommand = prepareCommand(INDEX_SECOND_PERSON);

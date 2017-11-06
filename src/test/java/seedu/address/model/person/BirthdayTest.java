@@ -17,7 +17,7 @@ public class BirthdayTest {
         assertFalse(Birthday.isValidBirthday("02/03/19000")); // more than 8 digits
         assertFalse(Birthday.isValidBirthday("phone")); // non-numeric
         assertFalse(Birthday.isValidBirthday("9011p041")); // alphanumeric
-        assertFalse(Birthday.isValidBirthday("02.03-1990")); //invalid characters between digits
+        assertFalse(Birthday.isValidBirthday("02.03-1990")); // invalid characters between digits
         assertFalse(Birthday.isValidBirthday("02031990")); // exactly 8 digits without any forward slash
         assertFalse(Birthday.isValidBirthday("29/02/1900")); // invalid leap day
 
@@ -29,11 +29,12 @@ public class BirthdayTest {
     @Test
     public void isValidBirthdayMonth() {
         // invalid birthday month
-        assertFalse(Birthday.isValidBirthdayMonth("011")); // more than 2 digits
-        assertFalse(Birthday.isValidBirthdayMonth("1")); // less than 2 digits
-        assertFalse(Birthday.isValidBirthdayMonth("13")); // exactly 2 digits but out of the range [01 to 12]
+        assertFalse(Birthday.isValidMonth("111")); // more than 2 digits
+        assertFalse(Birthday.isValidMonth("1")); // less than 2 digits
+        assertFalse(Birthday.isValidMonth("00")); // exactly 2 digits but less than the range of [01 to 12]
+        assertFalse(Birthday.isValidMonth("13")); // exactly 2 digits but above the range of [01 to 12]
 
         // valid birthday month
-        assertTrue(Birthday.isValidBirthdayMonth("01")); // exactly 2 digits between 01 to 12
+        assertTrue(Birthday.isValidMonth("01")); // exactly 2 digits between 01 to 12
     }
 }
