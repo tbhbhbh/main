@@ -8,6 +8,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Rule;
@@ -105,6 +106,15 @@ public class EmailCommandTest {
         CommandResult result = emailCommand.execute();
 
         assertEquals(expectedMessage, result.feedbackToUser);
+    }
+
+    @Test
+    public void execute_validIndexWithoutEmail_throwsCommandException() {
+        EmailCommand emailCommand = prepareCommand(INDEX_THIRD_PERSON);
+        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_TO_EMAIL
+                + INDEX_THIRD_PERSON.getOneBased();
+
+        assertCommandFailure(emailCommand, model, expectedMessage);
     }
 
     @Test
