@@ -22,7 +22,6 @@ public class EmailCommand extends Command {
             + ": Email one or more person identified by the index number used in the last person listing.\n"
             + "Parameters: INDEX [INDEX]... (must be a positive and no repeated integers)\n"
             + "Example: " + COMMAND_WORD + " 1" + " [2]" + " [3]";
-    public static final String MESSAGE_INDEX_DUPLICATES = "INDEX of the person should not be repeated";
 
     public static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Email Person: %1$s";
 
