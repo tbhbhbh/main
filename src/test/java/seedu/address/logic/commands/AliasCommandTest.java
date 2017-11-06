@@ -57,6 +57,13 @@ public class AliasCommandTest {
     }
 
     @Test
+    public void execute_addRestrictedAlias_failure() throws Exception {
+
+        assertCommandFailure(prepareCommand("add", "add"), model,
+                AliasCommand.MESSAGE_RESTRICTED_ALIAS);
+    }
+
+    @Test
     public void equals() {
         AliasCommand aliasAddCommand = new AliasCommand("a", "add");
         AliasCommand aliasFindCommand = new AliasCommand("f", "find");

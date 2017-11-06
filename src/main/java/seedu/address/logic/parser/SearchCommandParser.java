@@ -5,8 +5,10 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 
 import java.util.Arrays;
 
+import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.SearchCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.PersonContainsBirthdayPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
@@ -27,7 +29,10 @@ public class SearchCommandParser implements Parser<SearchCommand> {
         }
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
-
+        // Single keyword that contains an non-zero integer
+        if (nameKeywords.length == 1 && StringUtil.isNonZeroUnsignedInteger(nameKeywords[0])) {
+            return new SearchCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
+        }
         return new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
     }
 }

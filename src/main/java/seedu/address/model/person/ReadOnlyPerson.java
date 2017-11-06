@@ -64,7 +64,7 @@ public interface ReadOnlyPerson {
                 .append(" Twitter: ")
                 .append(getTwitterName())
                 .append(" Instagram: ")
-                .append(getTwitterName())
+                .append(getInstagramName())
                 .append(" DisplayPic Path: ")
                 .append(getDisplayPic())
                 .append(" Tags: ");
