@@ -10,6 +10,7 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import seedu.address.logic.commands.SearchCommand;
+import seedu.address.model.person.PersonContainsBirthdayPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 public class SearchCommandParserTest {
@@ -31,5 +32,9 @@ public class SearchCommandParserTest {
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t friends  \t", expectedSearchCommand);
+
+        // single birthday month represented by 2 digits
+        expectedSearchCommand = new SearchCommand(new PersonContainsBirthdayPredicate("05"));
+        assertParseSuccess(parser, "05", expectedSearchCommand);
     }
 }

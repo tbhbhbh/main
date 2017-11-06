@@ -17,6 +17,9 @@ public class Birthday {
     public static final String BIRTHDAY_VALIDATION_REGEX = "\\d{2}\\/\\d{2}\\/\\d{4}";
 
     public final String value;
+    private String birthdayDay;
+    private String birthdayMonth;
+    private String birthdayYear;
 
     /**
      * Validates given birthday.
@@ -30,6 +33,13 @@ public class Birthday {
             throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
         }
         this.value = trimmedBirthday;
+
+        if (trimmedBirthday.length() > 0) {
+            String[] allValues = this.value.split("/");
+            this.birthdayDay = allValues[0];    // get day
+            this.birthdayMonth = allValues[1];  // get month
+            this.birthdayYear = allValues[2];   // get year
+        }
     }
 
     /**
@@ -37,6 +47,11 @@ public class Birthday {
      */
     public static boolean isValidBirthday(String test) {
         return test.matches(BIRTHDAY_VALIDATION_REGEX);
+    }
+
+    public String getBirthdayMonth() {
+        requireNonNull(birthdayMonth);
+        return birthdayMonth;
     }
 
     @Override
