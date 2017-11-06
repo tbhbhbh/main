@@ -69,7 +69,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
                 .map(tag -> tag.tagName)
                 .collect(Collectors.toList());
 
-        
+
 
     }
 

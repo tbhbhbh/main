@@ -1,4 +1,3 @@
-//@@author tbhbhbh
 package seedu.address.logic.commands;
 
 import static junit.framework.TestCase.assertFalse;
@@ -6,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
@@ -20,10 +20,12 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.PersonContainsBirthdayPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 import seedu.address.model.person.ReadOnlyPerson;
 
 public class SearchCommandTest {
+    //@@author tbhbhbh
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
@@ -56,14 +58,14 @@ public class SearchCommandTest {
     @Test
     public void execute_zeroKeywords_noPersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        SearchCommand command = prepareCommand(" ");
+        SearchCommand command = prepareSearchKeywordsCommand(" ");
         assertCommandSuccess(command, expectedMessage, Collections.emptyList());
     }
 
     @Test
     public void execute_tagThenName_personFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-        SearchCommand command = prepareCommand("owesMoney Benson");
+        SearchCommand command = prepareSearchKeywordsCommand("owesMoney Benson");
         assertCommandSuccess(command, expectedMessage, Collections.singletonList(BENSON));
 
     }
@@ -71,14 +73,31 @@ public class SearchCommandTest {
     @Test
     public void execute_nameThenTag_personFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-        SearchCommand command = prepareCommand("Benson owesMoney");
+        SearchCommand command = prepareSearchKeywordsCommand("Benson owesMoney");
         assertCommandSuccess(command, expectedMessage, Collections.singletonList(BENSON));
+    }
+    //@@author conantteo
+    @Test
+    public void execute_birthdayMonth_personFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        SearchCommand command = prepareSearchBirthdayCommand("05");
+        assertCommandSuccess(command, expectedMessage, Collections.singletonList(CARL));
     }
 
     /**
-     * Parses {@code userInput} into a {@code SearchCommand}.
+     * Parses {@code userInput} which is a birthday month represented by 2 digits into a {@code SearchCommand}.
      */
-    public SearchCommand prepareCommand(String userInput) {
+    public SearchCommand prepareSearchBirthdayCommand(String userInput) {
+        SearchCommand command = new SearchCommand(new PersonContainsBirthdayPredicate(userInput));
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        return command;
+    }
+
+    //@@author tbhbhbh
+    /**
+     * Parses {@code userInput} which are keywords into a {@code SearchCommand}.
+     */
+    public SearchCommand prepareSearchKeywordsCommand(String userInput) {
         SearchCommand command =
                 new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+"))));
         command.setData(model, new CommandHistory(), new UndoRedoStack());
