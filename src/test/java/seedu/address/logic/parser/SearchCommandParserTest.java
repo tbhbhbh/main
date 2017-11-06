@@ -18,9 +18,11 @@ public class SearchCommandParserTest {
     private SearchCommandParser parser = new SearchCommandParser();
 
     @Test
-    public void parse_emptyArg_throwsParseException() {
+    public void parse_invalidArgs_throwsParseException() {
         assertParseFailure(parser, "     ",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.KEYWORD_USAGE));
+        assertParseFailure(parser, "102",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.BIRTHDAY_USAGE));
     }
 
     @Test

@@ -2,13 +2,13 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.model.person.Birthday.BIRTHDAY_MONTH_REGEX;
 
 import java.util.Arrays;
 
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.SearchCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Birthday;
 import seedu.address.model.person.PersonContainsBirthdayPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
@@ -30,9 +30,9 @@ public class SearchCommandParser implements Parser<SearchCommand> {
         }
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
-        // Single keyword as argument and check that it contains an non-zero integer
+        // Single keyword as argument and check that it contains an non-zero integer and is a valid birthday month
         if (nameKeywords.length == 1 && StringUtil.isNonZeroUnsignedInteger(nameKeywords[0])) {
-            if (nameKeywords[0].matches(BIRTHDAY_MONTH_REGEX)) {
+            if (Birthday.isValidBirthdayMonth(nameKeywords[0])) {
                 return new SearchCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
             } else {
                 throw new ParseException(
