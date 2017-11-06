@@ -57,9 +57,9 @@ public class SearchCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 7);
         SearchCommand command = prepareSearchKeywordsCommand(" ");
-        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+        assertCommandSuccess(command, expectedMessage, model.getFilteredPersonList());
     }
 
     @Test

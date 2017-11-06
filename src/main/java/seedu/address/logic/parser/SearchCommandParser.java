@@ -4,7 +4,6 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.SearchCommand;
@@ -34,6 +33,7 @@ public class SearchCommandParser implements Parser<SearchCommand> {
         if (nameKeywords.length == 1 && StringUtil.isNonZeroUnsignedInteger(nameKeywords[0])) {
             return new SearchCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
         }
+
         return new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
     }
 
