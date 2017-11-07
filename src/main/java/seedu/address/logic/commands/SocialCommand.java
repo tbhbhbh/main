@@ -30,8 +30,8 @@ public class SocialCommand extends Command {
             + "CHOSEN_SOCIAL_MEDIA: ig or tw\n"
             + "Example: " + COMMAND_WORD + " 1 ig";
 
-    public static final String INSTAGRAM_URL_PREFIX = "https://instagram.com/";
-    public static final String TWITTER_URL_PREFIX = "https://twitter.com/";
+    public static final String INSTAGRAM_URL_PREFIX = "https://www.instagram.com/";
+    public static final String TWITTER_URL_PREFIX = "https://www.twitter.com/";
 
     private final Index index;
     private final String socialMedia;

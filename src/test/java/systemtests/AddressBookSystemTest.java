@@ -3,6 +3,7 @@ package systemtests;
 import static guitests.guihandles.WebViewUtil.waitUntilBrowserLoaded;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static seedu.address.logic.commands.SocialCommand.INSTAGRAM_URL_PREFIX;
 import static seedu.address.ui.BrowserPanel.DEFAULT_PAGE;
 import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_PREFIX;
 import static seedu.address.ui.BrowserPanel.GOOGLE_SEARCH_URL_SUFFIX;
@@ -183,6 +184,7 @@ public abstract class AddressBookSystemTest {
         assertFalse(getPersonListPanel().isAnyCardSelected());
     }
 
+    //@@author tbhbhbh
     /**
      * Asserts that the browser's url is changed to display the details of the person in the person list panel at
      * {@code expectedSelectedCardIndex}, and only the card at {@code expectedSelectedCardIndex} is selected.
@@ -191,10 +193,10 @@ public abstract class AddressBookSystemTest {
      */
     protected void assertSelectedCardChanged(Index expectedSelectedCardIndex) {
         String selectedCardName = getPersonListPanel().getHandleToSelectedCard().getName();
+        String instagramName = getInstagramNameFromFullName(selectedCardName);
         URL expectedUrl;
         try {
-            expectedUrl = new URL(GOOGLE_SEARCH_URL_PREFIX + selectedCardName.replaceAll(" ", "+")
-                    + GOOGLE_SEARCH_URL_SUFFIX);
+            expectedUrl = new URL(INSTAGRAM_URL_PREFIX + instagramName + "/");
         } catch (MalformedURLException mue) {
             throw new AssertionError("URL expected to be valid.");
         }
@@ -202,6 +204,7 @@ public abstract class AddressBookSystemTest {
 
         assertEquals(expectedSelectedCardIndex.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
     }
+    //@@author
 
     /**
      * Asserts that the browser's url and the selected card in the person list panel remain unchanged.
@@ -271,4 +274,33 @@ public abstract class AddressBookSystemTest {
     protected Model getModel() {
         return testApp.getModel();
     }
+
+    //@@author tbhbhbh
+    /**
+     * Returns the person's instagram name from his/her full name.
+     */
+    private String getInstagramNameFromFullName(String fullName) {
+
+        switch(fullName) {
+        case "Alice Pauline":
+            return "alice_pauline";
+        case "Benson Meier":
+            return "meier";
+        case "Carl Kurz":
+            return "kurz";
+        case "Daniel Meier":
+            return "meier_dan";
+        case "Elle Meyer":
+            return "meyer_elle";
+        case "Fiona Kunz":
+            return "kunz";
+        case "George Best":
+            return "iamthebest";
+        case "Amy Bee":
+            return "amy_bee";
+        }
+
+        return "failed";
+    }
+    //@@author
 }
