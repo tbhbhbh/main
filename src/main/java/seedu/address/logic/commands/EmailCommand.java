@@ -20,7 +20,7 @@ public class EmailCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Email one or more person identified by the index number used in the last person listing.\n"
-            + "Parameters: INDEX [INDEX]... (must be a positive integer)\n"
+            + "Parameters: INDEX [INDEX]... (must be a positive and no repeated integers)\n"
             + "Example: " + COMMAND_WORD + " 1" + " [2]" + " [3]";
 
     public static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Email Person: %1$s";
@@ -43,13 +43,11 @@ public class EmailCommand extends Command {
                         + targetIndex.getOneBased());
             }
             ReadOnlyPerson personToEmail = lastShownList.get(targetIndex.getZeroBased());
-            persons.append(", ");
-            persons.append(personToEmail.getName().toString());
-            addresses.append(" ");
             if (personToEmail.getEmail().toString().isEmpty()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL + targetIndex.getOneBased());
             }
-            addresses.append(personToEmail.getEmail().toString());
+            persons.append(", " + personToEmail.getName().toString());
+            addresses.append(" " + personToEmail.getEmail().toString());
         }
 
         String allPersons = persons.toString().trim().substring(2, persons.length());

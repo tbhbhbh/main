@@ -28,6 +28,12 @@ public class ExportCommandParserTest {
         assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
     }
 
+    @Test
+    public void parse_duplicatedArgs_throwsParseException() {
+        assertParseFailure(parser, "1 1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ParserUtil.MESSAGE_INDEX_DUPLICATES));
+    }
+
     /**
      * Returns a {@code ExportCommand} with the parameter {@code index}.
      * @param index is an index specified by user input.

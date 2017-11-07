@@ -12,14 +12,17 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
-            "Birthday format should be 'DD/MM/YYYY', and it should not be blank";
+            "Birthday format should be 'DD/MM/YYYY', and it should not be blank\n"
+                    + "Please check if the birthday is valid and is not a leap day";
 
-    public static final String BIRTHDAY_VALIDATION_REGEX = "\\d{2}\\/\\d{2}\\/\\d{4}";
+    public static final String BIRTHDAY_VALIDATION_REGEX = "^(?:(?:31(/)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)"
+            + "(/)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(/)0?2\\3(?:(?:"
+            + "(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?"
+            + "[1-9]|1\\d|2[0-8])(/)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
+    public static final String BIRTHDAY_MONTH_REGEX = "([0][1-9])|([1][0-2])";
 
     public final String value;
-    private String birthdayDay;
     private String birthdayMonth;
-    private String birthdayYear;
 
     /**
      * Validates given birthday.
@@ -31,26 +34,28 @@ public class Birthday {
         String trimmedBirthday = birthday.trim();
         if (birthday.length() != 0 && !isValidBirthday(trimmedBirthday)) {
             throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
+        } else if (isValidBirthday(trimmedBirthday)) {
+            this.birthdayMonth = trimmedBirthday.split("/")[1];
         }
         this.value = trimmedBirthday;
-
-        if (trimmedBirthday.length() > 0) {
-            String[] allValues = this.value.split("/");
-            this.birthdayDay = allValues[0];    // get day
-            this.birthdayMonth = allValues[1];  // get month
-            this.birthdayYear = allValues[2];   // get year
-        }
     }
 
+
     /**
-     * Returns true if a given string is a valid person phone number.
+     * Returns true if a given string is a valid person birthday.
      */
     public static boolean isValidBirthday(String test) {
         return test.matches(BIRTHDAY_VALIDATION_REGEX);
     }
 
+    /**
+     * Returns true if a given String matches exactly 2 digits from 01 to 12 which is a valid birthday month.
+     */
+    public static boolean isValidMonth(String test) {
+        return test.matches(BIRTHDAY_MONTH_REGEX);
+    }
+
     public String getBirthdayMonth() {
-        requireNonNull(birthdayMonth);
         return birthdayMonth;
     }
 
