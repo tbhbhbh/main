@@ -296,9 +296,9 @@ public abstract class AddressBookSystemTest {
             return "iamthebest";
         case "Amy Bee":
             return "amy_bee";
-        }
-
+        default:
         return "failed";
+        }
     }
     //@@author
 }
