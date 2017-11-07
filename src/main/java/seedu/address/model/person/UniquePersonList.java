@@ -28,7 +28,7 @@ public class UniquePersonList implements Iterable<Person> {
     private final ObservableList<Person> internalList = FXCollections.observableArrayList();
     // used by asObservableList()
     private final ObservableList<ReadOnlyPerson> mappedList = EasyBind.map(internalList, (person) -> person);
-    private Comparator<Person> comparator = Comparator.comparing(Person::getName);
+    private Comparator<Person> comparator = Comparator.comparing(Person::getLowerCaseNameToString);
 
     /**
      * Returns true if the list contains an equivalent person as the given argument.
