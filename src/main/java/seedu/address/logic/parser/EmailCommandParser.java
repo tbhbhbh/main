@@ -6,6 +6,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.IndexArrayUtil;
 import seedu.address.logic.commands.EmailCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -29,11 +30,15 @@ public class EmailCommandParser implements Parser<EmailCommand> {
                 Index index = ParserUtil.parseIndex(indexes[i]);
                 indexArray[i] = index;
             }
-            return new EmailCommand(indexArray);
         } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
         }
+        if (!IndexArrayUtil.isDistinct(indexArray)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
+        }
+        return new EmailCommand(indexArray);
     }
 
 }

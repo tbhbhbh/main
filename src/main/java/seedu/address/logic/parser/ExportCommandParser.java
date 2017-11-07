@@ -5,6 +5,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.IndexArrayUtil;
 import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -32,11 +33,15 @@ public class ExportCommandParser implements Parser<ExportCommand> {
                     Index index = ParserUtil.parseIndex(indices[i]);
                     indexArray[i] = index;
                 }
-                return new ExportCommand(indexArray);
             } catch (IllegalValueException e) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
             }
+            if (!IndexArrayUtil.isDistinct(indexArray)) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
+            }
+            return new ExportCommand(indexArray);
         }
     }
 }

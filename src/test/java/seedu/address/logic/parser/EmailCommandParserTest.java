@@ -20,16 +20,18 @@ public class EmailCommandParserTest {
     @Test
     public void parse_validArgs_returnsEmailCommand() {
         assertParseSuccess(parser, "1", prepareCommand(INDEX_FIRST_PERSON));
-    }
-
-    @Test
-    public void parse_multipleValidArgs_returnsEmailCommand() {
         assertParseSuccess(parser, "1 2", prepareCommand(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
         assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_duplicatedArgs_throwsParseException() {
+        assertParseFailure(parser, "1 1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ParserUtil.MESSAGE_INDEX_DUPLICATES));
     }
 
     /**
