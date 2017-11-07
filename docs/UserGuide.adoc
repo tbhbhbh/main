@@ -366,7 +366,7 @@ Deletes the tag 'friends' from all persons with the 'friends' tag in the address
 
 Allows you to change the name of a tag belonging to all persons in the address book.
 
-Format: `tagedit OLD TAG NAME OLD_TAG_NAME NEW_TAG_NAME`
+Format: `tagedit OLD_TAG_NAME NEW_TAG_NAME`
 
 ****
 * Old tag must be an existing, valid tag
