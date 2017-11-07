@@ -1,24 +1,13 @@
 //@@author tbhbhbh
 package seedu.address.model.person;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.Logic;
-import seedu.address.logic.LogicManager;
-import seedu.address.logic.parser.Parser;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
 import seedu.address.model.tag.Tag;
-import seedu.address.storage.AddressBookStorage;
 
 /**
  * Tests that a {@code ReadOnlyPerson} matches any or all of the keywords given depending on the number of keywords.
@@ -80,37 +69,45 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
                 && this.keywords.equals(((PersonContainsKeywordsPredicate) other).keywords)); // state check
     }
 
-    public boolean findNamesWithFirstChar(char firstChar) {
+    private boolean findNamesWithFirstChar(char firstChar) {
         return (nameStartsWith(firstChar));
 
     }
 
-    public boolean keywordIsSingleCharacter() {
+    /**
+     * This method returns true if the keyword given in the command is a single character
+     */
+    private boolean keywordIsSingleCharacter() {
         if (keywords.toString().length() == 3) {
             return true;
         }
         return false;
     }
 
-    public boolean nameStartsWith(char character) {
+    /**
+     * This method returns true if any part of a person's name begins with the given character
+     */
+    private boolean nameStartsWith(char character) {
         for (String name : nameArr) {
-            if (name.toLowerCase().charAt(0) == character) return true;
+            if (name.toLowerCase().charAt(0) == character) {
+                return true;
+            }
         }
         return false;
     }
 
-    public void clearMasterAndTagLists() {
+    private void clearMasterAndTagLists() {
         masterList.clear();
         tagList.clear();
     }
 
-    public void setUpCaseInsensitiveKeywords() {
+    private void setUpCaseInsensitiveKeywords() {
         for (int i = 0; i < keywords.size(); i++) {
             keywordsLower.add(keywords.get(i).toLowerCase());
         }
     }
 
-    void setUpTagList() {
+    private void setUpTagList() {
         tagList.clear();
         try {
             tagList.add(new Tag(keywords.get(0)));
@@ -119,11 +116,11 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
         }
     }
 
-    public void setUpMasterList(ReadOnlyPerson person) {
+    private void setUpMasterList(ReadOnlyPerson person) {
 
         tagList.addAll(person.getTags());
         for (int i = 0; i < tagList.size(); i++) {
-            String tagNameToAdd = tagList.get(i).toString().substring(1,tagList.get(i).toString().length()-1);
+            String tagNameToAdd = tagList.get(i).toString().substring(1, tagList.get(i).toString().length() - 1);
             masterList.add(tagNameToAdd.toLowerCase());
         }
 
