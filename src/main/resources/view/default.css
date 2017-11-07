@@ -12,7 +12,7 @@
 }
 
 .list-cell:filled:hover{
-    -fx-background-color: #424d5f;
+    -fx-background-color: #00bfbf;
 }
 
 .list-cell:filled:hover .label{
@@ -20,7 +20,7 @@
 }
 
 .list-cell:filled:selected{
-    -fx-background-color: #00bfbf;
+    -fx-background-color: #424d5f;
 }
 
 .list-cell:empty{
