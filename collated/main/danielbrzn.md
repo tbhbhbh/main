@@ -40,6 +40,34 @@ public class CloseProgressEvent extends BaseEvent {
 
 }
 ```
+###### \java\seedu\address\commons\events\ui\ShowLocationEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * An event requesting to show the location of a Person.
+ */
+public class ShowLocationEvent extends BaseEvent {
+
+    private final String googleMapsUrl;
+
+    public ShowLocationEvent(String mapsUrl) {
+        this.googleMapsUrl = mapsUrl;
+    }
+
+    public String getGoogleMapsUrl() {
+        return googleMapsUrl;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
+}
+```
 ###### \java\seedu\address\commons\events\ui\ShowProgressEvent.java
 ``` java
 package seedu.address.commons.events.ui;
@@ -122,7 +150,7 @@ public class GoogleUtil {
     /**
      * Returns true if Google is reachable
      */
-    public static boolean isReachable() throws IOException {
+    public static boolean isReachable() {
         Socket socket = new Socket();
         InetSocketAddress googleAddr = new InetSocketAddress(GOOGLE_ADDRESS, HTTP_PORT);
 
@@ -270,7 +298,8 @@ public class AliasCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New alias added: %1$s for %2$s";
     public static final String MESSAGE_OVERRIDE = "Alias %1$s is now mapped to %2$s instead of %3$s";
     public static final String MESSAGE_INVALID_COMMAND = "Command entered is invalid.";
-
+    public static final String MESSAGE_RESTRICTED_ALIAS = "Alias entered is a command name and cannot be mapped. "
+            + "Choose a different alias.";
     private final String alias;
     private final String actualCommand;
 
@@ -285,6 +314,9 @@ public class AliasCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         if (AddressBookParser.checkValidCommand(actualCommand)) {
+            if (AddressBookParser.checkValidCommand(alias)) {
+                throw new CommandException(MESSAGE_RESTRICTED_ALIAS);
+            }
             String mapping = model.getAlias(this.alias);
             model.addAlias(this.alias, actualCommand);
             if (mapping == null) {
@@ -392,13 +424,8 @@ public class ImportCommand extends UndoableCommand {
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         // Check for connectivity to Google
-        try {
-            if (!GoogleUtil.isReachable()) {
-                throw new CommandException(MESSAGE_CONNECTION_FAILURE);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new CommandException(MESSAGE_FAILURE);
+        if (!GoogleUtil.isReachable()) {
+            throw new CommandException(MESSAGE_CONNECTION_FAILURE);
         }
         Thread thread = new Thread(() -> {
             try {
@@ -498,6 +525,101 @@ public class ImportCommand extends UndoableCommand {
 
 }
 ```
+###### \java\seedu\address\logic\commands\LocationCommand.java
+``` java
+
+package seedu.address.logic.commands;
+
+import java.util.List;
+
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.ShowLocationEvent;
+import seedu.address.commons.util.GoogleUtil;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.ReadOnlyPerson;
+
+/**
+ * Accesses the person's location in Google Maps on the browser.
+ */
+
+public class LocationCommand extends Command {
+
+    public static final String COMMAND_WORD = "location";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Opens up the location of the person at the selected"
+            + " index in Google Maps. "
+            + "Parameters: "
+            + "INDEX "
+            + "Example: " + COMMAND_WORD + " "
+            + "1 ";
+
+    public static final String GOOGLE_MAPS_URL_PREFIX = "https://www.google.com.sg/maps/place/";
+    public static final String MESSAGE_SUCCESS = "Loaded location of %1$s";
+    public static final String MESSAGE_NO_ADDRESS = "%1$s does not have an address.";
+    public static final String MESSAGE_FAILURE = "Failed to load Google Maps. Check your internet connection.";
+
+    private final Index index;
+
+    public LocationCommand(Index index) {
+        this.index = index;
+    }
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+
+        // Check if index is valid
+        if (index.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+
+        // Check if Google is reachable
+        if (!GoogleUtil.isReachable()) {
+            throw new CommandException(MESSAGE_FAILURE);
+        }
+
+        ReadOnlyPerson current = lastShownList.get(index.getZeroBased());
+
+        // Check if Person has an address
+        if (current.getAddress().toString().length() == 0) {
+            throw new CommandException(String.format(MESSAGE_NO_ADDRESS, current.getName().toString()));
+        }
+
+        String finalUrl = GOOGLE_MAPS_URL_PREFIX + parseAddressForUrl(current.getAddress());
+        EventsCenter.getInstance().post(new ShowLocationEvent(finalUrl));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, current.getName().toString()));
+    }
+
+    /**
+     * Parses address into a URL-appendable string
+     */
+    public String parseAddressForUrl(Address address) {
+        StringBuilder sb = new StringBuilder();
+        String prefix = "";
+        String[] addressArray = address.toString().split(" ");
+
+        for (String part : addressArray) {
+            sb.append(prefix);
+            prefix = "+";
+            sb.append(part);
+        }
+
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof LocationCommand // instanceof handles nulls
+                && this.index.equals(((LocationCommand) other).index)); // state check
+    }
+
+}
+
+```
 ###### \java\seedu\address\logic\parser\AddCommandParser.java
 ``` java
     /**
@@ -553,10 +675,9 @@ public class ImportCommand extends UndoableCommand {
         case TagEditCommand.COMMAND_WORD:
         case EmailCommand.COMMAND_WORD:
         case ImportCommand.COMMAND_WORD:
-        case SearchCommand.COMMAND_WORD:
         case ExportCommand.COMMAND_WORD:
         case SocialCommand.COMMAND_WORD:
-
+        case LocationCommand.COMMAND_WORD:
             return true;
         default:
             return false;
@@ -630,6 +751,38 @@ public class ImportCommandParser implements Parser<ImportCommand> {
                     ImportCommand.MESSAGE_USAGE));
         } else {
             return new ImportCommand(trimmedInput);
+        }
+    }
+}
+```
+###### \java\seedu\address\logic\parser\LocationCommandParser.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.LocationCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+
+/**
+ * Parses input arguments and creates a new LocationCommand object
+ */
+public class LocationCommandParser implements Parser<LocationCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the LocationCommand
+     * and returns a LocationCommand object for execution.
+     * @throws ParseException if the user input does not conform to the expected format
+     */
+    public LocationCommand parse(String args) throws ParseException {
+        try {
+            Index index = ParserUtil.parseIndex(args);
+            return new LocationCommand(index);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, LocationCommand.MESSAGE_USAGE));
         }
     }
 }
@@ -929,15 +1082,14 @@ public class BrowserWindow extends UiPart<Region> {
 ```
 ###### \java\seedu\address\ui\MainWindow.java
 ``` java
-    /**
-     * This method will use the built-in browser to open the selected index's social media profile (either Twitter
-     * or Instagram).
-     * @param userName is a UserName of the person
-     */
-    public void handleSocial(UserName userName, String socialMediaLink) {
-        browserPanel.loadPage(socialMediaLink + userName);
-    }
 
+    /**
+     * Opens the provided Google Maps URL in the built-in browser
+     * @param googleMapsUrl is the full URL of a person's location
+     */
+    public void handleLocation(String googleMapsUrl) {
+        browserPanel.loadPage(googleMapsUrl);
+    }
 
     /**
      * Opens the progress window.
@@ -960,6 +1112,13 @@ public class BrowserWindow extends UiPart<Region> {
 ```
 ###### \java\seedu\address\ui\MainWindow.java
 ``` java
+
+    @Subscribe
+    private void handleShowLocationEvent(ShowLocationEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        handleLocation(event.getGoogleMapsUrl());
+    }
+
     @Subscribe
     private void handleSocialEvent(SocialRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
