@@ -8,6 +8,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Rule;
@@ -108,12 +109,10 @@ public class EmailCommandTest {
     }
 
     @Test
-    public void execute_multipleIndexWithInvalidIndex_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        EmailCommand emailCommand = prepareCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
-
-        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
-                + outOfBoundIndex.getOneBased();
+    public void execute_validIndexWithoutEmail_throwsCommandException() {
+        EmailCommand emailCommand = prepareCommand(INDEX_THIRD_PERSON);
+        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_TO_EMAIL
+                + INDEX_THIRD_PERSON.getOneBased();
 
         assertCommandFailure(emailCommand, model, expectedMessage);
     }

@@ -37,6 +37,22 @@ public class IndexArrayUtil {
     }
 
     /**
+     * Check if IndexArray {@code arr} has distinct Index with no duplicates.
+     * @return false if there are at least one repeated index in the array.
+     */
+    public static boolean isDistinct(Index[] arr) {
+        boolean isDistinct = true;
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i].equals(arr[j])) {
+                    isDistinct = false;
+                }
+            }
+        }
+        return isDistinct;
+    }
+
+    /**
      * Swap elements in an array by its position.
      * @param arr is a given array, it cannot be null
      * @param pos is a valid position to be swap with the next element.

@@ -41,7 +41,7 @@ public class TypicalPersons {
             .withTwitter("meier").withInstagram("meier")
             .withDisplayPic("/images/defaultperson.png").withTags("owesMoney", "friends").build();
     public static final ReadOnlyPerson CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withEmail("heinz@example.com").withAddress("wall street").withBirthday("05/05/1997")
+            .withEmail("").withAddress("wall street").withBirthday("05/05/1997")
             .withTwitter("kurz").withInstagram("kurz")
             .withDisplayPic("/images/defaultperson.png").build();
     public static final ReadOnlyPerson DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")

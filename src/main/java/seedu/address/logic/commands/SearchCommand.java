@@ -14,10 +14,14 @@ public class SearchCommand extends Command {
     //@@author tbhbhbh
     public static final String COMMAND_WORD = "search";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Searches for all persons whose information contain "
+    public static final String KEYWORD_USAGE = COMMAND_WORD + ": Searches for all persons whose information contain "
             + "any of the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice colleagues";
+    public static final String BIRTHDAY_USAGE = COMMAND_WORD + ": Search for persons whose birthday month is "
+            + "represented by [01-12] for [January to December].\n"
+            + "Parameters: MM (must be a non-zero integer 01 to 12)\n"
+            + "Example: " + COMMAND_WORD + " 09";
 
     private final Predicate<ReadOnlyPerson> searchPredicate;
 

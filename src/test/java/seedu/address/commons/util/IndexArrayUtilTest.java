@@ -21,18 +21,8 @@ public class IndexArrayUtilTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void compareIndexArrays_bothNullArrays_throwException() {
-        assertExceptionThrown(NullPointerException.class, null, null, Optional.empty());
-    }
-
-    @Test
-    public void compareIndexArrays_oneNullArray_throwException() {
+    public void compareIndexArrays_atLeastOneNullArray_throwException() {
         assertExceptionThrown(NullPointerException.class, new Index[1], null, Optional.empty());
-    }
-
-    @Test
-    public void compareIndexArrays_arraysContainsZeroElement_validComparison() {
-        assertTrue(assertComparison(new Index[0], new Index[0]));
     }
 
     @Test
@@ -41,7 +31,7 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void compareIndexArrays_sameLengthArraysDiffElements_invalidComparison() {
+    public void compareIndexArrays_sameLengthDiffElements_invalidComparison() {
         Index[] arr1 = {INDEX_FIRST_PERSON};
         Index[] arr2 = {INDEX_SECOND_PERSON};
         assertFalse(assertComparison(arr1, arr2));
@@ -55,7 +45,7 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void swap_positionZero_successful() {
+    public void swapFirstWithSecond_positionChanged_successful() {
         Index[] beforeSwap = {INDEX_THIRD_PERSON, INDEX_SECOND_PERSON, INDEX_FIRST_PERSON};
         Index[] afterSwap = {INDEX_SECOND_PERSON, INDEX_THIRD_PERSON, INDEX_FIRST_PERSON};
         IndexArrayUtil.swapElements(beforeSwap, 0);
@@ -65,12 +55,15 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void noSwap_noChangeInPosition() {
-        Index[] beforeSwap = {INDEX_THIRD_PERSON, INDEX_SECOND_PERSON, INDEX_FIRST_PERSON};
-        Index[] afterSwap = {INDEX_SECOND_PERSON, INDEX_THIRD_PERSON, INDEX_FIRST_PERSON};
-        assertFalse(beforeSwap[0].equals(afterSwap[0]));
-        assertFalse(beforeSwap[1].equals(afterSwap[1]));
-        assertTrue(beforeSwap[2].equals(afterSwap[2]));
+    public void array_isDistinct() {
+        Index[] distinctArray = {INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON};
+        assertTrue(IndexArrayUtil.isDistinct(distinctArray));
+    }
+
+    @Test
+    public void array_isNotDistinct() {
+        Index[] notDistinctArray = {INDEX_FIRST_PERSON, INDEX_FIRST_PERSON, INDEX_THIRD_PERSON};
+        assertFalse(IndexArrayUtil.isDistinct(notDistinctArray));
     }
 
     private void assertExceptionThrown(Class<? extends Throwable> exceptionClass, Index[] arr1, Index[] arr2,
