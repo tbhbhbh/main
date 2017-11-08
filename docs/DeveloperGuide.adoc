@@ -340,6 +340,7 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+// tag::email[]
 === Email mechanism
 
 The email mechanism is facilitated by java `Desktop` class which allows java application to launch default mail client registered on the users' native desktop to handle a Uniform Resource Indentifier `URI`.
@@ -425,6 +426,7 @@ the email to their recipients.
 **Cons:** Not all users use the same email services such as Gmail or Outlook. Moreover,
 it is difficult to authorize every email services for all users since it is often dependent
 on the type of email services they need. +
+// end::email[]
 
 // tag::import[]
 === Import mechanism
@@ -509,6 +511,7 @@ Threading has to be used to allow the progress bar to update as the `importConta
 **Cons:** Requires implementing a new class to listen on the local web server for the authorization code instead of using the provided `LocalServerReceiver` from the Google Client Library. +
 // end::import[]
 
+// tag::export[]
 === Export mechanism
 
 The export mechanism is facilitated by java `File` and `FileOutputStream` class. It supports writing contact information into a vCard format file.
@@ -558,6 +561,7 @@ fos = new FileOutputStream(file);
 ---------------
 
 Finally, the directory for the "contacts.vcf" will be shown to the user and the file can be imported to other applications.
+// end::export[]
 
 === Display Picture Mechanism
 This feature was implemented to facilitate users to remember their friends with ease. It allows user to select display picture for each of their contacts if they have a picture ready. Otherwise, they can simple assign a default display picture for them.
