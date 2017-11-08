@@ -115,6 +115,7 @@ public class ParserUtil {
     }
 
     //@@author
+    //@@author JunQuann
     /**
      * Parses a {@code Optional<String> displayPic} into an {@code Optional<DisplayPic>}
      * if {@code displayPic} is present.
@@ -122,8 +123,9 @@ public class ParserUtil {
      */
     public static Optional<DisplayPic> parseDisplayPic(Optional<String> displayPic) throws IllegalValueException {
         requireNonNull(displayPic);
-        return displayPic.isPresent() ? Optional.of(new DisplayPic(displayPic.get())) : Optional.empty();
+        return displayPic.isPresent() ? Optional.of(new DisplayPic(displayPic.get(), false)) : Optional.empty();
     }
+    //@@author
 
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.

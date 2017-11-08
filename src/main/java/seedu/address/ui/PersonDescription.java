@@ -1,7 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
-
 import java.io.File;
 import java.util.logging.Logger;
 
@@ -18,13 +16,13 @@ import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.util.AppUtil;
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author JunQuann
 /**
- *
+ * An UI component that displays the detailed information of a selected person
  */
 public class PersonDescription extends UiPart<StackPane> {
 
     private static final String FXML = "PersonDescription.fxml";
-    private static final String DEFAULT_DP = "/images/defaultperson.png";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -58,7 +56,6 @@ public class PersonDescription extends UiPart<StackPane> {
 
     public PersonDescription() {
         super(FXML);
-        initIcons();
         registerAsAnEventHandler(this);
     }
 
@@ -84,20 +81,13 @@ public class PersonDescription extends UiPart<StackPane> {
     private void initDisplayPic(ReadOnlyPerson person) {
         Image displayPictureImg;
         String profilePic = person.getDisplayPic().toString();
-        if (profilePic.equals(DEFAULT_DISPLAY_PIC)) {
+        if (profilePic.equals(MainWindow.DEFAULT_DP)) {
             displayPictureImg = AppUtil.getImage(profilePic);
         } else {
             File imgFile = new File(person.getDisplayPic().toString());
             displayPictureImg = new Image(imgFile.toURI().toString());
         }
         displayPic.setFill(new ImagePattern(displayPictureImg));
-    }
-
-    /**
-     *
-     */
-    private void initIcons() {
-
     }
 
     @Subscribe
