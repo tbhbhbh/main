@@ -20,12 +20,13 @@ in the application itself without having to switch to a browser or check their p
 == Features
 
 ====
-*Since v1.4*
+*Since v1.5rc*
 
-* Add your contacts' Instagram/Twitter accounts
-* View your groups at a glance with new groups tab
-* New Material Design inspired UI, and an improved PersonCard
-* Directly access your contacts' Instagram/Twitter accounts with the new *social* command
+* View your contacts' addresses quickly in Google Maps
+* Search by first letter of name
+* Search by birthday month
+* Automatically moves your contact's display pictures
+
 ====
 
 
@@ -41,16 +42,17 @@ in the application itself without having to switch to a browser or check their p
 * Import your contacts from Google Contacts
 * Automatic list sorting
 * Add pictures to every contact
-*
+* Add your contacts' Instagram/Twitter accounts
+* View your groups at a glance with new groups tab
+* New Material Design inspired UI, and an improved PersonCard
+* Directly access your contacts' Instagram/Twitter accounts with the new *social* command
 
 ====
 
 ====
 *Coming in v2.0*
 
-* Search by initials
 * Multiple themes to suit your needs
-* View your contacts' addresses quickly in Google Maps
 * Secure your application with a PIN
 * Import your contacts from Apple iCloud
 
