@@ -6,13 +6,15 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import seedu.address.commons.util.FileUtil;
 
 //@@author JunQuann
+
+/**
+ */
 public class ImageFileStorage {
 
     private String dirPath;
@@ -25,6 +27,11 @@ public class ImageFileStorage {
         return dirPath + imageName;
     }
 
+    /**
+     * @param currentImagePath
+     * @param imageName
+     * @throws IOException
+     */
     public void copyImage(String currentImagePath, String imageName) throws IOException {
         File currentImage = new File(currentImagePath);
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(currentImage));
@@ -33,7 +40,7 @@ public class ImageFileStorage {
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(newImagePath));
         boolean done = false;
 
-        while(!done) {
+        while (!done) {
 
             byte[] buf = new byte[1024];
             int readLength = bis.read(buf, 0, 1024);

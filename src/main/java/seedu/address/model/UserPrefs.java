@@ -47,9 +47,13 @@ public class UserPrefs {
         this.addressBookFilePath = addressBookFilePath;
     }
 
-    public String getDisplayPicDir() { return displayPicDir; }
+    public String getDisplayPicDir() {
+        return displayPicDir;
+    }
 
-    public void setDisplayPicDir(String displayPicDir) { this.displayPicDir = displayPicDir; }
+    public void setDisplayPicDir(String displayPicDir) {
+        this.displayPicDir = displayPicDir;
+    }
 
     public String getAddressBookName() {
         return addressBookName;

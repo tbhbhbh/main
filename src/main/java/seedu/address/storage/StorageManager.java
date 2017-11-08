@@ -27,7 +27,8 @@ public class StorageManager extends ComponentManager implements Storage {
     private ImageFileStorage imageFileStorage;
 
 
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage, ImageFileStorage imageFileStorage) {
+    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage,
+                          ImageFileStorage imageFileStorage) {
         super();
         this.addressBookStorage = addressBookStorage;
         this.userPrefsStorage = userPrefsStorage;
@@ -125,7 +126,7 @@ public class StorageManager extends ComponentManager implements Storage {
     @Subscribe
     public void handleNewImageEvent(NewImageEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Copying display picture to the designated folder"));
-        event.imagePath = getImageFilePath(event.imageName);
+        event.setImagePath(getImageFilePath(event.imageName));
         try {
             copyImageFile(event.currentImagePath, event.imageName);
         } catch (IOException e) {

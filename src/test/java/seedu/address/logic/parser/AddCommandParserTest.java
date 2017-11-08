@@ -119,7 +119,8 @@ public class AddCommandParserTest {
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-            + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY, new AddCommand(expectedPerson));
+            + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY,
+                new AddCommand(expectedPerson));
 
         // no address
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -128,7 +129,8 @@ public class AddCommandParserTest {
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-            + EMAIL_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY, new AddCommand(expectedPerson));
+            + EMAIL_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY,
+                new AddCommand(expectedPerson));
 
         // no birthday
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)

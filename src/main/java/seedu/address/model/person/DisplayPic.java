@@ -15,11 +15,11 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class DisplayPic {
 
+    private String newDisplayPicPath;
+    private String currentDisplayPic;
     private EventsCenter eventsCenter = EventsCenter.getInstance();
     private FileChooserEvent fileChooserEvent;
     private NewImageEvent newImageEvent;
-    private String currentDisplayPic;
-    public String newDisplayPicPath;
 
     public DisplayPic(String displayPicName, boolean isFromStorage) throws IllegalValueException {
         requireNonNull(displayPicName);
@@ -31,13 +31,20 @@ public class DisplayPic {
         }
     }
 
+    /**
+     * @param trimmedDisplayPicName
+     */
     private void initialiseDisplayPic(String trimmedDisplayPicName) {
         fileChooserEvent = new FileChooserEvent();
         raise(fileChooserEvent);
-        this.currentDisplayPic = fileChooserEvent.filePath;
+        this.currentDisplayPic = fileChooserEvent.getFilePath();
         newImageEvent = new NewImageEvent(trimmedDisplayPicName, currentDisplayPic);
         raise(newImageEvent);
-        this.newDisplayPicPath = newImageEvent.imagePath;
+        this.newDisplayPicPath = newImageEvent.getImagePath();
+    }
+
+    public String getNewDisplayPicPath() {
+        return newDisplayPicPath;
     }
 
     public void raise(BaseEvent event) {

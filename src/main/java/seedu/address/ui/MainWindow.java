@@ -236,7 +236,7 @@ public class MainWindow extends UiPart<Region> {
     @Subscribe
     private void handleFileChooserEvent(FileChooserEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Select your image from the file chooser"));
-        event.filePath = getDisplayPicPath();
+        event.setFilePath(getDisplayPicPath());
     }
     //@@author
 
