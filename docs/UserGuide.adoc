@@ -48,6 +48,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * Search by first letter of name
 * Search by birthday month
 * Automatically moves your contact's display pictures
+* Easily access your groups by clicking on the tags in the `Groups` panel
 
 ====
 
