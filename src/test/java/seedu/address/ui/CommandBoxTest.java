@@ -34,9 +34,8 @@ public class CommandBoxTest extends GuiUnitTest {
     public void setUp() throws TimeoutException {
         Model model = new ModelManager();
         Logic logic = new LogicManager(model, new UserPrefs());
-        Stage stage = FxToolkit.registerPrimaryStage();
 
-        CommandBox commandBox = new CommandBox(logic, stage);
+        CommandBox commandBox = new CommandBox(logic);
         commandBoxHandle = new CommandBoxHandle(getChildNode(commandBox.getRoot(),
                 CommandBoxHandle.COMMAND_INPUT_FIELD_ID));
         uiPartRule.setUiPart(commandBox);

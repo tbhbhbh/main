@@ -44,7 +44,6 @@ public class PersonUtil {
         sb.append(PREFIX_BIRTHDAY + person.getBirthday().value + " ");
         sb.append(PREFIX_TWITTER + person.getTwitterName().value + " ");
         sb.append(PREFIX_INSTAGRAM + person.getInstagramName().value + " ");
-        sb.append(PREFIX_DP + person.getDisplayPic().toString() + " ");
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
@@ -60,7 +59,6 @@ public class PersonUtil {
         sb.append(PREFIX_BIRTHDAY + person.getBirthday().value + " ");
         sb.append(PREFIX_TWITTER + person.getTwitterName().value + " ");
         sb.append(PREFIX_INSTAGRAM + person.getInstagramName().value + " ");
-        sb.append(PREFIX_DP + "N ");
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );
