@@ -20,10 +20,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.model.FileChooserEvent;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.EmailRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
@@ -43,6 +45,7 @@ import seedu.address.model.person.UserName;
  */
 public class MainWindow extends UiPart<Region> {
 
+    public static final String DEFAULT_DP = "/images/defaultperson.png";
     private static final String ICON = "/images/Icon.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
@@ -169,7 +172,7 @@ public class MainWindow extends UiPart<Region> {
                 logic.getFilteredPersonList().size());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        CommandBox commandBox = new CommandBox(logic, primaryStage);
+        CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
         tagListPanel = new TagListPanel(logic.getAllTags());
@@ -216,6 +219,26 @@ public class MainWindow extends UiPart<Region> {
         return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
+
+    //@@author JunQuann
+    public String getDisplayPicPath() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files", "*.jpg", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        } else {
+            return DEFAULT_DP;
+        }
+    }
+
+    @Subscribe
+    private void handleFileChooserEvent(FileChooserEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Select your image from the file chooser"));
+        event.filePath = getDisplayPicPath();
+    }
+    //@@author
 
     /**
      * Opens the help window.
