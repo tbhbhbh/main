@@ -182,6 +182,7 @@ Selects the 2nd person from the list of contacts listed.
 `select 1` +
 Selects the 1st person in the results of the `find` command.
 
+// tag::email[]
 === Sending an email to one or more person: `email`
 Emails one or more person identified by the index number used in the last person listing. +
 Format: `email INDEX [INDEX]...`
@@ -201,6 +202,7 @@ Send an email to the 2nd person and 3rd person from the list of contacts listed.
 * `find Betsy` +
 `email 1` +
 Send an email to the 1st person in the results of the `find` command.
+// end::email[]
 
 === Listing entered commands : `history`
 
@@ -308,6 +310,7 @@ will pop up to indicate progress of import.
 =======
 //end::import[]
 
+// tag::export[]
 === Exporting contacts : `export`
 
 Allows you to export contacts from the application.
@@ -328,6 +331,7 @@ Exports all contacts into a vCard format file.
 * `list` +
 `export 1 2` +
 Exports the 1st and 2nd person from the list of contacts listed.
+// end::export[]
 
 // tag::tagdelete[]
 === Deleting a tag : `tagdelete`
