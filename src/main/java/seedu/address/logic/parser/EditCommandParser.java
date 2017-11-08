@@ -11,6 +11,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TWITTER;
+import static seedu.address.ui.MainWindow.DEFAULT_DP;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -49,6 +50,8 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
 
+        fillDisplayPicPrefix(argMultimap);
+
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         try {
             ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME)).ifPresent(editPersonDescriptor::setName);
@@ -72,6 +75,12 @@ public class EditCommandParser implements Parser<EditCommand> {
         }
 
         return new EditCommand(index, editPersonDescriptor);
+    }
+
+    private void fillDisplayPicPrefix(ArgumentMultimap argMultimap) {
+        if (!argMultimap.getValue(PREFIX_DP).isPresent()) {
+            argMultimap.put(PREFIX_DP, DEFAULT_DP);
+        }
     }
 
     /**
