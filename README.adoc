@@ -26,6 +26,7 @@ in the application itself without having to switch to a browser or check their p
 * Search by first letter of name
 * Search by birthday month
 * Automatically moves your contact's display pictures
+* Easily access your groups by clicking on the tags in the `Groups` panel
 
 ====
 
