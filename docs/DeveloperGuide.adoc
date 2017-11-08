@@ -340,6 +340,7 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+// tag::email[]
 === Email mechanism
 
 The email mechanism is facilitated by java `Desktop` class which allows java application to launch default mail client registered on the users' native desktop to handle a Uniform Resource Indentifier `URI`.
@@ -425,6 +426,7 @@ the email to their recipients.
 **Cons:** Not all users use the same email services such as Gmail or Outlook. Moreover,
 it is difficult to authorize every email services for all users since it is often dependent
 on the type of email services they need. +
+// end::email[]
 
 // tag::import[]
 === Import mechanism
@@ -509,6 +511,7 @@ Threading has to be used to allow the progress bar to update as the `importConta
 **Cons:** Requires implementing a new class to listen on the local web server for the authorization code instead of using the provided `LocalServerReceiver` from the Google Client Library. +
 // end::import[]
 
+// tag::export[]
 === Export mechanism
 
 The export mechanism is facilitated by java `File` and `FileOutputStream` class. It supports writing contact information into a vCard format file.
@@ -558,6 +561,7 @@ fos = new FileOutputStream(file);
 ---------------
 
 Finally, the directory for the "contacts.vcf" will be shown to the user and the file can be imported to other applications.
+// end::export[]
 
 === Display Picture Mechanism
 This feature was implemented to facilitate users to remember their friends with ease. It allows user to select display picture for each of their contacts if they have a picture ready. Otherwise, they can simple assign a default display picture for them.
@@ -616,6 +620,7 @@ public static String setPath(String arguments, CommandBox commandBox) throws Par
 
 ---
 
+// tag::tagedit[]
 === Tag Edit
 This feature is implemented to provide users the ability to edit tags without having to update each person one at a time.
 
@@ -636,32 +641,82 @@ will call its method `executeUndoableCommand()` and ensure that the tag `friends
 **Alternative 2:** just override `execute()` +
 **Pros:** Does not involve template pattern, easier to understand +
 **Cons:** Cannot undo/redo unless `super.execute()` is called
+// end::tagedit[]
 
-=== Search
-This feature is implemented as an improvement to the default `find` feature. Currently, the user is able to find
-contacts based on a word in the name, tag, or both, without the need for prefixes as seen in the `add` or `edit`
+// tag::find[]
+=== Find
+This feature is implemented as an improvement to the default `find` feature. Previously, the user was only able to find
+names. Currently, the user is able to find contacts based on the name, tags or both, without the need for prefixes as
+seen in the `add` or `edit`. The user is also able to find contacts based on an initial.
 features.
 
-When using the search feature, there are 2 possible cases: +
+When using the find feature, there are 2 possible cases: +
 
 **Case 1: User input contains only 1 argument** +
-The user is searching either a keyword in the name OR a tag. Contacts with the matching name OR tag will be listed.
+In this case there would be 3 possibilities: +
+1) The user is searching for the keyword in the name, +
+2) The user is searching for the keyword in the tags, +
+3) OR the user is searching for an initial in the names. +
+Contacts with the matching name, tag or initial will be listed.
+
 
 **Case 2: User input contains more than 1 argument** +
 The user is searching for contacts with a keyword in the name AND a tag. Contacts with the matching name AND tag will
 be listed.
 
-The sequence diagram for the command `search Alex friends` is shown below:
+Note that `find` only supports searching with 1 name keyword.
 
-image::SearchLogicDiagram.png[width="800"]
+In this case, the user is either searching for a name with multiple tags, or simply multiple tags.
 
-The user will have to provide the command `search Alex friends` to search for persons with the word `Alex` in their
-names and the tag `friends` under their tags. `SearchCommandParser` will parse the 2 arguments given after `search`
-(in this case, they are `Alex` and `friends`) provided by the user and it will return `SearchCommand`. In
-`SearchCommand`, the method `PersonContainsKeywordsPredicate` will check the arguments provided against the existing
-list of names and tags and return all persons with the matching keyword `Alex` in their names and tag `friends`.
+The sequence diagram for the command `find Alex` is shown below:
+
+image::FindCommandLogicDiagram.png[width="800"]
+
+The user will have to provide the command `find Alex` to search for persons with the word `Alex` in their
+names. `SearchCommandParser` will parse the argument given after `find` provided and it will return `FindCommand`. In
+`FindCommand`, the method `PersonContainsKeywordsPredicate` will check the arguments provided against the existing
+list of names and tags and return all persons with the matching keyword `Alex` in their names.
 Finally, `execute()` will run `updateFilteredPersonList` to show the list of persons returned.
 
+Take another find command, `find Alex colleagues` for example. The code listing for checking if a person returns true
+for the find command stated is as shown: +
+
+* Code listing:
++
+[source, java]
+    public boolean test(ReadOnlyPerson person) {
+        clearMasterAndTagLists();
+        //sets up the name and tags of the person for comparison
+        setUpMasterList(person);
+        if (keywords.size() == 1) {
+            //To handle find when input is a single argument
+            //...logic...
+        }
+        /* Case 3: more than 1 keyword
+         * Only supports 1 name, but multiple tags
+         * a) name + tag
+         * b) tag + tag + tag...
+         */
+        return masterList.containsAll(keywordsLower);
+    }
+
+The user will have to provide the command `find Alex colleagues` to search for persons with the word `Alex` and the tag
+`colleagues` in their names. `SearchCommandParser` will parse the argument given after `find` provided and it will
+return `FindCommand`. In `FindCommand`, the method `PersonContainsKeywordsPredicate` will check the arguments provided
+against the existing list of names and tags and return all persons with the matching keyword `Alex` in their names and
+tag `friends`. Finally, `execute()` will run `updateFilteredPersonList` to show the list of persons returned.
+
+==== Design consideration
+*Aspect:* How to input arguments for the command +
+*Alternative 1 (current choice):* flexible input, no prefixes needed +
+*Pros:* easy and simple to use for the users +
+*Cons:* harder to implement and edit in future +
+*Alternative 2:* require users to enter prefixes to use find +
+*Pros:* easy and simple to implement +
+*Cons:* inconvenient and inflexible for the users
+// end::find[]
+
+// tag::social[]
 === Social
 
 This feature is a way for users to quickly access their contacts' social media profiles via the built in browser,
@@ -690,7 +745,7 @@ this command the same way +
 *Cons:* Might not make sense since you add people's social media into their details based on shortcuts and yet in this
 command the full name of the chosen social media is required. Moreover, it might be more user-friendly to allow them to
 type less into the CLI +
-
+// end::social[]
 
 === Logging
 

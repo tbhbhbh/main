@@ -8,8 +8,56 @@ AddressBook - Level 4 is a desktop address book application used for teaching So
 
 *Code contributed*: to be updated
 
-=== Enhancement Added: to be updated
+=== Enhancement Added: vCard Export
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=export]
+
+#End of Extract#
+
+---
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=export]
+
+#End of Extract#
+
+---
+
+=== Enhancement Added: Email
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=email]
+
+#End of Extract#
+
+---
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=email]
+
+#End of Extract#
+
+---
 
 === Enhancement Proposed: to be updated
 
 === Other contributions
+* Added Birthday field for a person
+* Modified search command to allow users to search for birthday

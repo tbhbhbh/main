@@ -33,42 +33,35 @@ public class SocialRequestEvent extends BaseEvent {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\SearchCommand.java
+###### \java\seedu\address\logic\commands\FindCommand.java
 ``` java
-package seedu.address.logic.commands;
+    public static final String COMMAND_WORD = "find";
 
-import seedu.address.model.person.PersonContainsKeywordsPredicate;
-
-/**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case sensitive.
- */
-public class SearchCommand extends Command {
-
-    public static final String COMMAND_WORD = "search";
-
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Searches for all persons whose information contain "
-            + "any of the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": finds all persons whose information contain "
+            + "any of the specified keywords and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
+            + "(HitMeUp only supports finding 1 keyword for name. Finding multiple tags is supported)\n"
             + "Example: " + COMMAND_WORD + " alice colleagues";
 
-    private final PersonContainsKeywordsPredicate predicate;
+    private final Predicate<ReadOnlyPerson> searchPredicate;
 
-    public SearchCommand(PersonContainsKeywordsPredicate predicate) {
-        this.predicate = predicate;
+    public FindCommand(PersonContainsKeywordsPredicate searchPredicate) {
+        this.searchPredicate = searchPredicate;
     }
-
+```
+###### \java\seedu\address\logic\commands\FindCommand.java
+``` java
     @Override
     public CommandResult execute() {
-        model.updateFilteredPersonList(predicate);
+        model.updateFilteredPersonList(searchPredicate);
         return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof SearchCommand // instanceof handles nulls
-                && this.predicate.equals(((SearchCommand) other).predicate)); // state check
+                || (other instanceof FindCommand // instanceof handles nulls
+                && this.searchPredicate.equals(((FindCommand) other).searchPredicate)); // state check
     }
 }
 ```
@@ -105,8 +98,8 @@ public class SocialCommand extends Command {
             + "CHOSEN_SOCIAL_MEDIA: ig or tw\n"
             + "Example: " + COMMAND_WORD + " 1 ig";
 
-    public static final String INSTAGRAM_URL_PREFIX = "https://instagram.com/";
-    public static final String TWITTER_URL_PREFIX = "https://twitter.com/";
+    public static final String INSTAGRAM_URL_PREFIX = "https://www.instagram.com/";
+    public static final String TWITTER_URL_PREFIX = "https://www.twitter.com/";
 
     private final Index index;
     private final String socialMedia;
@@ -324,7 +317,7 @@ public class TagEditCommand extends UndoableCommand {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\SearchCommandParser.java
+###### \java\seedu\address\logic\parser\FindCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -332,31 +325,38 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 
 import java.util.Arrays;
 
-import seedu.address.logic.commands.SearchCommand;
+import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.PersonContainsBirthdayPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
 /**
- * Parses input arguments and creates a new SearchCommand object
+ * Parses input arguments and creates a new FindCommand object
  */
-public class SearchCommandParser implements Parser<SearchCommand> {
+public class FindCommandParser implements Parser<FindCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the FindCommand
      * and returns an FindCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public SearchCommand parse(String args) throws ParseException {
+    public FindCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
         if (trimmedArgs.isEmpty()) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
+        // Single keyword that contains an non-zero integer
+        if (nameKeywords.length == 1 && StringUtil.isNonZeroUnsignedInteger(nameKeywords[0])) {
+            return new FindCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
+        }
 
-        return new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+        return new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
     }
+
 }
 ```
 ###### \java\seedu\address\logic\parser\SocialCommandParser.java
@@ -521,35 +521,53 @@ import seedu.address.model.tag.Tag;
  * Tests that a {@code ReadOnlyPerson} matches any or all of the keywords given depending on the number of keywords.
  * Case 1: Given only 1 keyword, {@code ReadOnlyPerson}'s {@code Name} OR {@code Tag} must match the keyword
  * Case 2: Given >1 keywords, {@code ReadOnlyPerson}'s {@code Name} AND {@code Tag} must match the keywords
- * More to be added later including Birthday, Address
+ * More to be added later including Birthday
  */
 public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson> {
     private final List<String> keywords;
+    private List<String> keywordsLower;
+    private String[] nameArr;
+    private List<Tag> tagList = new ArrayList<>();
+    private List<String> masterList = new ArrayList<>();
 
     public PersonContainsKeywordsPredicate(List<String> keywords) {
         this.keywords = keywords;
+        keywordsLower = new ArrayList<>();
+        setUpCaseInsensitiveKeywords();
     }
 
     @Override
     public boolean test(ReadOnlyPerson person) {
-        List<Tag> tagList = new ArrayList<>();
-        for (int i = 0; i < keywords.size(); i++) {
-            try {
-                tagList.add(new Tag(keywords.get(i)));
-            } catch (IllegalValueException ive) {
-                assert false : "The target tag is invalid";
-            }
-        }
+
+        clearMasterAndTagLists();
+        setUpMasterList(person);
 
         if (keywords.size() == 1) {
+
+            setUpTagList(); // prepares the keyword in tag form to compare with persons
+
+            /* Case 1: keyword is a character (aka initial)
+             * searches for people with names (Both first and last names) that start with the character
+             */
+            if (keywordIsSingleCharacter()) {
+                return findNamesWithFirstChar(keywordsLower.toString().charAt(1));
+            }
+
+            /* Case 2: keyword can either be a name or a tag
+             * searches for the keyword in the person's name or tags
+             */
             return keywords.stream()
                     .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
-                    || tagList.stream().anyMatch((tag -> person.getTags().contains(tag)));
+                    || tagList.stream().anyMatch(tag -> person.getTags().contains(tag));
+
         }
 
-        return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
-                && tagList.stream().anyMatch((tag -> person.getTags().contains(tag)));
+        /* Case 3: more than 1 keyword
+         * Only supports 1 name, but multiple tags
+         * a) name + tag
+         * b) tag + tag + tag...
+         */
+        return masterList.containsAll(keywordsLower);
     }
 
     @Override
@@ -557,6 +575,67 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
         return other == this // short circuit if same object
                 || (other instanceof PersonContainsKeywordsPredicate // instanceof handles nulls
                 && this.keywords.equals(((PersonContainsKeywordsPredicate) other).keywords)); // state check
+    }
+
+    private boolean findNamesWithFirstChar(char firstChar) {
+        return (nameStartsWith(firstChar));
+
+    }
+
+    /**
+     * This method returns true if the keyword given in the command is a single character
+     */
+    private boolean keywordIsSingleCharacter() {
+        if (keywords.toString().length() == 3) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method returns true if any part of a person's name begins with the given character
+     */
+    private boolean nameStartsWith(char character) {
+        for (String name : nameArr) {
+            if (name.toLowerCase().charAt(0) == character) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void clearMasterAndTagLists() {
+        masterList.clear();
+        tagList.clear();
+    }
+
+    private void setUpCaseInsensitiveKeywords() {
+        for (int i = 0; i < keywords.size(); i++) {
+            keywordsLower.add(keywords.get(i).toLowerCase());
+        }
+    }
+
+    private void setUpTagList() {
+        tagList.clear();
+        try {
+            tagList.add(new Tag(keywords.get(0)));
+        } catch (IllegalValueException ive) {
+            assert false : "target tag cannot exist";
+        }
+    }
+
+    private void setUpMasterList(ReadOnlyPerson person) {
+
+        tagList.addAll(person.getTags());
+        for (int i = 0; i < tagList.size(); i++) {
+            String tagNameToAdd = tagList.get(i).toString().substring(1, tagList.get(i).toString().length() - 1);
+            masterList.add(tagNameToAdd.toLowerCase());
+        }
+
+        nameArr = person.getName().toString().split("\\s+");
+        for (int i = 0; i < nameArr.length; i++) {
+            masterList.add(nameArr[i].toLowerCase());
+        }
     }
 
 }
@@ -569,4 +648,34 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
     public void sortByName() {
         FXCollections.sort(internalList, comparator);
     }
+```
+###### \java\seedu\address\ui\BrowserPanel.java
+``` java
+    /**
+     * Loads the person's Instagram, Twitter and then a Google search page for the person's name, in that order,
+     * depending on if the person has the social media fields filled in.
+     */
+    private void loadPersonPage(ReadOnlyPerson person) {
+        if (!person.getInstagramName().toString().isEmpty()) {
+            loadPage(INSTAGRAM_URL_PREFIX +  person.getInstagramName());
+        } else if (!person.getTwitterName().toString().isEmpty()) {
+            loadPage(TWITTER_URL_PREFIX + person.getTwitterName());
+        } else {
+            loadPage(GOOGLE_SEARCH_URL_PREFIX + person.getName().fullName.replaceAll(" ", "+")
+                    + GOOGLE_SEARCH_URL_SUFFIX);
+        }
+    }
+```
+###### \java\seedu\address\ui\MainWindow.java
+``` java
+    /**
+     * This method will use the built-in browser to open the selected index's social media profile (either Twitter
+     * or Instagram).
+     * @param userName is a UserName of the person
+     */
+    public void handleSocial(UserName userName, String socialMediaLink) {
+        browserPanel.loadPage(socialMediaLink + userName);
+    }
+
+
 ```

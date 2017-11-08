@@ -71,6 +71,10 @@ public class Person implements ReadOnlyPerson, Comparator<Person> {
         return name.get();
     }
 
+    public String getLowerCaseNameToString() {
+        return name.get().toString().toLowerCase();
+    }
+
     public void setPhone(Phone phone) {
         this.phone.set(requireNonNull(phone));
     }

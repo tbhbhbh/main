@@ -28,13 +28,26 @@ public class TagBoxHandle extends NodeHandle<Node> {
 
     private final Label tagLabel;
 
+    private boolean isTagBoxClicked = false;
+
     public TagBoxHandle(Node boxNode) {
         super(boxNode);
-
+        this.isTagBoxClicked = false;
         this.tagLabel = getChildNode(TAG_FIELD_ID);
     }
 
-    public String getTag() {
+    // isTagBoxClicked returns true after guiRobot has click the rootNode
+    @Override
+    public void click() {
+        guiRobot.clickOn(getRootNode());
+        this.isTagBoxClicked = true;
+    }
+
+    public boolean isClicked() {
+        return isTagBoxClicked;
+    }
+
+    public String getTagName() {
         return tagLabel.getText();
     }
 }
@@ -118,18 +131,8 @@ public class IndexArrayUtilTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void compareIndexArrays_bothNullArrays_throwException() {
-        assertExceptionThrown(NullPointerException.class, null, null, Optional.empty());
-    }
-
-    @Test
-    public void compareIndexArrays_oneNullArray_throwException() {
+    public void compareIndexArrays_atLeastOneNullArray_throwException() {
         assertExceptionThrown(NullPointerException.class, new Index[1], null, Optional.empty());
-    }
-
-    @Test
-    public void compareIndexArrays_arraysContainsZeroElement_validComparison() {
-        assertTrue(assertComparison(new Index[0], new Index[0]));
     }
 
     @Test
@@ -138,7 +141,7 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void compareIndexArrays_sameLengthArraysDiffElements_invalidComparison() {
+    public void compareIndexArrays_sameLengthDiffElements_invalidComparison() {
         Index[] arr1 = {INDEX_FIRST_PERSON};
         Index[] arr2 = {INDEX_SECOND_PERSON};
         assertFalse(assertComparison(arr1, arr2));
@@ -152,7 +155,7 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void swap_positionZero_successful() {
+    public void swapFirstWithSecond_positionChanged_successful() {
         Index[] beforeSwap = {INDEX_THIRD_PERSON, INDEX_SECOND_PERSON, INDEX_FIRST_PERSON};
         Index[] afterSwap = {INDEX_SECOND_PERSON, INDEX_THIRD_PERSON, INDEX_FIRST_PERSON};
         IndexArrayUtil.swapElements(beforeSwap, 0);
@@ -162,12 +165,15 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void noSwap_noChangeInPosition() {
-        Index[] beforeSwap = {INDEX_THIRD_PERSON, INDEX_SECOND_PERSON, INDEX_FIRST_PERSON};
-        Index[] afterSwap = {INDEX_SECOND_PERSON, INDEX_THIRD_PERSON, INDEX_FIRST_PERSON};
-        assertFalse(beforeSwap[0].equals(afterSwap[0]));
-        assertFalse(beforeSwap[1].equals(afterSwap[1]));
-        assertTrue(beforeSwap[2].equals(afterSwap[2]));
+    public void array_isDistinct() {
+        Index[] distinctArray = {INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON};
+        assertTrue(IndexArrayUtil.isDistinct(distinctArray));
+    }
+
+    @Test
+    public void array_isNotDistinct() {
+        Index[] notDistinctArray = {INDEX_FIRST_PERSON, INDEX_FIRST_PERSON, INDEX_THIRD_PERSON};
+        assertFalse(IndexArrayUtil.isDistinct(notDistinctArray));
     }
 
     private void assertExceptionThrown(Class<? extends Throwable> exceptionClass, Index[] arr1, Index[] arr2,
@@ -193,6 +199,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.Rule;
@@ -293,12 +300,10 @@ public class EmailCommandTest {
     }
 
     @Test
-    public void execute_multipleIndexWithInvalidIndex_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        EmailCommand emailCommand = prepareCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
-
-        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
-                + outOfBoundIndex.getOneBased();
+    public void execute_validIndexWithoutEmail_throwsCommandException() {
+        EmailCommand emailCommand = prepareCommand(INDEX_THIRD_PERSON);
+        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_TO_EMAIL
+                + INDEX_THIRD_PERSON.getOneBased();
 
         assertCommandFailure(emailCommand, model, expectedMessage);
     }
@@ -463,17 +468,6 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_multipleIndexWithInvalidIndex_throwsCommandException() {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        ExportCommand exportCommand = prepareCommand(INDEX_FIRST_PERSON, outOfBoundIndex);
-
-        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
-                + outOfBoundIndex.getOneBased();
-
-        assertCommandFailure(exportCommand, model, expectedMessage);
-    }
-
-    @Test
     public void execute_all_success() throws CommandException {
         // Preparing command to export all contacts
         ExportCommand exportCommand = new ExportCommand();
@@ -540,6 +534,25 @@ public class ExportCommandTest {
     }
 }
 ```
+###### \java\seedu\address\logic\commands\FindCommandTest.java
+``` java
+    @Test
+    public void execute_birthdayMonth_personFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FindCommand command = prepareSearchBirthdayCommand("05");
+        assertCommandSuccess(command, expectedMessage, Collections.singletonList(CARL));
+    }
+
+    /**
+     * Parses {@code userInput} which is a birthday month represented by 2 digits into a {@code FindCommand}.
+     */
+    public FindCommand prepareSearchBirthdayCommand(String userInput) {
+        FindCommand command = new FindCommand(new PersonContainsBirthdayPredicate(userInput));
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        return command;
+    }
+
+```
 ###### \java\seedu\address\logic\parser\EmailCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
@@ -563,16 +576,18 @@ public class EmailCommandParserTest {
     @Test
     public void parse_validArgs_returnsEmailCommand() {
         assertParseSuccess(parser, "1", prepareCommand(INDEX_FIRST_PERSON));
-    }
-
-    @Test
-    public void parse_multipleValidArgs_returnsEmailCommand() {
         assertParseSuccess(parser, "1 2", prepareCommand(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
     }
 
     @Test
     public void parse_invalidArgs_throwsParseException() {
         assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_duplicatedArgs_throwsParseException() {
+        assertParseFailure(parser, "1 1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ParserUtil.MESSAGE_INDEX_DUPLICATES));
     }
 
     /**
@@ -632,6 +647,12 @@ public class ExportCommandParserTest {
         assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
     }
 
+    @Test
+    public void parse_duplicatedArgs_throwsParseException() {
+        assertParseFailure(parser, "1 1", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                ParserUtil.MESSAGE_INDEX_DUPLICATES));
+    }
+
     /**
      * Returns a {@code ExportCommand} with the parameter {@code index}.
      * @param index is an index specified by user input.
@@ -660,17 +681,32 @@ public class BirthdayTest {
 
     @Test
     public void isValidBirthday() {
-        // invalid birthdays
+        // invalid birthday format
         assertFalse(Birthday.isValidBirthday("")); // empty string
         assertFalse(Birthday.isValidBirthday(" ")); // spaces only
-        assertFalse(Birthday.isValidBirthday("91")); // less than 8 numbers
+        assertFalse(Birthday.isValidBirthday("02/03/190")); // less than 8 digits
+        assertFalse(Birthday.isValidBirthday("02/03/19000")); // more than 8 digits
         assertFalse(Birthday.isValidBirthday("phone")); // non-numeric
-        assertFalse(Birthday.isValidBirthday("9011p041")); // alphabets within digits
-        assertFalse(Birthday.isValidBirthday("09.03 1994")); //invalid characters and spaces within digits
-        assertFalse(Birthday.isValidBirthday("02031990")); //exactly 8 digits without any forward slash
+        assertFalse(Birthday.isValidBirthday("9011p041")); // alphanumeric
+        assertFalse(Birthday.isValidBirthday("02.03-1990")); // invalid characters between digits
+        assertFalse(Birthday.isValidBirthday("02031990")); // exactly 8 digits without any forward slash
+        assertFalse(Birthday.isValidBirthday("29/02/1900")); // invalid leap day
 
-        // valid birthdays
+        // valid birthday format
+        assertTrue(Birthday.isValidBirthday("29/02/2000")); // valid leap day
         assertTrue(Birthday.isValidBirthday("02/03/1990")); // DD/MM/YYYY format consists of 8 digits and 2 '/'
+    }
+
+    @Test
+    public void isValidBirthdayMonth() {
+        // invalid birthday month
+        assertFalse(Birthday.isValidMonth("111")); // more than 2 digits
+        assertFalse(Birthday.isValidMonth("1")); // less than 2 digits
+        assertFalse(Birthday.isValidMonth("00")); // exactly 2 digits but less than the range of [01 to 12]
+        assertFalse(Birthday.isValidMonth("13")); // exactly 2 digits but above the range of [01 to 12]
+
+        // valid birthday month
+        assertTrue(Birthday.isValidMonth("01")); // exactly 2 digits between 01 to 12
     }
 }
 ```
@@ -813,12 +849,14 @@ public class TypicalTags {
 
     public static final Tag CLASSMATES = new TagBuilder().withSpecifiedTagName("Classmates");
 
-    public static final Tag FAMILY = new TagBuilder().withSpecifiedTagName("Family");
+    public static final Tag FRIENDS = new TagBuilder().withSpecifiedTagName("friends");
+
+    public static final Tag OWE_MONEY = new TagBuilder().withSpecifiedTagName("owesMoney");
 
     private TypicalTags() {} // prevents instantiation
 
     public static List<Tag> getTypicalTags() {
-        return new ArrayList<>(Arrays.asList(GOOGLE, FACEBOOK, CLASSMATES, FAMILY));
+        return new ArrayList<>(Arrays.asList(GOOGLE, FACEBOOK, CLASSMATES, FRIENDS, OWE_MONEY));
     }
 }
 ```
@@ -828,37 +866,58 @@ package seedu.address.ui;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.testutil.TypicalTags.CLASSMATES;
+import static seedu.address.testutil.TypicalTags.FACEBOOK;
+import static seedu.address.testutil.TypicalTags.FRIENDS;
+import static seedu.address.testutil.TypicalTags.GOOGLE;
+import static seedu.address.testutil.TypicalTags.OWE_MONEY;
 import static seedu.address.ui.testutil.GuiTestAssert.assertBoxDisplayTag;
 
 import org.junit.Test;
 
 import guitests.guihandles.TagBoxHandle;
 import seedu.address.model.tag.Tag;
-import seedu.address.testutil.TagBuilder;
 
 public class TagBoxTest extends GuiUnitTest {
+
+    private Tag testTag;
+    private TagBox testTagBox;
 
     @Test
     public void display() {
         // Label with a tag
-        Tag testTag = new TagBuilder().withSpecifiedTagName("alpha");
-        TagBox tagBox = new TagBox(testTag);
-        uiPartRule.setUiPart(tagBox);
+        testTag = GOOGLE;
+        testTagBox = new TagBox(testTag);
+        uiPartRule.setUiPart(testTagBox);
 
-        assertTagBoxDisplay(tagBox, testTag);
+        assertTagBoxDisplay(testTagBox, testTag);
 
         // Changes label to reflect another new tag
-        Tag anotherTag = new TagBuilder().withSpecifiedTagName("beta");
-        tagBox = new TagBox(anotherTag);
-        uiPartRule.setUiPart(tagBox);
+        Tag anotherTag = FACEBOOK;
+        testTagBox = new TagBox(anotherTag);
+        uiPartRule.setUiPart(testTagBox);
 
-        assertTagBoxDisplay(tagBox, anotherTag);
+        assertTagBoxDisplay(testTagBox, anotherTag);
+    }
+
+    @Test
+    public void mouseEventHandler_tagBoxIsClicked() {
+        testTag = OWE_MONEY;
+        testTagBox = new TagBox(testTag);
+        uiPartRule.setUiPart(testTagBox);
+
+        TagBoxHandle tagBoxHandle = new TagBoxHandle(testTagBox.getRoot());
+        tagBoxHandle.click();
+
+        guiRobot.waitForEvent(tagBoxHandle::isClicked);
+
+        assertTrue(tagBoxHandle.isClicked());
     }
 
     @Test
     public void equals() {
-        Tag tag = new TagBuilder().withSpecifiedTagName("test");
-        TagBox tagBox = new TagBox(tag);
+        testTag = FRIENDS;
+        TagBox tagBox = new TagBox(testTag);
 
         // same object -> returns true
         assertTrue(tagBox.equals(tagBox));
@@ -867,7 +926,7 @@ public class TagBoxTest extends GuiUnitTest {
         assertFalse(tagBox.equals(null));
 
         // different types -> returns false
-        Tag differentTag = new TagBuilder().withSpecifiedTagName("anotherTest");
+        Tag differentTag = CLASSMATES;
         assertFalse(tagBox.equals(new TagBox(differentTag)));
     }
 

@@ -151,6 +151,13 @@ public class AliasCommandTest {
     }
 
     @Test
+    public void execute_addRestrictedAlias_failure() throws Exception {
+
+        assertCommandFailure(prepareCommand("add", "add"), model,
+                AliasCommand.MESSAGE_RESTRICTED_ALIAS);
+    }
+
+    @Test
     public void equals() {
         AliasCommand aliasAddCommand = new AliasCommand("a", "add");
         AliasCommand aliasFindCommand = new AliasCommand("f", "find");
@@ -257,6 +264,158 @@ public class ImportCommandTest {
         return importCommand;
     }
 
+}
+```
+###### \java\seedu\address\logic\commands\LocationCommandTest.java
+``` java
+
+package seedu.address.logic.commands;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.ShowLocationEvent;
+import seedu.address.logic.CommandHistory;
+import seedu.address.logic.UndoRedoStack;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
+import seedu.address.ui.testutil.EventsCollectorRule;
+
+/**
+ * Contains integration tests (interaction with the Model) for {@code LocationCommand}.
+ */
+
+public class LocationCommandTest {
+
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
+
+    private Model model;
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    }
+
+    @Test
+    public void execute_validIndexUnfilteredList_success() {
+        Index lastPersonIndex = Index.fromOneBased(model.getFilteredPersonList().size());
+
+        assertExecutionSuccess(INDEX_FIRST_PERSON);
+        assertExecutionSuccess(INDEX_THIRD_PERSON);
+        assertExecutionSuccess(lastPersonIndex);
+    }
+
+    @Test
+    public void execute_invalidIndexUnfilteredList_failure() {
+        Index outOfBoundsIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+
+        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_validIndexFilteredList_success() {
+        showFirstPersonOnly(model);
+
+        assertExecutionSuccess(INDEX_FIRST_PERSON);
+    }
+
+    @Test
+    public void execute_invalidIndexFilteredList_failure() {
+        showFirstPersonOnly(model);
+
+        Index outOfBoundsIndex = INDEX_SECOND_PERSON;
+        // ensures that outOfBoundIndex is still in bounds of address book list
+        assertTrue(outOfBoundsIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+
+        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void equals() {
+        LocationCommand showLocationOfFirstCommand = new LocationCommand(INDEX_FIRST_PERSON);
+        LocationCommand showLocationOfSecondCommand = new LocationCommand(INDEX_SECOND_PERSON);
+
+        // same object -> returns true
+        assertTrue(showLocationOfFirstCommand.equals(showLocationOfFirstCommand));
+
+        // same values -> returns true
+        LocationCommand showLocationOfFirstCommandCopy = new LocationCommand(INDEX_FIRST_PERSON);
+        assertTrue(showLocationOfFirstCommand.equals(showLocationOfFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(showLocationOfFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(showLocationOfFirstCommand.equals(null));
+
+        // different person -> returns false
+        assertFalse(showLocationOfFirstCommand.equals(showLocationOfSecondCommand));
+    }
+
+
+    /**
+     * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowLocationEvent}
+     * is raised with the correct URL.
+     */
+    private void assertExecutionSuccess(Index index) {
+        LocationCommand locationCommand = prepareCommand(index);
+
+        try {
+            CommandResult commandResult = locationCommand.execute();
+            assertEquals(String.format(LocationCommand.MESSAGE_SUCCESS, model.getFilteredPersonList()
+                    .get(index.getZeroBased()).getName()),
+                    commandResult.feedbackToUser);
+        } catch (CommandException ce) {
+            throw new IllegalArgumentException("Execution of command should not fail.", ce);
+        }
+
+        String url = LocationCommand.GOOGLE_MAPS_URL_PREFIX + locationCommand.parseAddressForUrl(
+                model.getFilteredPersonList().get(index.getZeroBased()).getAddress());
+
+        ShowLocationEvent lastEvent = (ShowLocationEvent) eventsCollectorRule.eventsCollector.getMostRecent();
+        assertEquals(url, lastEvent.getGoogleMapsUrl());
+    }
+
+    /**
+     * Executes a {@code LocationCommand} with the given {@code index}, and checks that a {@code CommandException}
+     * is thrown with the {@code expectedMessage}.
+     */
+    private void assertExecutionFailure(Index index, String expectedMessage) {
+        LocationCommand locationCommand = prepareCommand(index);
+
+        try {
+            locationCommand.execute();
+            fail("The expected CommandException was not thrown.");
+        } catch (CommandException ce) {
+            assertEquals(expectedMessage, ce.getMessage());
+            assertTrue(eventsCollectorRule.eventsCollector.isEmpty());
+        }
+    }
+
+    /**
+     * Returns a {@code LocationCommand} with parameters {@code index}.
+     */
+    private LocationCommand prepareCommand(Index index) {
+        LocationCommand locationCommand = new LocationCommand(index);
+        locationCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return locationCommand;
+    }
 }
 ```
 ###### \java\seedu\address\logic\parser\AddCommandParserTest.java
@@ -368,6 +527,38 @@ public class ImportCommandParserTest {
     }
 }
 ```
+###### \java\seedu\address\logic\parser\LocationCommandParserTest.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+import org.junit.Test;
+
+import seedu.address.logic.commands.LocationCommand;
+
+/**
+ * Test scope: similar to {@code DeleteCommandParserTest}.
+ * @see DeleteCommandParserTest
+ */
+public class LocationCommandParserTest {
+
+    private LocationCommandParser parser = new LocationCommandParser();
+
+    @Test
+    public void parse_validArgs_returnsLocationCommand() {
+        assertParseSuccess(parser, "1", new LocationCommand(INDEX_FIRST_PERSON));
+    }
+
+    @Test
+    public void parse_invalidArgs_throwsParseException() {
+        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, LocationCommand.MESSAGE_USAGE));
+    }
+}
+```
 ###### \java\seedu\address\storage\StorageManagerTest.java
 ``` java
     @Test
@@ -383,9 +574,11 @@ package seedu.address.testutil;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.api.services.people.v1.model.Address;
 import com.google.api.services.people.v1.model.Birthday;
 import com.google.api.services.people.v1.model.Date;
 import com.google.api.services.people.v1.model.EmailAddress;
+import com.google.api.services.people.v1.model.Name;
 import com.google.api.services.people.v1.model.PhoneNumber;
 
 
@@ -408,11 +601,11 @@ public class GooglePersonBuilder {
 
     public GooglePersonBuilder() {
 
-        List names = new ArrayList<>();
-        List phone = new ArrayList<>();
-        List emails = new ArrayList<>();
-        List addresses = new ArrayList<>();
-        List birthday = new ArrayList<>();
+        ArrayList<com.google.api.services.people.v1.model.Name> names = new ArrayList<>();
+        ArrayList<PhoneNumber> phone = new ArrayList<>();
+        ArrayList<EmailAddress> emails = new ArrayList<>();
+        ArrayList<com.google.api.services.people.v1.model.Address> addresses = new ArrayList<>();
+        ArrayList<Birthday> birthday = new ArrayList<>();
 
         names.add(new com.google.api.services.people.v1.model.Name().setDisplayName(DEFAULT_NAME));
         phone.add(new PhoneNumber().setCanonicalForm(DEFAULT_PHONE));
@@ -433,7 +626,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Name} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withName(String name) {
-        List names = new ArrayList<>();
+        List<Name> names = new ArrayList<>();
         names.add(new com.google.api.services.people.v1.model.Name().setDisplayName(name));
         this.person.setNames(names);
 
@@ -444,7 +637,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Address} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withAddress(String address) {
-        List addresses = new ArrayList<>();
+        List<Address> addresses = new ArrayList<>();
         addresses.add(new com.google.api.services.people.v1.model.Address().setFormattedValue(address));
         this.person.setAddresses(addresses);
         return this;
@@ -454,7 +647,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Phone} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withPhone(String phone) {
-        List phoneNumbers = new ArrayList<>();
+        List<PhoneNumber> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(new PhoneNumber().setValue(phone));
         this.person.setPhoneNumbers(phoneNumbers);
         return this;
@@ -464,7 +657,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Email} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withEmail(String email) {
-        List emails = new ArrayList<>();
+        List<EmailAddress> emails = new ArrayList<>();
         emails.add(new EmailAddress().setValue(email));
         this.person.setEmailAddresses(emails);
         return this;
@@ -474,7 +667,7 @@ public class GooglePersonBuilder {
      * Sets the {@code Birthday} of the {@code Person} that we are building.
      */
     public GooglePersonBuilder withBirthday(String birthday) {
-        List birthdays = new ArrayList<>();
+        List<Birthday> birthdays = new ArrayList<>();
         birthdays.add(new com.google.api.services.people.v1.model.Birthday().setText(birthday));
         this.person.setBirthdays(birthdays);
 

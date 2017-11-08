@@ -8,8 +8,56 @@ AddressBook - Level 4 is a desktop address book application used for teaching So
 
 *Code contributed*: to be updated
 
-=== Enhancement Added: to be updated
+=== Enhancement Added: Tag Delete
+---
+#Start of Extract [from: User Guide]#
 
-=== Enhancement Proposed: to be updated
+include::../UserGuide.adoc[tag=tagdelete]
+
+#End of Extract#
+
+=== Enhancement Added: Tag Edit
+---
+
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=tagedit]
+
+#End of Extract#
+
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=tagedit]
+
+#End of Extract#
+
+=== Enhancement Added: Improved Find
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=find]
+
+#End of Extract#
+
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=find]
+
+#End of Extract#
+
+=== Enhancement Added: Social
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=social]
+
+#End of Extract#
+
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=social]
+
+#End of Extract#
 
 === Other contributions
+- Implemented sorting feature that is case insensitive
