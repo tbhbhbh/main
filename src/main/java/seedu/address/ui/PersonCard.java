@@ -1,6 +1,6 @@
 package seedu.address.ui;
 
-import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
+import static seedu.address.ui.MainWindow.DEFAULT_DP;
 
 import java.io.File;
 import java.util.HashMap;
@@ -76,14 +76,15 @@ public class PersonCard extends UiPart<Region> {
         });
     }
 
+    //@@author JunQuann
     /**
      * Initialise the image in PersonCard display
      * @param person
      */
     private void initImage(ReadOnlyPerson person) {
         Image displayPicture;
-        if (person.getDisplayPic().toString().equals(DEFAULT_DISPLAY_PIC)) {
-            displayPicture = AppUtil.getImage(DEFAULT_DISPLAY_PIC);
+        if (person.getDisplayPic().toString().equals(DEFAULT_DP)) {
+            displayPicture = AppUtil.getImage(DEFAULT_DP);
         } else {
             File personImg = new File(person.getDisplayPic().toString());
             String imgUrl = personImg.toURI().toString();
@@ -91,6 +92,7 @@ public class PersonCard extends UiPart<Region> {
         }
         displayPic.setFill(new ImagePattern(displayPicture));
     }
+    //author JunQuann
 
     /**
      * Create new labels and bind a colour to it

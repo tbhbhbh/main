@@ -68,31 +68,26 @@ public class AddCommandParserTest {
         // multiple names - last name accepted
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + NAME_DESC_BOB + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + BIRTHDAY_DESC_BOB  + TWITTER_DESC_BOB + INSTAGRAM_DESC_BOB
-                + DISPLAYPIC_DESC
                 + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
         // multiple phones - last phone accepted
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_AMY + PHONE_DESC_BOB
                 + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + BIRTHDAY_DESC_BOB  + TWITTER_DESC_BOB + INSTAGRAM_DESC_BOB
-                + DISPLAYPIC_DESC
                 + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
         // multiple emails - last email accepted
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_AMY
                 + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + BIRTHDAY_DESC_BOB + TWITTER_DESC_BOB + INSTAGRAM_DESC_BOB
-                + DISPLAYPIC_DESC
                 + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
         // multiple addresses - last address accepted
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_AMY + ADDRESS_DESC_BOB + BIRTHDAY_DESC_BOB + TWITTER_DESC_BOB + INSTAGRAM_DESC_BOB
-                + DISPLAYPIC_DESC
                 + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
         // multiple birthdays - last birthday accepted
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + BIRTHDAY_DESC_AMY + BIRTHDAY_DESC_BOB + TWITTER_DESC_BOB + INSTAGRAM_DESC_BOB
-                + DISPLAYPIC_DESC
                 + TAG_DESC_FRIEND, new AddCommand(expectedPerson));
 
         // multiple tags - all accepted
@@ -102,8 +97,7 @@ public class AddCommandParserTest {
                 .withDisplayPic(VALID_DISPLAYPIC).withTags(VALID_TAG_FRIEND, VALID_TAG_HUSBAND).build();
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_BOB + PHONE_DESC_BOB
                         + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + BIRTHDAY_DESC_BOB + TWITTER_DESC_BOB + INSTAGRAM_DESC_BOB
-                        + DISPLAYPIC_DESC + TAG_DESC_HUSBAND
-                        + TAG_DESC_FRIEND, new AddCommand(expectedPersonMultipleTags));
+                        + TAG_DESC_HUSBAND + TAG_DESC_FRIEND, new AddCommand(expectedPersonMultipleTags));
     }
 
     @Test
@@ -114,8 +108,7 @@ public class AddCommandParserTest {
                 .withTwitter(VALID_TWITTER_AMY).withInstagram(VALID_INSTAGRAM_AMY)
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
-                        + DISPLAYPIC_DESC,
+                + EMAIL_DESC_AMY + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY,
                 new AddCommand(expectedPerson));
 
         //@@author danielbrzn
@@ -126,8 +119,8 @@ public class AddCommandParserTest {
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-            + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
-                + DISPLAYPIC_DESC, new AddCommand(expectedPerson));
+            + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY,
+                new AddCommand(expectedPerson));
 
         // no address
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -136,8 +129,8 @@ public class AddCommandParserTest {
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-            + EMAIL_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
-                + DISPLAYPIC_DESC, new AddCommand(expectedPerson));
+            + EMAIL_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY,
+                new AddCommand(expectedPerson));
 
         // no birthday
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -147,7 +140,7 @@ public class AddCommandParserTest {
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
                 + EMAIL_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
-                + ADDRESS_DESC_AMY + DISPLAYPIC_DESC, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_AMY, new AddCommand(expectedPerson));
         //@@author
     }
 

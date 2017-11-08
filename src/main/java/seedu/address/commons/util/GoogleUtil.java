@@ -35,7 +35,7 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.UserName;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
-import seedu.address.ui.CommandBox;
+import seedu.address.ui.MainWindow;
 
 /**
  * Contains utility methods for Google APIs
@@ -167,7 +167,7 @@ public class GoogleUtil {
         toAdd = new seedu.address.model.person.Person(nameAdd,
                 new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
                 new seedu.address.model.person.Birthday(birthday), new UserName(""), new UserName(""),
-                new DisplayPic(CommandBox.DEFAULT_DISPLAY_PIC),
+                new DisplayPic(MainWindow.DEFAULT_DP, false),
                 defaultTags);
         return toAdd;
     }
