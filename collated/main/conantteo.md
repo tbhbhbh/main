@@ -91,6 +91,22 @@ public class IndexArrayUtil {
     }
 
     /**
+     * Check if IndexArray {@code arr} has distinct Index with no duplicates.
+     * @return false if there are at least one repeated index in the array.
+     */
+    public static boolean isDistinct(Index[] arr) {
+        boolean isDistinct = true;
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i].equals(arr[j])) {
+                    isDistinct = false;
+                }
+            }
+        }
+        return isDistinct;
+    }
+
+    /**
      * Swap elements in an array by its position.
      * @param arr is a given array, it cannot be null
      * @param pos is a valid position to be swap with the next element.
@@ -143,7 +159,7 @@ public class EmailCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Email one or more person identified by the index number used in the last person listing.\n"
-            + "Parameters: INDEX [INDEX]... (must be a positive integer)\n"
+            + "Parameters: INDEX [INDEX]... (must be a positive and no repeated integers)\n"
             + "Example: " + COMMAND_WORD + " 1" + " [2]" + " [3]";
 
     public static final String MESSAGE_EMAIL_PERSON_SUCCESS = "Email Person: %1$s";
@@ -166,13 +182,11 @@ public class EmailCommand extends Command {
                         + targetIndex.getOneBased());
             }
             ReadOnlyPerson personToEmail = lastShownList.get(targetIndex.getZeroBased());
-            persons.append(", ");
-            persons.append(personToEmail.getName().toString());
-            addresses.append(" ");
             if (personToEmail.getEmail().toString().isEmpty()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL + targetIndex.getOneBased());
             }
-            addresses.append(personToEmail.getEmail().toString());
+            persons.append(", " + personToEmail.getName().toString());
+            addresses.append(" " + personToEmail.getEmail().toString());
         }
 
         String allPersons = persons.toString().trim().substring(2, persons.length());
@@ -305,6 +319,12 @@ public class ExportCommand extends Command {
     }
 }
 ```
+###### \java\seedu\address\logic\commands\FindCommand.java
+``` java
+    public FindCommand(PersonContainsBirthdayPredicate searchPredicate) {
+        this.searchPredicate = searchPredicate;
+    }
+```
 ###### \java\seedu\address\logic\Logic.java
 ``` java
     /** Returns an unmodifiable view of all tags in the address book */
@@ -326,6 +346,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.IndexArrayUtil;
 import seedu.address.logic.commands.EmailCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -349,11 +370,15 @@ public class EmailCommandParser implements Parser<EmailCommand> {
                 Index index = ParserUtil.parseIndex(indexes[i]);
                 indexArray[i] = index;
             }
-            return new EmailCommand(indexArray);
         } catch (IllegalValueException ive) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
         }
+        if (!IndexArrayUtil.isDistinct(indexArray)) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
+        }
+        return new EmailCommand(indexArray);
     }
 
 }
@@ -366,6 +391,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.IndexArrayUtil;
 import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -393,11 +419,15 @@ public class ExportCommandParser implements Parser<ExportCommand> {
                     Index index = ParserUtil.parseIndex(indices[i]);
                     indexArray[i] = index;
                 }
-                return new ExportCommand(indexArray);
             } catch (IllegalValueException e) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
             }
+            if (!IndexArrayUtil.isDistinct(indexArray)) {
+                throw new ParseException(
+                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
+            }
+            return new ExportCommand(indexArray);
         }
     }
 }
@@ -427,11 +457,17 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
-            "Birthday format should be 'DD/MM/YYYY', and it should not be blank";
+            "Birthday format should be 'DD/MM/YYYY', and it should not be blank\n"
+                    + "Please check if the birthday is valid and is not a leap day";
 
-    public static final String BIRTHDAY_VALIDATION_REGEX = "\\d{2}\\/\\d{2}\\/\\d{4}";
+    public static final String BIRTHDAY_VALIDATION_REGEX = "^(?:(?:31(/)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)"
+            + "(/)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(/)0?2\\3(?:(?:"
+            + "(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?"
+            + "[1-9]|1\\d|2[0-8])(/)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
+    public static final String BIRTHDAY_MONTH_REGEX = "([0][1-9])|([1][0-2])";
 
     public final String value;
+    private String birthdayMonth;
 
     /**
      * Validates given birthday.
@@ -443,15 +479,29 @@ public class Birthday {
         String trimmedBirthday = birthday.trim();
         if (birthday.length() != 0 && !isValidBirthday(trimmedBirthday)) {
             throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
+        } else if (isValidBirthday(trimmedBirthday)) {
+            this.birthdayMonth = trimmedBirthday.split("/")[1];
         }
         this.value = trimmedBirthday;
     }
 
+
     /**
-     * Returns true if a given string is a valid person phone number.
+     * Returns true if a given string is a valid person birthday.
      */
     public static boolean isValidBirthday(String test) {
         return test.matches(BIRTHDAY_VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if a given String matches exactly 2 digits from 01 to 12 which is a valid birthday month.
+     */
+    public static boolean isValidMonth(String test) {
+        return test.matches(BIRTHDAY_MONTH_REGEX);
+    }
+
+    public String getBirthdayMonth() {
+        return birthdayMonth;
     }
 
     @Override
@@ -681,10 +731,13 @@ public class Vcard {
 ``` java
 package seedu.address.ui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.commons.events.model.SearchTagEvent;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -704,10 +757,24 @@ public class TagBox extends UiPart<Region> {
         super(FXML);
         this.tag = tag;
         initTags(tag);
+        registerAsAnEventHandler(this);
+        setEventHandlerForMouseClick();
     }
 
     private void initTags(Tag tag) {
         tagsName.setText(tag.tagName);
+    }
+
+    /**
+     * Register the Label {@tagsName} for MouseEvent to display the persons with the tag that user wants to see.
+     */
+    private void setEventHandlerForMouseClick() {
+        tagsName.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                raise(new SearchTagEvent(tag));
+            }
+        });
     }
 
     @Override

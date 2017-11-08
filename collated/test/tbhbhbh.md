@@ -11,33 +11,8 @@
             fail("This method should not be called.");
         }
 ```
-###### \java\seedu\address\logic\commands\SearchCommandTest.java
+###### \java\seedu\address\logic\commands\FindCommandTest.java
 ``` java
-package seedu.address.logic.commands;
-
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
-import static seedu.address.testutil.TypicalPersons.BENSON;
-import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.Test;
-
-import seedu.address.logic.CommandHistory;
-import seedu.address.logic.UndoRedoStack;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
-import seedu.address.model.person.PersonContainsKeywordsPredicate;
-import seedu.address.model.person.ReadOnlyPerson;
-
-public class SearchCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
@@ -47,14 +22,14 @@ public class SearchCommandTest {
         PersonContainsKeywordsPredicate secondPredicate =
                 new PersonContainsKeywordsPredicate(Collections.singletonList("second"));
 
-        SearchCommand searchFirstCommand = new SearchCommand(firstPredicate);
-        SearchCommand searchSecondCommand = new SearchCommand(secondPredicate);
+        FindCommand searchFirstCommand = new FindCommand(firstPredicate);
+        FindCommand searchSecondCommand = new FindCommand(secondPredicate);
 
         // same object -> returns true
         assertTrue(searchFirstCommand.equals(searchFirstCommand));
 
         // same values -> returns true
-        SearchCommand findFirstCommandCopy = new SearchCommand(firstPredicate);
+        FindCommand findFirstCommandCopy = new FindCommand(firstPredicate);
         assertTrue(searchFirstCommand.equals(findFirstCommandCopy));
 
         // different types -> returns false
@@ -69,15 +44,15 @@ public class SearchCommandTest {
 
     @Test
     public void execute_zeroKeywords_noPersonFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
-        SearchCommand command = prepareCommand(" ");
-        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 7);
+        FindCommand command = prepareSearchKeywordsCommand(" ");
+        assertCommandSuccess(command, expectedMessage, model.getFilteredPersonList());
     }
 
     @Test
     public void execute_tagThenName_personFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-        SearchCommand command = prepareCommand("owesMoney Benson");
+        FindCommand command = prepareSearchKeywordsCommand("owesMoney Benson");
         assertCommandSuccess(command, expectedMessage, Collections.singletonList(BENSON));
 
     }
@@ -85,16 +60,18 @@ public class SearchCommandTest {
     @Test
     public void execute_nameThenTag_personFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-        SearchCommand command = prepareCommand("Benson owesMoney");
+        FindCommand command = prepareSearchKeywordsCommand("Benson owesMoney");
         assertCommandSuccess(command, expectedMessage, Collections.singletonList(BENSON));
     }
-
+```
+###### \java\seedu\address\logic\commands\FindCommandTest.java
+``` java
     /**
-     * Parses {@code userInput} into a {@code SearchCommand}.
+     * Parses {@code userInput} which are keywords into a {@code FindCommand}.
      */
-    public SearchCommand prepareCommand(String userInput) {
-        SearchCommand command =
-                new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+"))));
+    public FindCommand prepareSearchKeywordsCommand(String userInput) {
+        FindCommand command =
+                new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList(userInput.split("\\s+"))));
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
@@ -105,7 +82,7 @@ public class SearchCommandTest {
      *     - the {@code FilteredList<ReadOnlyPerson>} is equal to {@code expectedList}<br>
      *     - the {@code AddressBook} in model remains the same after executing the {@code command}
      */
-    private void assertCommandSuccess(SearchCommand command,
+    private void assertCommandSuccess(FindCommand command,
                                       String expectedMessage, List<ReadOnlyPerson> expectedList) {
         AddressBook expectedAddressBook = new AddressBook(model.getAddressBook());
         CommandResult commandResult = command.execute();
@@ -397,7 +374,7 @@ public class TagEditCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\SearchCommandParserTest.java
+###### \java\seedu\address\logic\parser\FindCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -409,28 +386,33 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import seedu.address.logic.commands.SearchCommand;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.model.person.PersonContainsBirthdayPredicate;
 import seedu.address.model.person.PersonContainsKeywordsPredicate;
 
-public class SearchCommandParserTest {
+public class FindCommandParserTest {
 
-    private SearchCommandParser parser = new SearchCommandParser();
+    private FindCommandParser parser = new FindCommandParser();
 
     @Test
     public void parse_emptyArg_throwsParseException() {
         assertParseFailure(parser, "     ",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, SearchCommand.MESSAGE_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_validArgs_returnsSearchCommand() {
         // no leading and trailing whitespaces
-        SearchCommand expectedSearchCommand =
-                new SearchCommand(new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "friends")));
+        FindCommand expectedSearchCommand =
+                new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "friends")));
         assertParseSuccess(parser, "Alice friends", expectedSearchCommand);
 
         // multiple whitespaces between keywords
         assertParseSuccess(parser, " \n Alice \n \t friends  \t", expectedSearchCommand);
+
+        // single birthday month represented by 2 digits
+        expectedSearchCommand = new FindCommand(new PersonContainsBirthdayPredicate("05"));
+        assertParseSuccess(parser, "05", expectedSearchCommand);
     }
 }
 ```
@@ -475,4 +457,55 @@ public class SocialCommandParserTest {
     }
 
 }
+```
+###### \java\systemtests\AddressBookSystemTest.java
+``` java
+    /**
+     * Asserts that the browser's url is changed to display the details of the person in the person list panel at
+     * {@code expectedSelectedCardIndex}, and only the card at {@code expectedSelectedCardIndex} is selected.
+     * @see BrowserPanelHandle#isUrlChanged()
+     * @see PersonListPanelHandle#isSelectedPersonCardChanged()
+     */
+    protected void assertSelectedCardChanged(Index expectedSelectedCardIndex) {
+        String selectedCardName = getPersonListPanel().getHandleToSelectedCard().getName();
+        String instagramName = getInstagramNameFromFullName(selectedCardName);
+        URL expectedUrl;
+        try {
+            expectedUrl = new URL(INSTAGRAM_URL_PREFIX + instagramName + "/");
+        } catch (MalformedURLException mue) {
+            throw new AssertionError("URL expected to be valid.");
+        }
+        assertEquals(expectedUrl, getBrowserPanel().getLoadedUrl());
+
+        assertEquals(expectedSelectedCardIndex.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
+    }
+```
+###### \java\systemtests\AddressBookSystemTest.java
+``` java
+    /**
+     * Returns the person's instagram name from his/her full name.
+     */
+    private String getInstagramNameFromFullName(String fullName) {
+
+        switch(fullName) {
+        case "Alice Pauline":
+            return "alice_pauline";
+        case "Benson Meier":
+            return "meier";
+        case "Carl Kurz":
+            return "kurz";
+        case "Daniel Meier":
+            return "meier_dan";
+        case "Elle Meyer":
+            return "meyer_elle";
+        case "Fiona Kunz":
+            return "kunz";
+        case "George Best":
+            return "iamthebest";
+        case "Amy Bee":
+            return "amy_bee";
+        default:
+            return "failed";
+        }
+    }
 ```

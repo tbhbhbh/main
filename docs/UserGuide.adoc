@@ -140,26 +140,6 @@ Edits the phone number and email address of the 1st person to be `91234567` and 
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
-=== Locating persons by name: `find`
-
-Finds persons whose names contain any of the given keywords. +
-Format: `find KEYWORD [MORE_KEYWORDS]`
-
-****
-* The search is case insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
-****
-
-Examples:
-
-* `find John` +
-Returns `john` and `John Doe`
-* `find Betsy Tim John` +
-Returns any person having names `Betsy`, `Tim`, or `John`
-
 === Deleting a person : `delete`
 
 Deletes the specified person from the address book. +
@@ -304,7 +284,7 @@ Assigns the alias 'a' to the add command. 'a' can now be used in place of add.
 it is no longer assigned to delete.
 // end::alias[]
 
-//tag::import[]
+// tag::import[]
 === Importing contacts : `import`
 
 Allows you to import contacts from either Google Contacts.
@@ -347,6 +327,7 @@ Exports all contacts into a vCard format file.
 `export 1 2` +
 Exports the 1st and 2nd person from the list of contacts listed.
 
+// tag::tagdelete[]
 === Deleting a tag : `tagdelete`
 
 Allows you to delete a tag from all persons in the address book.
@@ -361,12 +342,14 @@ Examples:
 
 * `tagdelete friends` +
 Deletes the tag 'friends' from all persons with the 'friends' tag in the address book.
+// end::tagdelete[]
 
+// tag::tagedit[]
 === Editing a tag : `tagedit`
 
 Allows you to change the name of a tag belonging to all persons in the address book.
 
-Format: `tagedit OLD TAG NAME OLD_TAG_NAME NEW_TAG_NAME`
+Format: `tagedit OLD_TAG_NAME NEW_TAG_NAME`
 
 ****
 * Old tag must be an existing, valid tag
@@ -378,33 +361,51 @@ Examples:
 
 * `tagedit friends losers` +
 Changes the tag 'friends' into 'losers' for all persons with that tag.
+// end::tagedit[]
 
-=== Search for persons : `search`
+// tag::find[]
+=== Find persons (improved) : `find`
 
-Searches for persons whose names or tags contain any of the given keywords. +
+Searches for persons whose name or tags contain any of the given keywords. +
 Format: `find KEYWORD [MORE_KEYWORDS]` +
 
 ****
-* The search for names is case insensitive. e.g. `hans` will match `Hans`. However, the search for tags is
-case sensitive.
-* The order of the keywords does not matter. e.g. `Alex colleagues` and `colleagues Alex` will give you the same result.
-* Both names and tags are searched.
-* Only full words will be matched with names and tags. e.g. `Han` will not match `Hans` and `colleague` will not match
-`colleagues`
-* When searching for one keyword, persons matching at least one keyword will be returned like in `find`
-* When searching for more than one keyword, only persons matching ALL keywords will be returned. eg. `search Alex` will
-return all persons with the name `Alex`, but `search Alex colleagues` will only return persons with both the word `Alex`
-in their names and the tag `colleagues`.
+* The search is case insensitive. e.g. `hans` will match `Hans` (example below)
+* The order of keywords does not matter. (example below)
+* Name, tags and initial can be searched.
+* For names, only full words will be matched. e.g. `Han` will not match `Hans`
 ****
 
-Examples:
+Examples with explanation:
 
-* `search alex` +
-returns `alex` and `Alex`
+* `find` only supports searching for 1 name. +
+e.g.:  `find Alex` +
+`find Alex` will successfully find any persons with the name `Alex`, but find `Alex Bob` will not find all persons
+with the name `Alex` and `Bob`. It would instead find persons with both `Alex` and `Bob` in their names. +
 
-* `search alex colleagues` +
-returns all persons with the name `Alex` or `alex` AND with the tag `colleagues`
+* `find` supports searching for multiple tags. +
+e.g.:  `find colleagues friends` +
+`find colleagues` will successfully find any persons with the tag `colleagues` in their description. `find
+colleagues friends` will find any persons with BOTH the tags `colleagues` and `friends`. +
 
+* `find` also supports searching for a name with tags. +
+e.g.:  `find Alex colleagues`
+`find Alex colleagues` returns all persons with the word `Alex` in their names (either first name or last name) and
+are `colleagues`.
+
+* `find` supports searching for an initial. +
+e.g.:  `find a` +
+`find a` will return all persons whose last names or first names begin with the letter `a`.
+
+* The order of keywords does not matter. +
+e.g.: `find Alex colleagues` is the same as `find colleagues Alex`. +
+
+* `find` is case insensitive for all inputs. +
+e.g.: `find BeRnICe FrIEnDs` is the same as `find Bernice friends`. +
+
+// end::find[]
+
+// tag::social[]
 === Viewing a contact's Twitter/Instagram profile : `social`
 
 Opens up a person's Twitter or Instagram profile in browser panel. +
@@ -424,6 +425,7 @@ Opens up the Instagram profile of the person at index 1. +
 
 * `social 2 tw` +
 Opens up the Twitter profile of the person at index 2.
+// end::social[]
 
 === Viewing a contact's address : `location`
 

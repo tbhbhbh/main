@@ -1,5 +1,8 @@
 package seedu.address.ui;
 
+import static seedu.address.logic.commands.SocialCommand.INSTAGRAM_URL_PREFIX;
+import static seedu.address.logic.commands.SocialCommand.TWITTER_URL_PREFIX;
+
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -40,12 +43,22 @@ public class BrowserPanel extends UiPart<Region> {
         loadDefaultPage();
         registerAsAnEventHandler(this);
     }
-
+    //@@author tbhbhbh
+    /**
+     * Loads the person's Instagram, Twitter and then a Google search page for the person's name, in that order,
+     * depending on if the person has the social media fields filled in.
+     */
     private void loadPersonPage(ReadOnlyPerson person) {
-        loadPage(GOOGLE_SEARCH_URL_PREFIX + person.getName().fullName.replaceAll(" ", "+")
-                + GOOGLE_SEARCH_URL_SUFFIX);
+        if (!person.getInstagramName().toString().isEmpty()) {
+            loadPage(INSTAGRAM_URL_PREFIX +  person.getInstagramName());
+        } else if (!person.getTwitterName().toString().isEmpty()) {
+            loadPage(TWITTER_URL_PREFIX + person.getTwitterName());
+        } else {
+            loadPage(GOOGLE_SEARCH_URL_PREFIX + person.getName().fullName.replaceAll(" ", "+")
+                    + GOOGLE_SEARCH_URL_SUFFIX);
+        }
     }
-
+    //@@author
     public void loadPage(String url) {
         Platform.runLater(() -> browser.getEngine().load(url));
     }
