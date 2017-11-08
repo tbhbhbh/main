@@ -1,7 +1,11 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
+import static seedu.address.ui.MainWindow.DEFAULT_DP;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Tokenizes arguments string of the form: {@code preamble <prefix>value <prefix>value ...}<br>
@@ -21,10 +25,13 @@ public class ArgumentTokenizer {
      * @param prefixes   Prefixes to tokenize the arguments string with
      * @return           ArgumentMultimap object that maps prefixes to their arguments
      */
+    //@@author JunQuann
     public static ArgumentMultimap tokenize(String argsString, Prefix... prefixes) {
         List<PrefixPosition> positions = findAllPrefixPositions(argsString, prefixes);
-        return extractArguments(argsString, positions);
+        ArgumentMultimap argsMultimap = extractArguments(argsString, positions);
+        return inputUniqueDisplayPicName(argsMultimap, prefixes);
     }
+    //@@author JunQuann
 
     /**
      * Finds all zero-based prefix positions in the given arguments string.
@@ -125,6 +132,20 @@ public class ArgumentTokenizer {
 
         return value.trim();
     }
+
+    //@@author JunQuann
+    private static ArgumentMultimap inputUniqueDisplayPicName(ArgumentMultimap argMultimap, Prefix... prefixes) {
+        if(!argMultimap.getValue(PREFIX_DP).equals(Optional.empty())) {
+            String displayPicName = "";
+            for (Prefix prefix : prefixes) {
+                displayPicName += argMultimap.getValue(prefix);
+            }
+            String hashedDisplayPicName = String.valueOf(displayPicName.hashCode());
+            argMultimap.put(PREFIX_DP, hashedDisplayPicName);
+        }
+        return argMultimap;
+    }
+    //@@author
 
     /**
      * Represents a prefix's position in an arguments string.
