@@ -2,7 +2,9 @@ package seedu.address.commons.events.model;
 
 import seedu.address.commons.events.BaseEvent;
 
+//@@author JunQuann
 /**
+ * Indicates that the file chooser needs to pop up
  */
 public class FileChooserEvent extends BaseEvent {
 

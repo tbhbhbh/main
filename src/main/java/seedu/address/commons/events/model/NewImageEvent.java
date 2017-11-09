@@ -3,8 +3,8 @@ package seedu.address.commons.events.model;
 import seedu.address.commons.events.BaseEvent;
 
 //@@author JunQuann
-
 /**
+ * Indicate that a new image is available to be copied to designated folder
  */
 public class NewImageEvent extends BaseEvent {
 
