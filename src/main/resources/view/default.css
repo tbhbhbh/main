@@ -23,6 +23,10 @@
     -fx-background-color: #424d5f;
 }
 
+.list-cell:filled:selected .label{
+    -fx-text-fill: #f7f7f7;
+}
+
 .list-cell:empty{
     -fx-background-color: #F5F9FA;
 }
