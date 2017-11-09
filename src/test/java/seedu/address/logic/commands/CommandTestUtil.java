@@ -62,7 +62,6 @@ public class CommandTestUtil {
     public static final String INSTAGRAM_DESC_AMY = " " + PREFIX_INSTAGRAM + VALID_INSTAGRAM_AMY;
     public static final String INSTAGRAM_DESC_BOB = " " + PREFIX_INSTAGRAM + VALID_INSTAGRAM_BOB;
     public static final String DISPLAYPIC_DESC = " " + PREFIX_DP;
-    public static final String DISPLAYPIC_DEFAULT = " " + PREFIX_DP;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
