@@ -284,7 +284,7 @@ public class AddCommandSystemTest extends AddressBookSystemTest {
      * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(ReadOnlyPerson toAdd) {
-        assertCommandSuccess(PersonUtil.getAddInput(toAdd), toAdd);
+        assertCommandSuccess(PersonUtil.getAddCommand(toAdd), toAdd);
     }
 
     /**
