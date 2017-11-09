@@ -1,10 +1,12 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
+import static seedu.address.ui.MainWindow.DEFAULT_DP;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 
 /**
  * Tokenizes arguments string of the form: {@code preamble <prefix>value <prefix>value ...}<br>
@@ -139,7 +141,8 @@ public class ArgumentTokenizer {
      */
     //@@author JunQuann
     private static ArgumentMultimap inputUniqueDisplayPicName(ArgumentMultimap argMultimap, Prefix... prefixes) {
-        if (!argMultimap.getValue(PREFIX_DP).equals(Optional.empty())) {
+        Optional<String> displayPicValue = argMultimap.getValue(PREFIX_DP);
+        if (displayPicValue.isPresent() && !displayPicValue.get().equals(DEFAULT_DP)) {
             String displayPicName = "";
             for (Prefix prefix : prefixes) {
                 displayPicName += argMultimap.getValue(prefix);
