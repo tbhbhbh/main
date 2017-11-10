@@ -23,7 +23,7 @@ public class ImageFileStorage {
     }
 
     public String getImageFilePath(String imageName) {
-        return dirPath + imageName;
+        return dirPath + imageName + ".png";
     }
 
     /**
