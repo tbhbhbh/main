@@ -168,6 +168,9 @@ public class ArgumentTokenizer {
         return fileChooserEvent.getImgPath();
     }
 
+    /**
+     * Create a unique display pic name by adding all fields of a person together and creating a hashcode
+     */
     private static String createUniqueDisplayPicName(ArgumentMultimap argMultimap, Prefix... prefixes) {
         String displayPicName = "";
         for (Prefix prefix : prefixes) {

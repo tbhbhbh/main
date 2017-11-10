@@ -34,7 +34,6 @@ import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.events.ui.SocialRequestEvent;
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;

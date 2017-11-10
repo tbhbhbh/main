@@ -3,7 +3,6 @@ package seedu.address.storage;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static seedu.address.testutil.EventsUtil.postNow;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.io.IOException;
@@ -23,14 +22,14 @@ import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class StorageManagerTest {
 
+    private static final String INVALID_IMG_PATH = "/invalid/test.png";
+    private static final String IMG_NAME = "testImage";
+    private static final NewImageEvent EVENT_STUB = new NewImageEvent(IMG_NAME, INVALID_IMG_PATH);
+
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
-
-    private static final String INVALID_IMG_PATH = "/invalid/test.png";
-    private static final String IMG_NAME = "testImage";
-    private static final NewImageEvent EVENT_STUB = new NewImageEvent(IMG_NAME, INVALID_IMG_PATH);
     private StorageManager storageManager;
 
     @Before
