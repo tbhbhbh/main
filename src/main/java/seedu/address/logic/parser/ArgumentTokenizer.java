@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.model.FileChooserEvent;
+import seedu.address.commons.events.model.NewImageEvent;
+
 
 /**
  * Tokenizes arguments string of the form: {@code preamble <prefix>value <prefix>value ...}<br>
@@ -17,7 +21,6 @@ import java.util.Optional;
  *    in the above example.<br>
  */
 public class ArgumentTokenizer {
-
     /**
      * Tokenizes an arguments string and returns an {@code ArgumentMultimap} object that maps prefixes to their
      * respective argument values. Only the given prefixes will be recognized in the arguments string.
@@ -30,7 +33,7 @@ public class ArgumentTokenizer {
     public static ArgumentMultimap tokenize(String argsString, Prefix... prefixes) {
         List<PrefixPosition> positions = findAllPrefixPositions(argsString, prefixes);
         ArgumentMultimap argsMultimap = extractArguments(argsString, positions);
-        return inputUniqueDisplayPicName(argsMultimap, prefixes);
+        return inputDisplayPicPath(argsMultimap, prefixes);
     }
     //@@author
 
@@ -134,23 +137,43 @@ public class ArgumentTokenizer {
         return value.trim();
     }
 
+    //@@author JunQuan
     /***
-     * @param argMultimap
-     * @param prefixes
-     * @return
+     * Input the path of the display pic that is copied into the preferred image file directory
      */
-    //@@author JunQuann
-    private static ArgumentMultimap inputUniqueDisplayPicName(ArgumentMultimap argMultimap, Prefix... prefixes) {
+    private static ArgumentMultimap inputDisplayPicPath(ArgumentMultimap argMultimap, Prefix... prefixes) {
         Optional<String> displayPicValue = argMultimap.getValue(PREFIX_DP);
         if (displayPicValue.isPresent() && !displayPicValue.get().equals(DEFAULT_DP)) {
-            String displayPicName = "";
-            for (Prefix prefix : prefixes) {
-                displayPicName += argMultimap.getValue(prefix);
+            String hashedDisplayPicName = createUniqueDisplayPicName(argMultimap, prefixes);
+            String currentImgPath = getCurrentImgPath();
+            if (currentImgPath == null || currentImgPath.equals(DEFAULT_DP)) {
+                argMultimap.put(PREFIX_DP, DEFAULT_DP);
+            } else {
+                String finalImgPath = getFinalImgPath(hashedDisplayPicName, currentImgPath);
+                argMultimap.put(PREFIX_DP, finalImgPath);
             }
-            String hashedDisplayPicName = String.valueOf(displayPicName.hashCode());
-            argMultimap.put(PREFIX_DP, hashedDisplayPicName);
         }
         return argMultimap;
+    }
+
+    private static String getFinalImgPath(String hashedDisplayPicName, String imgPath) {
+        NewImageEvent newImageEvent = new NewImageEvent(hashedDisplayPicName, imgPath);
+        EventsCenter.getInstance().post(newImageEvent);
+        return newImageEvent.getImagePath();
+    }
+
+    private static String getCurrentImgPath() {
+        FileChooserEvent fileChooserEvent = new FileChooserEvent();
+        EventsCenter.getInstance().post(fileChooserEvent);
+        return fileChooserEvent.getImgPath();
+    }
+
+    private static String createUniqueDisplayPicName(ArgumentMultimap argMultimap, Prefix... prefixes) {
+        String displayPicName = "";
+        for (Prefix prefix : prefixes) {
+            displayPicName += argMultimap.getValue(prefix);
+        }
+        return String.valueOf(displayPicName.hashCode());
     }
     //@@author
 
