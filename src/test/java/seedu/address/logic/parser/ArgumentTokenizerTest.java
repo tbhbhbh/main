@@ -7,12 +7,16 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import seedu.address.commons.events.model.FileChooserEvent;
+import seedu.address.ui.testutil.EventsCollectorRule;
+
 public class ArgumentTokenizerTest {
 
     private final Prefix unknownPrefix = new Prefix("--u");
     private final Prefix pSlash = new Prefix("p/");
     private final Prefix dashT = new Prefix("-t");
     private final Prefix hatQ = new Prefix("^Q");
+    private final Prefix dpSlash = new Prefix("dp/");
 
     @Test
     public void tokenize_emptyArgsString_noValues() {
@@ -128,12 +132,22 @@ public class ArgumentTokenizerTest {
 
     @Test
     public void tokenize_multipleArgumentsJoined() {
-        String argsString = "SomePreambleStringp/ pSlash joined-tjoined -t not joined^Qjoined";
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
+        String argsString = "SomePreambleStringp/ pSlash joined-tjoined -t not joined^Qjoined dp/";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ, dpSlash);
         assertPreamblePresent(argMultimap, "SomePreambleStringp/ pSlash joined-tjoined");
         assertArgumentAbsent(argMultimap, pSlash);
         assertArgumentPresent(argMultimap, dashT, "not joined^Qjoined");
         assertArgumentAbsent(argMultimap, hatQ);
+        assertArgumentPresent(argMultimap, dpSlash, "", "/images/defaultperson.png");
+    }
+
+    @Test
+    public void handlePresentDisplayPicPrefix_eventRaised() {
+        EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
+        String argString = "SomePreambleString dp/";
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argString, dpSlash);
+        assertArgumentPresent(argMultimap, dpSlash, "", "/images/defaultperson.png");
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof FileChooserEvent);
     }
 
     @Test
