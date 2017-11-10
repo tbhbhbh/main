@@ -167,7 +167,7 @@ public class GoogleUtil {
         toAdd = new seedu.address.model.person.Person(nameAdd,
                 new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
                 new seedu.address.model.person.Birthday(birthday), new UserName(""), new UserName(""),
-                new DisplayPic(MainWindow.DEFAULT_DP, false),
+                new DisplayPic(MainWindow.DEFAULT_DP),
                 defaultTags);
         return toAdd;
     }

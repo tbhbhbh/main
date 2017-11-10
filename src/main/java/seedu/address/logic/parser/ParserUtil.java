@@ -123,7 +123,7 @@ public class ParserUtil {
      */
     public static Optional<DisplayPic> parseDisplayPic(Optional<String> displayPic) throws IllegalValueException {
         requireNonNull(displayPic);
-        return displayPic.isPresent() ? Optional.of(new DisplayPic(displayPic.get(), false)) : Optional.empty();
+        return displayPic.isPresent() ? Optional.of(new DisplayPic(displayPic.get())) : Optional.empty();
     }
     //@@author
 

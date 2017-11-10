@@ -88,7 +88,7 @@ public class XmlAdaptedPerson {
         final Birthday birthday = new Birthday(this.birthday);
         final UserName twitterName = new UserName(this.twitterName);
         final UserName instagramName = new UserName(this.instagramName);
-        final DisplayPic displayPic = new DisplayPic(this.displayPicPath, true);
+        final DisplayPic displayPic = new DisplayPic(this.displayPicPath);
         final Set<Tag> tags = new HashSet<>(personTags);
         return new Person(name, phone, email, address, birthday, twitterName,
                 instagramName, displayPic, tags);
