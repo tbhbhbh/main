@@ -34,6 +34,7 @@ import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
 import seedu.address.commons.events.ui.SocialRequestEvent;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
@@ -236,7 +237,8 @@ public class MainWindow extends UiPart<Region> {
     @Subscribe
     private void handleFileChooserEvent(FileChooserEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Select your image from the file chooser"));
-        event.setFilePath(getDisplayPicPath());
+        String currentImgPath = getDisplayPicPath();
+        event.setImgPath(currentImgPath);
     }
     //@@author
 
