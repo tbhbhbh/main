@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -109,7 +110,6 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
-
         setAccelerators();
         registerAsAnEventHandler(this);
     }
@@ -300,9 +300,11 @@ public class MainWindow extends UiPart<Region> {
      */
     @FXML
     public void handleProgress(ReadOnlyDoubleProperty progress) {
-        pWindow = new ProgressWindow(progress);
-        primaryStage.toFront();
-        pWindow.show();
+        Platform.runLater(() -> {
+            pWindow = new ProgressWindow(progress);
+            pWindow.show();
+        });
+
     }
 
     /**

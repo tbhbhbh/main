@@ -42,6 +42,10 @@ public class BrowserPanel extends UiPart<Region> {
 
         loadDefaultPage();
         registerAsAnEventHandler(this);
+
+        // Allows Google sign in to work in WebView as
+        // Same-Origin Policy would prevent it otherwise
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
     }
     //@@author tbhbhbh
     /**

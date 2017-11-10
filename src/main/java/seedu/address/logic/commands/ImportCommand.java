@@ -10,7 +10,6 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.services.people.v1.model.Person;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.CloseProgressEvent;
@@ -42,11 +41,15 @@ public class ImportCommand extends UndoableCommand {
     public static final String MESSAGE_CONNECTION_FAILURE = "Failed to access Google. Check your internet connection or"
             + " try again in a few minutes.";
     public static final int ADDRESSBOOK_SIZE = 1000;
-    private static int peopleAdded;
+    public static final int FIRST_PERSON_INDEX = 0;
+
     private static ArrayList<String> invalidPeople;
     private static Credential credential;
     private static HttpTransport httpTransport;
     private final String service;
+
+    private int peopleAdded;
+    private int peopleNotAdded;
 
     /**
      * Creates an ImportCommand to add contacts from the specified service
@@ -61,6 +64,13 @@ public class ImportCommand extends UndoableCommand {
         }
     }
 
+    /**
+     * Executes the Import Command using a Thread. The thread uses methods for authorization with Google and
+     * subsequent retrieval of contacts from the service.
+     *
+     * Returns a CommandResult with an "In Progress" message as the results display will be updated upon
+     * execution of the thread.
+     */
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         // Check for connectivity to Google
@@ -70,32 +80,25 @@ public class ImportCommand extends UndoableCommand {
         Thread thread = new Thread(() -> {
             try {
                 credential = GoogleUtil.authorize(httpTransport);
+                if (credential.equals(null)) {
+                    EventsCenter.getInstance().post(new NewResultAvailableEvent(MESSAGE_FAILURE, true));
+                    return;
+                }
+                // Retrieve a list of Persons
+                List<Person> connections = GoogleUtil.retrieveContacts(credential, httpTransport);
+
+                if (connections.equals(null)) {
+                    EventsCenter.getInstance().post(new NewResultAvailableEvent(MESSAGE_FAILURE_EMPTY, false));
+                    return;
+                }
+
+                // Import contacts into the application
+                importContacts(connections);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
         thread.start();
-
-        try {
-            thread.join(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new CommandException(MESSAGE_FAILURE);
-        }
-
-        if (credential == null) {
-            throw new CommandException(MESSAGE_FAILURE);
-        }
-
-        // Retrieve a list of Persons
-        List<Person> connections = GoogleUtil.retrieveContacts(credential, httpTransport);
-
-        if (connections == null) {
-            throw new CommandException(MESSAGE_FAILURE_EMPTY);
-        }
-
-        // Import contacts into the application
-        importContacts(connections);
 
         return new CommandResult(MESSAGE_IN_PROGRESS);
     }
@@ -109,24 +112,22 @@ public class ImportCommand extends UndoableCommand {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+
                 int amountToAdd = connections.size();
                 invalidPeople = new ArrayList<String>();
                 for (Person person : connections) {
                     seedu.address.model.person.Person toAdd = GoogleUtil.convertPerson(person);
                     if (toAdd == null) {
-                        invalidPeople.add(person.getNames().get(0).getDisplayName());
+                        invalidPeople.add(person.getNames().get(FIRST_PERSON_INDEX).getDisplayName());
                         continue;
                     }
                     try {
                         model.addPerson(toAdd);
+                        peopleAdded++;
                     } catch (DuplicatePersonException e) {
                         e.printStackTrace();
                     }
-                    peopleAdded++;
-                    Platform.runLater(() -> {
-                        updateProgress(peopleAdded, amountToAdd);
-
-                    });
+                    updateProgress(peopleAdded, amountToAdd);
                 }
                 return null;
             }
@@ -134,16 +135,14 @@ public class ImportCommand extends UndoableCommand {
 
         task.setOnSucceeded(t -> {
             EventsCenter.getInstance().post(new CloseProgressEvent());
-            StringBuilder sb = new StringBuilder();
-            if (connections.size() - peopleAdded > 0) {
-                sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded));
-                sb.append(" ");
-                sb.append(MESSAGE_INVALID_PEOPLE);
-                sb.append(invalidPeople.toString());
+            peopleNotAdded = connections.size() - peopleAdded;
+            String result;
+            if (peopleNotAdded > 0) {
+                result = constructResultMessage(peopleNotAdded, false);
             } else {
-                sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded));
+                result = constructResultMessage(peopleNotAdded, true);
             }
-            EventsCenter.getInstance().post(new NewResultAvailableEvent(sb.toString(), false));
+            EventsCenter.getInstance().post(new NewResultAvailableEvent(result, false));
         });
 
         task.setOnFailed(t -> {
@@ -154,6 +153,23 @@ public class ImportCommand extends UndoableCommand {
         EventsCenter.getInstance().post(new ShowProgressEvent(task.progressProperty()));
         Thread importThread = new Thread(task);
         importThread.start();
+    }
+
+    /**
+     * Constructs a message for the result
+     */
+    private String constructResultMessage(int peopleNotAdded, boolean isSuccessful) {
+        StringBuilder sb = new StringBuilder();
+        if (isSuccessful) {
+            sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, peopleNotAdded));
+
+        } else {
+            sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, peopleNotAdded));
+            sb.append(" ");
+            sb.append(MESSAGE_INVALID_PEOPLE);
+            sb.append(invalidPeople.toString());
+        }
+        return sb.toString();
     }
 
     @Override
