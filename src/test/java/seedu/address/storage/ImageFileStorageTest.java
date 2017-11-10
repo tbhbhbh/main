@@ -17,7 +17,7 @@ import seedu.address.commons.util.FileUtil;
 
 //@@author JunQuann
 public class ImageFileStorageTest {
-    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/ImageFileStorageTest/");
+    private static final String TEST_DATA_FOLDER = "./src/test/data/ImageFileStorageTest/";
     private static final String TEST_IMAGE = FileUtil.getPath("./src/test/data/ImageFileStorageTest/testImage.png");
     private static final String TEST_FILENAME = "test";
 

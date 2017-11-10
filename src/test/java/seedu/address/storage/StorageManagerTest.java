@@ -22,9 +22,11 @@ import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class StorageManagerTest {
 
+    //@@author JunQuann
     private static final String INVALID_IMG_PATH = "/invalid/test.png";
     private static final String IMG_NAME = "testImage";
     private static final NewImageEvent EVENT_STUB = new NewImageEvent(IMG_NAME, INVALID_IMG_PATH);
+    //@@author
 
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
