@@ -32,7 +32,7 @@ public class ArgumentTokenizer {
         ArgumentMultimap argsMultimap = extractArguments(argsString, positions);
         return inputUniqueDisplayPicName(argsMultimap, prefixes);
     }
-    //@@author JunQuann
+    //@@author
 
     /**
      * Finds all zero-based prefix positions in the given arguments string.

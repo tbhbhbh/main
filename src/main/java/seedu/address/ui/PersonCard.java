@@ -112,7 +112,7 @@ public class PersonCard extends UiPart<Region> {
         }
         return tagColours.get(tagName);
     }
-    //author JunQuann
+    //@@author
 
     @Override
     public boolean equals(Object other) {
