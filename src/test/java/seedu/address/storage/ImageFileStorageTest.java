@@ -19,7 +19,7 @@ import seedu.address.commons.util.FileUtil;
 public class ImageFileStorageTest {
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/ImageFileStorageTest/");
     private static final String TEST_IMAGE = FileUtil.getPath("./src/test/data/ImageFileStorageTest/testImage.png");
-    private static final String TEST_FILENAME = "test.png";
+    private static final String TEST_FILENAME = "test";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -39,7 +39,7 @@ public class ImageFileStorageTest {
 
     @Test
     public void assertImageFile() {
-        String expectedFile = FileUtil.getPath(TEST_DATA_FOLDER + TEST_FILENAME);
+        String expectedFile = FileUtil.getPath(TEST_DATA_FOLDER + TEST_FILENAME + ".png");
         String actualFile = new ImageFileStorage(TEST_DATA_FOLDER).getImageFilePath(TEST_FILENAME);
         assertEquals(expectedFile, actualFile);
     }
