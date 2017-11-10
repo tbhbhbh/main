@@ -8,14 +8,14 @@ import seedu.address.commons.events.BaseEvent;
  */
 public class FileChooserEvent extends BaseEvent {
 
-    private String filePath;
+    private String imgPath;
 
-    public String getFilePath() {
-        return filePath;
+    public String getImgPath() {
+        return imgPath;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     @Override
