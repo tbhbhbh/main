@@ -41,7 +41,7 @@ public class PersonBuilder {
             Birthday defaultBirthday = new Birthday(DEFAULT_BIRTHDAY);
             UserName defaultTwitter = new UserName(DEFAULT_TWITTER);
             UserName defaultInstagram = new UserName(DEFAULT_INSTAGRAM);
-            DisplayPic defaultDisplayPic = new DisplayPic(DEFAULT_DISPLAYPIC, true);
+            DisplayPic defaultDisplayPic = new DisplayPic(DEFAULT_DISPLAYPIC);
             Set<Tag> defaultTags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
             this.person = new Person(defaultName, defaultPhone, defaultEmail, defaultAddress, defaultBirthday,
                     defaultTwitter, defaultInstagram, defaultDisplayPic, defaultTags);
@@ -99,7 +99,7 @@ public class PersonBuilder {
      */
     public PersonBuilder withDisplayPic(String displayPic) {
         try {
-            this.person.setDisplayPic(new DisplayPic(displayPic, true));
+            this.person.setDisplayPic(new DisplayPic(displayPic));
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("address is expected to be unique.");
         }

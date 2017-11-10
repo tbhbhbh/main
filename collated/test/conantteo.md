@@ -1,11 +1,11 @@
 # conantteo
-###### \java\guitests\AddressBookGuiTest.java
+###### /java/guitests/AddressBookGuiTest.java
 ``` java
     protected TagListPanelHandle getTagListPanel() {
         return mainWindowHandle.getTagListPanel();
     }
 ```
-###### \java\guitests\guihandles\MainWindowHandle.java
+###### /java/guitests/guihandles/MainWindowHandle.java
 ``` java
     public TagListPanelHandle getTagListPanel() {
         return tagListPanel;
@@ -13,7 +13,7 @@
 
 }
 ```
-###### \java\guitests\guihandles\TagBoxHandle.java
+###### /java/guitests/guihandles/TagBoxHandle.java
 ``` java
 package guitests.guihandles;
 
@@ -52,7 +52,7 @@ public class TagBoxHandle extends NodeHandle<Node> {
     }
 }
 ```
-###### \java\guitests\guihandles\TagListPanelHandle.java
+###### /java/guitests/guihandles/TagListPanelHandle.java
 ``` java
 package guitests.guihandles;
 
@@ -107,7 +107,7 @@ public class TagListPanelHandle extends NodeHandle<ListView<TagBox>> {
     }
 }
 ```
-###### \java\seedu\address\commons\util\IndexArrayUtilTest.java
+###### /java/seedu/address/commons/util/IndexArrayUtilTest.java
 ``` java
 package seedu.address.commons.util;
 
@@ -188,7 +188,7 @@ public class IndexArrayUtilTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\EmailCommandTest.java
+###### /java/seedu/address/logic/commands/EmailCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -357,7 +357,7 @@ public class EmailCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\ExportCommandTest.java
+###### /java/seedu/address/logic/commands/ExportCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -534,7 +534,7 @@ public class ExportCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\FindCommandTest.java
+###### /java/seedu/address/logic/commands/FindCommandTest.java
 ``` java
     @Test
     public void execute_birthdayMonth_personFound() {
@@ -553,7 +553,7 @@ public class ExportCommandTest {
     }
 
 ```
-###### \java\seedu\address\logic\parser\EmailCommandParserTest.java
+###### /java/seedu/address/logic/parser/EmailCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -616,7 +616,7 @@ public class EmailCommandParserTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\ExportCommandParserTest.java
+###### /java/seedu/address/logic/parser/ExportCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -668,7 +668,7 @@ public class ExportCommandParserTest {
     }
 }
 ```
-###### \java\seedu\address\model\person\BirthdayTest.java
+###### /java/seedu/address/model/person/BirthdayTest.java
 ``` java
 package seedu.address.model.person;
 
@@ -710,7 +710,7 @@ public class BirthdayTest {
     }
 }
 ```
-###### \java\seedu\address\model\person\VcardTest.java
+###### /java/seedu/address/model/person/VcardTest.java
 ``` java
 package seedu.address.model.person;
 
@@ -771,16 +771,16 @@ public class VcardTest {
     }
 }
 ```
-###### \java\seedu\address\storage\XmlAddressBookStorageTest.java
+###### /java/seedu/address/storage/XmlAddressBookStorageTest.java
 ``` java
         //Save in a backup file and read back
         xmlAddressBookStorage.backupAddressBook(original);
-        readBack = xmlAddressBookStorage.readAddressBook(filePath + "-backup.xml").get();
+        readBack = xmlAddressBookStorage.readAddressBook(imgPath + "-backup.xml").get();
         assertEquals(original, new AddressBook(readBack));
 
     }
 ```
-###### \java\seedu\address\testutil\TagBuilder.java
+###### /java/seedu/address/testutil/TagBuilder.java
 ``` java
 package seedu.address.testutil;
 
@@ -823,12 +823,12 @@ public class TagBuilder {
 
 }
 ```
-###### \java\seedu\address\testutil\TypicalIndexes.java
+###### /java/seedu/address/testutil/TypicalIndexes.java
 ``` java
     public static final Index[] MULTIPLE_INDEX = {INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON};
 }
 ```
-###### \java\seedu\address\testutil\TypicalTags.java
+###### /java/seedu/address/testutil/TypicalTags.java
 ``` java
 package seedu.address.testutil;
 
@@ -860,7 +860,7 @@ public class TypicalTags {
     }
 }
 ```
-###### \java\seedu\address\ui\TagBoxTest.java
+###### /java/seedu/address/ui/TagBoxTest.java
 ``` java
 package seedu.address.ui;
 
@@ -942,7 +942,7 @@ public class TagBoxTest extends GuiUnitTest {
     }
 }
 ```
-###### \java\seedu\address\ui\TagListPanelTest.java
+###### /java/seedu/address/ui/TagListPanelTest.java
 ``` java
 package seedu.address.ui;
 

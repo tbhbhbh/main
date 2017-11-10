@@ -50,7 +50,7 @@ public class StatusBarFooterTest extends AddressBookGuiTest {
     public void syncStatus_mutatingCommandSucceeds_syncStatusUpdated() {
         String timestamp = new Date(injectedClock.millis()).toString();
         String expected = String.format(SYNC_STATUS_UPDATED, timestamp);
-        assertTrue(runCommand(PersonUtil.getAddInput(HOON))); // mutating command succeeds
+        assertTrue(runCommand(PersonUtil.getAddCommand(HOON))); // mutating command succeeds
         assertEquals(expected, getStatusBarFooter().getSyncStatus());
     }
 

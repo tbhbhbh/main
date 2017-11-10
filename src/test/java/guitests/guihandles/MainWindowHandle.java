@@ -50,6 +50,7 @@ public class MainWindowHandle extends StageHandle {
     public BrowserPanelHandle getBrowserPanel() {
         return browserPanel;
     }
+
     //@@author conantteo
     public TagListPanelHandle getTagListPanel() {
         return tagListPanel;

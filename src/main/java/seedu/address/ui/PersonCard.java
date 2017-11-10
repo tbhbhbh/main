@@ -92,7 +92,6 @@ public class PersonCard extends UiPart<Region> {
         }
         displayPic.setFill(new ImagePattern(displayPicture));
     }
-    //author JunQuann
 
     /**
      * Create new labels and bind a colour to it
@@ -113,6 +112,7 @@ public class PersonCard extends UiPart<Region> {
         }
         return tagColours.get(tagName);
     }
+    //@@author
 
     @Override
     public boolean equals(Object other) {

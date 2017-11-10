@@ -12,7 +12,6 @@ import java.io.IOException;
 import seedu.address.commons.util.FileUtil;
 
 //@@author JunQuann
-
 /**
  */
 public class ImageFileStorage {
@@ -24,13 +23,12 @@ public class ImageFileStorage {
     }
 
     public String getImageFilePath(String imageName) {
-        return dirPath + imageName;
+        return dirPath + imageName + ".png";
     }
 
     /**
-     * @param currentImagePath
-     * @param imageName
-     * @throws IOException
+     * Copy the image {@code currentImagePath} to the designated ImageFileStorage
+     * folder with image name {@code imageName}
      */
     public void copyImage(String currentImagePath, String imageName) throws IOException {
         File currentImage = new File(currentImagePath);
@@ -38,25 +36,21 @@ public class ImageFileStorage {
         createImageDir();
         String newImagePath = getImageFilePath(imageName);
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(newImagePath));
-        boolean done = false;
 
-        while (!done) {
+        int data;
 
-            byte[] buf = new byte[1024];
-            int readLength = bis.read(buf, 0, 1024);
-
-            if (readLength < 1024) {
-                done = true;
-            }
-
-            bos.write(buf);
+        while ((data = bis.read()) != -1) {
+            bos.write(data);
         }
 
         bis.close();
         bos.close();
     }
 
-    private void createImageDir() throws IOException {
+    /**
+     * Create the image file storage directory if it does not exists.
+     */
+    public void createImageDir() throws IOException {
         requireNonNull(dirPath);
         FileUtil.createDirs(new File(dirPath));
     }

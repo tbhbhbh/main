@@ -48,10 +48,12 @@ public abstract class AddressBookSystemTest {
     @ClassRule
     public static ClockRule clockRule = new ClockRule();
 
+    //@@author JunQuann
     private static final List<String> COMMAND_BOX_DEFAULT_STYLE = Arrays.asList("text-input", "text-field",
             "jfx-text-field");
     private static final List<String> COMMAND_BOX_ERROR_STYLE =
             Arrays.asList("text-input", "text-field", "jfx-text-field", CommandBox.ERROR_STYLE_CLASS);
+    //@@author
 
     private MainWindowHandle mainWindowHandle;
     private TestApp testApp;

@@ -95,6 +95,7 @@ public abstract class AddressBookGuiTest {
         return mainWindowHandle.getTagListPanel();
     }
     //@@author
+
     /**
      * Runs {@code command} in the application's {@code CommandBox}.
      * @return true if the command was executed successfully.

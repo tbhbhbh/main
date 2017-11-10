@@ -1,3 +1,4 @@
+/*@@author JunQuann*/
 .list-cell {
     -fx-label-padding: 0 0 0 0;
     -fx-graphic-text-gap : 0;
@@ -21,6 +22,10 @@
 
 .list-cell:filled:selected{
     -fx-background-color: #424d5f;
+}
+
+.list-cell:filled:selected .label{
+    -fx-text-fill: #f7f7f7;
 }
 
 .list-cell:empty{

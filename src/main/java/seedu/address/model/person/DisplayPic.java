@@ -3,10 +3,10 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.ui.MainWindow.DEFAULT_DP;
 
-import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.BaseEvent;
-import seedu.address.commons.events.model.FileChooserEvent;
-import seedu.address.commons.events.model.NewImageEvent;
+import java.io.File;
+
+import javax.activation.MimetypesFileTypeMap;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 
 //@@author JunQuann
@@ -14,41 +14,36 @@ import seedu.address.commons.exceptions.IllegalValueException;
  * Represents a Person's display picture path in a addressbook
  */
 public class DisplayPic {
+    public static final String MESSAGE_DISPLAYPIC_CONSTRAINTS = "Please ensure that you choose a valid image file";
 
     private String newDisplayPicPath;
-    private String currentDisplayPic;
-    private EventsCenter eventsCenter = EventsCenter.getInstance();
-    private FileChooserEvent fileChooserEvent;
-    private NewImageEvent newImageEvent;
 
-    public DisplayPic(String displayPicName, boolean isFromStorage) throws IllegalValueException {
+    public DisplayPic(String displayPicName) throws IllegalValueException {
         requireNonNull(displayPicName);
         String trimmedDisplayPicName = displayPicName.trim();
-        if (trimmedDisplayPicName.equals(DEFAULT_DP) || isFromStorage) {
-            this.newDisplayPicPath = trimmedDisplayPicName;
-        } else {
-            initialiseDisplayPic(trimmedDisplayPicName);
+        if (!isValidPicPath(trimmedDisplayPicName) && !trimmedDisplayPicName.equals(DEFAULT_DP)) {
+            throw new IllegalValueException(MESSAGE_DISPLAYPIC_CONSTRAINTS);
         }
-    }
-
-    /**
-     * @param trimmedDisplayPicName
-     */
-    private void initialiseDisplayPic(String trimmedDisplayPicName) {
-        fileChooserEvent = new FileChooserEvent();
-        raise(fileChooserEvent);
-        this.currentDisplayPic = fileChooserEvent.getFilePath();
-        newImageEvent = new NewImageEvent(trimmedDisplayPicName, currentDisplayPic);
-        raise(newImageEvent);
-        this.newDisplayPicPath = newImageEvent.getImagePath();
+        this.newDisplayPicPath = trimmedDisplayPicName;
     }
 
     public String getNewDisplayPicPath() {
         return newDisplayPicPath;
     }
 
-    public void raise(BaseEvent event) {
-        eventsCenter.post(event);
+    /**
+     * Returns if a given string is a valid picture path
+     */
+    public static boolean isValidPicPath(String displayPicPath) {
+        File displayPicFile = new File(displayPicPath);
+
+        MimetypesFileTypeMap mtftp = new MimetypesFileTypeMap();
+        mtftp.addMimeTypes("image png jpg jpeg");
+
+        String mimeType = mtftp.getContentType(displayPicFile).split("/")[0];
+        boolean isPicture = mimeType.equals("image");
+
+        return isPicture && displayPicFile.exists();
     }
 
     @Override

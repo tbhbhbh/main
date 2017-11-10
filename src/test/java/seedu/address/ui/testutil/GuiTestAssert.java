@@ -1,15 +1,19 @@
 package seedu.address.ui.testutil;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import guitests.guihandles.PersonCardHandle;
+import guitests.guihandles.PersonDescriptionHandle;
 import guitests.guihandles.PersonListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.TagBoxHandle;
 import guitests.guihandles.TagListPanelHandle;
+import javafx.scene.image.Image;
+import seedu.address.commons.util.AppUtil;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 
@@ -17,6 +21,8 @@ import seedu.address.model.tag.Tag;
  * A set of assertion methods useful for writing GUI tests.
  */
 public class GuiTestAssert {
+
+    //@@author JunQuann
     /**
      * Asserts that {@code actualCard} displays the same values as {@code expectedCard}.
      */
@@ -24,6 +30,7 @@ public class GuiTestAssert {
         assertEquals(expectedCard.getId(), actualCard.getId());
         assertEquals(expectedCard.getName(), actualCard.getName());
         assertEquals(expectedCard.getPhone(), actualCard.getPhone());
+        assertImageEquals(expectedCard.getDisplayPic(), actualCard.getDisplayPic());
         assertEquals(expectedCard.getTags(), actualCard.getTags());
     }
 
@@ -33,9 +40,30 @@ public class GuiTestAssert {
     public static void assertCardDisplaysPerson(ReadOnlyPerson expectedPerson, PersonCardHandle actualCard) {
         assertEquals(expectedPerson.getName().fullName, actualCard.getName());
         assertEquals(expectedPerson.getPhone().value, actualCard.getPhone());
+        Image expectedDisplayPic = AppUtil.getImage(expectedPerson.getDisplayPic().getNewDisplayPicPath());
+        Image actualDisplayPic = actualCard.getDisplayPic();
+        assertImageEquals(expectedDisplayPic, actualDisplayPic);
         assertEquals(expectedPerson.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
                 actualCard.getTags());
     }
+
+    /**
+     * Asserts that {@code personDescription} displays the details of {@code expectedPerson}.
+     */
+    public static void assertDescriptionDisplaysPerson(ReadOnlyPerson expectedPerson,
+                                                       PersonDescriptionHandle actualDescription) {
+        Image expectedDisplayPic = AppUtil.getImage(expectedPerson.getDisplayPic().getNewDisplayPicPath());
+        Image actualDisplayPic = actualDescription.getDisplayPic();
+        assertImageEquals(expectedDisplayPic, actualDisplayPic);
+        assertEquals(expectedPerson.getName().fullName, actualDescription.getName());
+        assertEquals(expectedPerson.getPhone().value, actualDescription.getMobile());
+        assertEquals(expectedPerson.getBirthday().value, actualDescription.getBirthday());
+        assertEquals(expectedPerson.getEmail().value, actualDescription.getEmail());
+        assertEquals(expectedPerson.getAddress().value, actualDescription.getAddress());
+        assertEquals(expectedPerson.getInstagramName().value, actualDescription.getInstagram());
+        assertEquals(expectedPerson.getTwitterName().value, actualDescription.getTwitter());
+    }
+    //@@author
 
     /**
      * Asserts that the list in {@code personListPanelHandle} displays the details of {@code persons} correctly and
@@ -87,5 +115,21 @@ public class GuiTestAssert {
 
     public static void assertBoxDisplayTag(Tag expectedTag, TagBoxHandle tagBox) {
         assertEquals(expectedTag.tagName, tagBox.getTagName());
+    }
+
+    //@@author JunQuann
+    /**
+     * Asserts that the image {@code expected} equals to {@code actual}
+     */
+    public static void assertImageEquals(Image expected, Image displayed) {
+        boolean equal = true;
+        for (int i = 0; i < expected.getWidth(); i++) {
+            for (int j = 0; j < expected.getHeight(); j++) {
+                if (expected.getPixelReader().getArgb(i, j) != displayed.getPixelReader().getArgb(i, j)) {
+                    equal = false;
+                }
+            }
+        }
+        assertTrue(equal);
     }
 }

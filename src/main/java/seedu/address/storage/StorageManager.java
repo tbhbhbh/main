@@ -123,6 +123,7 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     //@@author JunQuann
+    @Override
     @Subscribe
     public void handleNewImageEvent(NewImageEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Copying display picture to the designated folder"));
