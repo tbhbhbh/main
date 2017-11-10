@@ -657,7 +657,7 @@ public class Vcard {
 ``` java
     @Override
     public void backupAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
-        saveAddressBook(addressBook, filePath + "-backup.xml");
+        saveAddressBook(addressBook, imgPath + "-backup.xml");
     }
 
 }

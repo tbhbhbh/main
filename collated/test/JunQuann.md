@@ -140,7 +140,7 @@ public class DisplayPicTest {
         //invalid file path
         assertFalse(DisplayPic.isValidPicPath(" "));
         assertFalse(DisplayPic.isValidPicPath("invalid file path"));
-        assertFalse(DisplayPic.isValidPicPath("/filePath/does/not/exists"));
+        assertFalse(DisplayPic.isValidPicPath("/imgPath/does/not/exists"));
 
         //valid file path but not picture file
         assertFalse(DisplayPic.isValidPicPath("./src/test/"));
@@ -175,8 +175,8 @@ public class ImageFileStorageTest {
         createImageDir(null);
     }
 
-    public void createImageDir(String filePath) throws IOException {
-        new ImageFileStorage(filePath).createImageDir();
+    public void createImageDir(String imgPath) throws IOException {
+        new ImageFileStorage(imgPath).createImageDir();
     }
 
     @Test
@@ -188,8 +188,8 @@ public class ImageFileStorageTest {
 
     @Test
     public void copiedImage_success() throws IOException {
-        String filePath = testFolder.getRoot().getPath();
-        ImageFileStorage imageFileStorage = new ImageFileStorage(filePath);
+        String imgPath = testFolder.getRoot().getPath();
+        ImageFileStorage imageFileStorage = new ImageFileStorage(imgPath);
         imageFileStorage.copyImage(TEST_IMAGE, TEST_FILENAME);
         File expectedFile = new File(TEST_IMAGE);
         File actualFile = new File(imageFileStorage.getImageFilePath(TEST_FILENAME));

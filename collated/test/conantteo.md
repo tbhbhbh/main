@@ -775,7 +775,7 @@ public class VcardTest {
 ``` java
         //Save in a backup file and read back
         xmlAddressBookStorage.backupAddressBook(original);
-        readBack = xmlAddressBookStorage.readAddressBook(filePath + "-backup.xml").get();
+        readBack = xmlAddressBookStorage.readAddressBook(imgPath + "-backup.xml").get();
         assertEquals(original, new AddressBook(readBack));
 
     }

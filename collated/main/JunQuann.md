@@ -6,14 +6,14 @@
  */
 public class FileChooserEvent extends BaseEvent {
 
-    private String filePath;
+    private String imgPath;
 
     public String getFilePath() {
-        return filePath;
+        return imgPath;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFilePath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     @Override
