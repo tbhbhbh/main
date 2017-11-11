@@ -2,7 +2,9 @@ package seedu.address.ui.testutil;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.ui.MainWindow.DEFAULT_DP;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,16 +37,27 @@ public class GuiTestAssert {
     }
 
     /**
-     * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
+     * Asserts that {@code actualCard} displays the details of {@code expectedPerson} with default Display Picture.
      */
     public static void assertCardDisplaysPerson(ReadOnlyPerson expectedPerson, PersonCardHandle actualCard) {
         assertEquals(expectedPerson.getName().fullName, actualCard.getName());
         assertEquals(expectedPerson.getPhone().value, actualCard.getPhone());
-        Image expectedDisplayPic = AppUtil.getImage(expectedPerson.getDisplayPic().getNewDisplayPicPath());
+        Image expectedDisplayPic = getFileImage(expectedPerson);
         Image actualDisplayPic = actualCard.getDisplayPic();
         assertImageEquals(expectedDisplayPic, actualDisplayPic);
         assertEquals(expectedPerson.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
                 actualCard.getTags());
+    }
+
+    private static Image getFileImage(ReadOnlyPerson expectedPerson) {
+        Image expectedDisplayPic;
+        if (expectedPerson.getDisplayPic().getNewDisplayPicPath().equals(DEFAULT_DP)) {
+            expectedDisplayPic = AppUtil.getImage(expectedPerson.getDisplayPic().getNewDisplayPicPath());
+        } else {
+            File expectedImgFile = new File(expectedPerson.getDisplayPic().getNewDisplayPicPath());
+            expectedDisplayPic = new Image(expectedImgFile.toURI().toString());
+        }
+        return expectedDisplayPic;
     }
 
     /**
@@ -52,7 +65,8 @@ public class GuiTestAssert {
      */
     public static void assertDescriptionDisplaysPerson(ReadOnlyPerson expectedPerson,
                                                        PersonDescriptionHandle actualDescription) {
-        Image expectedDisplayPic = AppUtil.getImage(expectedPerson.getDisplayPic().getNewDisplayPicPath());
+
+        Image expectedDisplayPic = getFileImage(expectedPerson);
         Image actualDisplayPic = actualDescription.getDisplayPic();
         assertImageEquals(expectedDisplayPic, actualDisplayPic);
         assertEquals(expectedPerson.getName().fullName, actualDescription.getName());

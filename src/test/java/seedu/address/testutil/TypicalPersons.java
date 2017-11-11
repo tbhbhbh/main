@@ -31,6 +31,12 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
  */
 public class TypicalPersons {
 
+    public static final String TEST_IMG = TestUtil.getTestImgPath();
+
+    public static final ReadOnlyPerson ZEPHYR = new PersonBuilder().withName("Zephyr Zelda")
+            .withAddress("Pallet Town").withEmail("Zephyr@zelda.com").withPhone("92840142")
+            .withBirthday("02/03/1990").withDisplayPic(TEST_IMG).withTags("Fictional").build();
+
     public static final ReadOnlyPerson ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
             .withPhone("85355255").withBirthday("01/03/1990").withDisplayPic("/images/defaultperson.png")

@@ -1,7 +1,7 @@
 package seedu.address.ui;
 
 import static seedu.address.testutil.EventsUtil.postNow;
-import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.ZEPHYR;
 import static seedu.address.ui.testutil.GuiTestAssert.assertDescriptionDisplaysPerson;
 
 import org.junit.Before;
@@ -34,17 +34,20 @@ public class PersonDescriptionTest extends GuiUnitTest {
     @Test
     public void display() throws Exception {
         //selects a person
+        testPerson.setName(ZEPHYR.getName());
+        testPerson.setPhone(ZEPHYR.getPhone());
+        testPerson.setAddress(ZEPHYR.getAddress());
+        testPerson.setInstagramName(ZEPHYR.getInstagramName());
+        testPerson.setTwitterName(ZEPHYR.getTwitterName());
         postNow(selectionChangedEventStub);
 
         assertDescriptionDisplaysPerson(testPerson, personDescriptionHandle);
+    }
 
-        guiRobot.interact(() -> {
-            testPerson.setName(ALICE.getName());
-            testPerson.setPhone(ALICE.getPhone());
-            testPerson.setAddress(ALICE.getAddress());
-            testPerson.setInstagramName(ALICE.getInstagramName());
-            testPerson.setTwitterName(ALICE.getTwitterName());
-        });
+    @Test
+    public void displayPicTest() {
+        testPerson.setDisplayPic(ZEPHYR.getDisplayPic());
+        postNow(selectionChangedEventStub);
 
         assertDescriptionDisplaysPerson(testPerson, personDescriptionHandle);
     }
