@@ -61,7 +61,6 @@ public class GoogleUtil {
         }
     }
 
-
     /**
      * Creates an authorized {@code Credential} for the application to interact with
      * the Google People API
@@ -99,7 +98,6 @@ public class GoogleUtil {
         assert response != null;
         return response.getConnections();
     }
-
     /**
      * Converts a {@code Person} from Google to a {@code seedu.address.model.person.Person}
      * Returns null if there is no name in the {@code Person}

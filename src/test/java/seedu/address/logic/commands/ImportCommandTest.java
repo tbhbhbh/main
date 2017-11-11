@@ -7,8 +7,10 @@ import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
+import org.testfx.api.FxToolkit;
 
 import com.google.api.services.people.v1.model.Person;
 
@@ -18,6 +20,9 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.testutil.GooglePersonBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ImportCommandTest {
 
@@ -31,9 +36,27 @@ public class ImportCommandTest {
     }
 
     @Test
-    public void execute_importContactsFromEmptyList_failure() {
+    public void execute_importContactsFromEmptyList_noPersonAdded() {
         ImportCommand importCommand = prepareCommand("Google");
         importCommand.importContacts(new ArrayList<Person>());
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void execute_importContactsFromNonEmptyList_personsAdded()
+            throws DuplicatePersonException, InterruptedException, TimeoutException {
+        ImportCommand importCommand = prepareCommand("Google");
+        ArrayList<Person> googlePersonList = new ArrayList<Person>();
+        GooglePersonBuilder gpb = new GooglePersonBuilder();
+        googlePersonList.add(gpb.build());
+        System.out.println(googlePersonList);
+        FxToolkit.registerPrimaryStage();
+        Thread thread = new Thread(() -> importCommand.importContacts(googlePersonList));
+        thread.run();
+        PersonBuilder pB = new PersonBuilder();
+        expectedModel.addPerson(pB.withInstagram("").withTwitter("").withTags("Google").build());
+        System.out.println(model.getAddressBook().getPersonList());
+        System.out.println(expectedModel.getAddressBook().getPersonList());
         assertEquals(expectedModel, model);
     }
 
@@ -66,7 +89,7 @@ public class ImportCommandTest {
     /**
      * Returns an {@code ImportCommand} with parameters {@code service}
      */
-    private ImportCommand prepareCommand(String service) {
+    public ImportCommand prepareCommand(String service) {
         ImportCommand importCommand = new ImportCommand(service);
         importCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         return importCommand;

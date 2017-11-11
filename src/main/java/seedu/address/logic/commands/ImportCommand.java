@@ -154,6 +154,11 @@ public class ImportCommand extends UndoableCommand {
         EventsCenter.getInstance().post(new ShowProgressEvent(task.progressProperty()));
         Thread importThread = new Thread(task);
         importThread.start();
+        try {
+            importThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
