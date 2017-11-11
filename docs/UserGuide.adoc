@@ -76,7 +76,7 @@ Format: `help`
 
 === Adding a person: `add`
 
-Adds a person to HitMeUp. +
+Adds a person to the application. +
 
 Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER] [ig/INSTAGRAM] [dp/DISPLAY_PIC_CHOICE] [t/TAG]...`
 
@@ -101,13 +101,13 @@ a phone number of `1234567`, a birthday of `5/06/1994` and an Instagram username
 
 === Listing all persons : `list`
 
-Shows a list of all persons in HitMeUp. +
+Shows a list of all persons in the application. +
 
 Format: `list`
 
 === Editing a person : `edit`
 
-Edits an existing person in HitMeUp. +
+Edits an existing person in the application. +
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER]
 [ig/INSTAGRAM] [dp/DISPLAY_PIC_CHOICE] [t/TAG]...`
@@ -202,7 +202,7 @@ Format: `history`
 
 [NOTE]
 ====
-Pressing the kbd:[&uarr;] and kbd:[&darr;] arrows will display the previous and next input respectively in the command box.
+Pressing the ↑ and  ↓ keys will display the previous and next input respectively in the command box.
 ====
 
 // tag::undoredo[]
@@ -260,7 +260,7 @@ The `redo` command fails as there are no `undo` commands executed previously.
 // tag::alias[]
 === Adding an alias for a command : `alias`
 
-Allows you to add an alias for any command used in HitMeUp.
+Allows you to add an alias for any command used in the application.
 
 Format: `alias USER_ALIAS COMMAND`
 
