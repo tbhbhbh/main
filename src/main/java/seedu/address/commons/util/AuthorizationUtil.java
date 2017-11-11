@@ -12,7 +12,7 @@ import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiv
 import com.google.api.client.util.Preconditions;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.ui.ShowLocationEvent;
+import seedu.address.commons.events.ui.ShowUrlEvent;
 
 /**
  * A utility class for OAuth authorization with Google
@@ -59,6 +59,6 @@ public class AuthorizationUtil extends AuthorizationCodeInstalledApp {
     public static void browse(String url) {
         Preconditions.checkNotNull(url);
 
-        EventsCenter.getInstance().post(new ShowLocationEvent(url));
+        EventsCenter.getInstance().post(new ShowUrlEvent(url));
     }
 }

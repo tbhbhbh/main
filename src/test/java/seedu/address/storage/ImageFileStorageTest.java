@@ -39,7 +39,7 @@ public class ImageFileStorageTest {
 
     @Test
     public void assertImageFile() {
-        String expectedFile = FileUtil.getPath(TEST_DATA_FOLDER + TEST_FILENAME + ".png");
+        String expectedFile = TEST_DATA_FOLDER + TEST_FILENAME + ".png";
         String actualFile = new ImageFileStorage(TEST_DATA_FOLDER).getImageFilePath(TEST_FILENAME);
         assertEquals(expectedFile, actualFile);
     }

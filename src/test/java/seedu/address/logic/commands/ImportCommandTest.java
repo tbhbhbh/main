@@ -4,7 +4,7 @@ package seedu.address.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import java.util.ArrayList;
 
@@ -22,18 +22,18 @@ import seedu.address.model.UserPrefs;
 public class ImportCommandTest {
 
     private Model model = new ModelManager(new AddressBook(), new UserPrefs());
+    private Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
 
     @Test
-    public void execute_importContactsWithoutGoogleAuthorization_failure() {
+    public void execute_importContactsWithoutGoogleAuthorization_success() {
         ImportCommand importCommand = prepareCommand("Google");
-        assertCommandFailure(importCommand, model, ImportCommand.MESSAGE_FAILURE);
+        assertCommandSuccess(importCommand, model, ImportCommand.MESSAGE_IN_PROGRESS, expectedModel);
     }
 
     @Test
-    public void execute_importContactsFunction_failure() {
+    public void execute_importContactsFromEmptyList_failure() {
         ImportCommand importCommand = prepareCommand("Google");
         importCommand.importContacts(new ArrayList<Person>());
-        Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
         assertEquals(expectedModel, model);
     }
 
