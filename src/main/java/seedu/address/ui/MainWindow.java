@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,8 +32,8 @@ import seedu.address.commons.events.ui.EmailRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ExportRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
+import seedu.address.commons.events.ui.ShowUrlEvent;
 import seedu.address.commons.events.ui.SocialRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
@@ -109,7 +110,6 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
-
         setAccelerators();
         registerAsAnEventHandler(this);
     }
@@ -288,11 +288,11 @@ public class MainWindow extends UiPart<Region> {
     //@@author danielbrzn
 
     /**
-     * Opens the provided Google Maps URL in the built-in browser
-     * @param googleMapsUrl is the full URL of a person's location
+     * Opens the provided URL in the built-in browser
+     * @param link is a URL to be opened in the BrowserPanel
      */
-    public void handleLocation(String googleMapsUrl) {
-        browserPanel.loadPage(googleMapsUrl);
+    public void handleUrl(String link) {
+        browserPanel.loadPage(link);
     }
 
     /**
@@ -300,9 +300,11 @@ public class MainWindow extends UiPart<Region> {
      */
     @FXML
     public void handleProgress(ReadOnlyDoubleProperty progress) {
-        pWindow = new ProgressWindow(progress);
-        primaryStage.toFront();
-        pWindow.show();
+        Platform.runLater(() -> {
+            pWindow = new ProgressWindow(progress);
+            pWindow.show();
+        });
+
     }
 
     /**
@@ -367,9 +369,9 @@ public class MainWindow extends UiPart<Region> {
     //@@author danielbrzn
 
     @Subscribe
-    private void handleShowLocationEvent(ShowLocationEvent event) {
+    private void handleShowUrlEvent(ShowUrlEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        handleLocation(event.getGoogleMapsUrl());
+        handleUrl(event.getUrl());
     }
 
     @Subscribe
