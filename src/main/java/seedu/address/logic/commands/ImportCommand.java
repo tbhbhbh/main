@@ -34,7 +34,8 @@ public class ImportCommand extends UndoableCommand {
             + "google ";
 
     public static final String MESSAGE_SUCCESS = "%1$s contacts imported. %2$s contacts failed to import.";
-    public static final String MESSAGE_IN_PROGRESS = "Importing in progress";
+    public static final String MESSAGE_IN_PROGRESS = "Importing in progress. Please enter your credentials in the"
+            + " Browser Panel. If you do not wish to continue with the import, you can type in other commands.";
     public static final String MESSAGE_INVALID_PEOPLE = "The contacts unable to be imported are: ";
     public static final String MESSAGE_FAILURE = "Failed to import contacts.";
     public static final String MESSAGE_FAILURE_EMPTY = "0 contacts imported as you have zero Google contacts.";
