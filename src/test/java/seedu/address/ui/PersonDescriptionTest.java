@@ -1,7 +1,6 @@
 package seedu.address.ui;
 
 import static seedu.address.testutil.EventsUtil.postNow;
-import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.ZEPHYR;
 import static seedu.address.ui.testutil.GuiTestAssert.assertDescriptionDisplaysPerson;
 
