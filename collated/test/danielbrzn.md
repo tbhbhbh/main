@@ -1,5 +1,5 @@
 # danielbrzn
-###### /java/guitests/guihandles/ProgressWindowHandle.java
+###### \java\guitests\guihandles\ProgressWindowHandle.java
 ``` java
 package guitests.guihandles;
 
@@ -34,7 +34,7 @@ public class ProgressWindowHandle extends StageHandle {
     }
 }
 ```
-###### /java/seedu/address/commons/util/GoogleUtilTest.java
+###### \java\seedu\address\commons\util\GoogleUtilTest.java
 ``` java
 package seedu.address.commons.util;
 
@@ -60,7 +60,7 @@ public class GoogleUtilTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/AddCommandTest.java
+###### \java\seedu\address\logic\commands\AddCommandTest.java
 ``` java
         @Override
         public void addAlias(String alias, String command) {
@@ -74,7 +74,7 @@ public class GoogleUtilTest {
         }
 
 ```
-###### /java/seedu/address/logic/commands/AddCommandTest.java
+###### \java\seedu\address\logic\commands\AddCommandTest.java
 ``` java
         @Override
         public void resetAlias(HashMap<String, String> prevAliasMap) {
@@ -82,7 +82,7 @@ public class GoogleUtilTest {
         }
 
 ```
-###### /java/seedu/address/logic/commands/AddCommandTest.java
+###### \java\seedu\address\logic\commands\AddCommandTest.java
 ``` java
         @Override
         public UserPrefs getUserPrefs() {
@@ -91,7 +91,7 @@ public class GoogleUtilTest {
         }
 
 ```
-###### /java/seedu/address/logic/commands/AliasCommandTest.java
+###### \java\seedu\address\logic\commands\AliasCommandTest.java
 ``` java
 
 package seedu.address.logic.commands;
@@ -189,18 +189,20 @@ public class AliasCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/ImportCommandTest.java
+###### \java\seedu\address\logic\commands\ImportCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
+import org.testfx.api.FxToolkit;
 
 import com.google.api.services.people.v1.model.Person;
 
@@ -210,22 +212,41 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.testutil.GooglePersonBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ImportCommandTest {
 
     private Model model = new ModelManager(new AddressBook(), new UserPrefs());
+    private Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
 
     @Test
-    public void execute_importContactsWithoutGoogleAuthorization_failure() {
+    public void execute_importContactsWithoutGoogleAuthorization_success() {
         ImportCommand importCommand = prepareCommand("Google");
-        assertCommandFailure(importCommand, model, ImportCommand.MESSAGE_FAILURE);
+        assertCommandSuccess(importCommand, model, ImportCommand.MESSAGE_IN_PROGRESS, expectedModel);
     }
 
     @Test
-    public void execute_importContactsFunction_failure() {
+    public void execute_importContactsFromEmptyList_noPersonAdded() {
         ImportCommand importCommand = prepareCommand("Google");
         importCommand.importContacts(new ArrayList<Person>());
-        Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void execute_importContactsFromNonEmptyList_personsAdded()
+            throws DuplicatePersonException, InterruptedException, TimeoutException {
+        ImportCommand importCommand = prepareCommand("Google");
+        ArrayList<Person> googlePersonList = new ArrayList<Person>();
+        GooglePersonBuilder googlePerson = new GooglePersonBuilder();
+        googlePersonList.add(googlePerson.build());
+        // Initialise a primary stage and the FxToolkit for importContacts to run
+        FxToolkit.registerPrimaryStage();
+        importCommand.importContacts(googlePersonList);
+        PersonBuilder person = new PersonBuilder();
+        expectedModel.addPerson(person.withInstagram("").withTwitter("")
+                .withTags(GooglePersonBuilder.DEFAULT_TAGS).build());
         assertEquals(expectedModel, model);
     }
 
@@ -258,7 +279,7 @@ public class ImportCommandTest {
     /**
      * Returns an {@code ImportCommand} with parameters {@code service}
      */
-    private ImportCommand prepareCommand(String service) {
+    public ImportCommand prepareCommand(String service) {
         ImportCommand importCommand = new ImportCommand(service);
         importCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         return importCommand;
@@ -266,7 +287,7 @@ public class ImportCommandTest {
 
 }
 ```
-###### /java/seedu/address/logic/commands/LocationCommandTest.java
+###### \java\seedu\address\logic\commands\LocationCommandTest.java
 ``` java
 
 package seedu.address.logic.commands;
@@ -370,7 +391,7 @@ public class LocationCommandTest {
 
 
     /**
-     * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowLocationEvent}
+     * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowUrlEvent}
      * is raised with the correct URL.
      */
     private void assertExecutionSuccess(Index index) {
@@ -388,8 +409,8 @@ public class LocationCommandTest {
         String url = LocationCommand.GOOGLE_MAPS_URL_PREFIX + locationCommand.parseAddressForUrl(
                 model.getFilteredPersonList().get(index.getZeroBased()).getAddress());
 
-        ShowLocationEvent lastEvent = (ShowLocationEvent) eventsCollectorRule.eventsCollector.getMostRecent();
-        assertEquals(url, lastEvent.getGoogleMapsUrl());
+        ShowUrlEvent lastEvent = (ShowUrlEvent) eventsCollectorRule.eventsCollector.getMostRecent();
+        assertEquals(url, lastEvent.getUrl());
     }
 
     /**
@@ -418,7 +439,7 @@ public class LocationCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/AddCommandParserTest.java
+###### \java\seedu\address\logic\parser\AddCommandParserTest.java
 ``` java
         // no email
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -450,7 +471,7 @@ public class LocationCommandTest {
                 + EMAIL_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
                 + ADDRESS_DESC_AMY, new AddCommand(expectedPerson));
 ```
-###### /java/seedu/address/logic/parser/AliasCommandParserTest.java
+###### \java\seedu\address\logic\parser\AliasCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -487,7 +508,7 @@ public class AliasCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ImportCommandParserTest.java
+###### \java\seedu\address\logic\parser\ImportCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -527,7 +548,7 @@ public class ImportCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/LocationCommandParserTest.java
+###### \java\seedu\address\logic\parser\LocationCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -559,7 +580,7 @@ public class LocationCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/storage/StorageManagerTest.java
+###### \java\seedu\address\storage\StorageManagerTest.java
 ``` java
     @Test
     public void getUserPrefsFilePath() {
@@ -567,7 +588,7 @@ public class LocationCommandParserTest {
     }
 
 ```
-###### /java/seedu/address/testutil/GooglePersonBuilder.java
+###### \java\seedu\address\testutil\GooglePersonBuilder.java
 ``` java
 package seedu.address.testutil;
 
@@ -680,7 +701,7 @@ public class GooglePersonBuilder {
 
 }
 ```
-###### /java/seedu/address/testutil/PersonBuilder.java
+###### \java\seedu\address\testutil\PersonBuilder.java
 ``` java
     /**
      * Sets the Twitter {@code UserName} of the {@code Person} that we are building.
@@ -707,7 +728,7 @@ public class GooglePersonBuilder {
     }
 
 ```
-###### /java/seedu/address/ui/ProgressWindowTest.java
+###### \java\seedu\address\ui\ProgressWindowTest.java
 ``` java
 package seedu.address.ui;
 
