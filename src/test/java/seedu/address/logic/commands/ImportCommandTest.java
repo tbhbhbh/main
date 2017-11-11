@@ -4,11 +4,13 @@ package seedu.address.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
+import org.testfx.api.FxToolkit;
 
 import com.google.api.services.people.v1.model.Person;
 
@@ -18,22 +20,41 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.testutil.GooglePersonBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ImportCommandTest {
 
     private Model model = new ModelManager(new AddressBook(), new UserPrefs());
+    private Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
 
     @Test
-    public void execute_importContactsWithoutGoogleAuthorization_failure() {
+    public void execute_importContactsWithoutGoogleAuthorization_success() {
         ImportCommand importCommand = prepareCommand("Google");
-        assertCommandFailure(importCommand, model, ImportCommand.MESSAGE_FAILURE);
+        assertCommandSuccess(importCommand, model, ImportCommand.MESSAGE_IN_PROGRESS, expectedModel);
     }
 
     @Test
-    public void execute_importContactsFunction_failure() {
+    public void execute_importContactsFromEmptyList_noPersonAdded() {
         ImportCommand importCommand = prepareCommand("Google");
         importCommand.importContacts(new ArrayList<Person>());
-        Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void execute_importContactsFromNonEmptyList_personsAdded()
+            throws DuplicatePersonException, InterruptedException, TimeoutException {
+        ImportCommand importCommand = prepareCommand("Google");
+        ArrayList<Person> googlePersonList = new ArrayList<Person>();
+        GooglePersonBuilder googlePerson = new GooglePersonBuilder();
+        googlePersonList.add(googlePerson.build());
+        // Initialise a primary stage and the FxToolkit for importContacts to run
+        FxToolkit.registerPrimaryStage();
+        importCommand.importContacts(googlePersonList);
+        PersonBuilder person = new PersonBuilder();
+        expectedModel.addPerson(person.withInstagram("").withTwitter("")
+                .withTags(GooglePersonBuilder.DEFAULT_TAGS).build());
         assertEquals(expectedModel, model);
     }
 
@@ -66,7 +87,7 @@ public class ImportCommandTest {
     /**
      * Returns an {@code ImportCommand} with parameters {@code service}
      */
-    private ImportCommand prepareCommand(String service) {
+    public ImportCommand prepareCommand(String service) {
         ImportCommand importCommand = new ImportCommand(service);
         importCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         return importCommand;

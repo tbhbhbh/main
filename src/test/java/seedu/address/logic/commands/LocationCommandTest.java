@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.ui.ShowLocationEvent;
+import seedu.address.commons.events.ui.ShowUrlEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -101,7 +101,7 @@ public class LocationCommandTest {
 
 
     /**
-     * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowLocationEvent}
+     * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowUrlEvent}
      * is raised with the correct URL.
      */
     private void assertExecutionSuccess(Index index) {
@@ -119,8 +119,8 @@ public class LocationCommandTest {
         String url = LocationCommand.GOOGLE_MAPS_URL_PREFIX + locationCommand.parseAddressForUrl(
                 model.getFilteredPersonList().get(index.getZeroBased()).getAddress());
 
-        ShowLocationEvent lastEvent = (ShowLocationEvent) eventsCollectorRule.eventsCollector.getMostRecent();
-        assertEquals(url, lastEvent.getGoogleMapsUrl());
+        ShowUrlEvent lastEvent = (ShowUrlEvent) eventsCollectorRule.eventsCollector.getMostRecent();
+        assertEquals(url, lastEvent.getUrl());
     }
 
     /**

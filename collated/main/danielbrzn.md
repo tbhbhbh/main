@@ -1,5 +1,5 @@
 # danielbrzn
-###### /java/seedu/address/commons/events/model/UserPrefsChangedEvent.java
+###### \java\seedu\address\commons\events\model\UserPrefsChangedEvent.java
 ``` java
 package seedu.address.commons.events.model;
 
@@ -22,7 +22,7 @@ public class UserPrefsChangedEvent extends BaseEvent {
     }
 }
 ```
-###### /java/seedu/address/commons/events/ui/CloseProgressEvent.java
+###### \java\seedu\address\commons\events\ui\CloseProgressEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -40,35 +40,7 @@ public class CloseProgressEvent extends BaseEvent {
 
 }
 ```
-###### /java/seedu/address/commons/events/ui/ShowLocationEvent.java
-``` java
-package seedu.address.commons.events.ui;
-
-import seedu.address.commons.events.BaseEvent;
-
-/**
- * An event requesting to show the location of a Person.
- */
-public class ShowLocationEvent extends BaseEvent {
-
-    private final String googleMapsUrl;
-
-    public ShowLocationEvent(String mapsUrl) {
-        this.googleMapsUrl = mapsUrl;
-    }
-
-    public String getGoogleMapsUrl() {
-        return googleMapsUrl;
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
-    }
-
-}
-```
-###### /java/seedu/address/commons/events/ui/ShowProgressEvent.java
+###### \java\seedu\address\commons\events\ui\ShowProgressEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -97,7 +69,101 @@ public class ShowProgressEvent extends BaseEvent {
 
 }
 ```
-###### /java/seedu/address/commons/util/GoogleUtil.java
+###### \java\seedu\address\commons\events\ui\ShowUrlEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * An event requesting to show a URL in the BrowserPanel.
+ */
+public class ShowUrlEvent extends BaseEvent {
+
+    private final String link;
+
+    public ShowUrlEvent(String link) {
+        this.link = link;
+    }
+
+    public String getUrl() {
+        return link;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
+}
+```
+###### \java\seedu\address\commons\util\AuthorizationUtil.java
+``` java
+package seedu.address.commons.util;
+
+import java.io.IOException;
+
+import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.java6.auth.oauth2.VerificationCodeReceiver;
+import com.google.api.client.util.Preconditions;
+
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.ShowUrlEvent;
+
+/**
+ * A utility class for OAuth authorization with Google
+ */
+
+public class AuthorizationUtil extends AuthorizationCodeInstalledApp {
+
+    private final AuthorizationCodeFlow flow;
+    private final VerificationCodeReceiver receiver;
+
+    public AuthorizationUtil(AuthorizationCodeFlow flow, VerificationCodeReceiver receiver) {
+        super(flow, receiver);
+        this.flow = flow;
+        this.receiver = receiver;
+    }
+
+    /**
+     * Authorizes HitMeUp to access user's protected data.
+     *
+     * @param userId user ID or {@code null} if not using a persisted credential store
+     * @return credential
+     */
+    public Credential authorize(String userId) throws IOException {
+        try {
+            // open in Browser Panel
+            String redirectUri = receiver.getRedirectUri();
+            AuthorizationCodeRequestUrl authorizationUrl =
+                    flow.newAuthorizationUrl().setRedirectUri(redirectUri);
+            browse(authorizationUrl.build());
+            // receive authorization code and exchange it for an access token
+            String code = receiver.waitForCode();
+            TokenResponse response = flow.newTokenRequest(code).setRedirectUri(redirectUri).execute();
+            // credential is not stored, but returned to caller
+            return flow.createAndStoreCredential(response, userId);
+        } finally {
+            receiver.stop();
+        }
+    }
+
+    /**
+     * Open a browser at the given URL using {@link seedu.address.ui.BrowserPanel}
+     * @param url URL to browse
+     */
+    public static void browse(String url) {
+        Preconditions.checkNotNull(url);
+
+        EventsCenter.getInstance().post(new ShowUrlEvent(url));
+    }
+}
+```
+###### \java\seedu\address\commons\util\GoogleUtil.java
 ``` java
 package seedu.address.commons.util;
 
@@ -110,7 +176,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
@@ -162,7 +227,6 @@ public class GoogleUtil {
         }
     }
 
-
     /**
      * Creates an authorized {@code Credential} for the application to interact with
      * the Google People API
@@ -178,7 +242,7 @@ public class GoogleUtil {
                 Collections.singleton("https://www.googleapis.com/auth/contacts.readonly")).build();
 
         // authorize
-        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+        return new AuthorizationUtil(flow, new LocalServerReceiver()).authorize("user");
     }
 
     /**
@@ -200,7 +264,6 @@ public class GoogleUtil {
         assert response != null;
         return response.getConnections();
     }
-
     /**
      * Converts a {@code Person} from Google to a {@code seedu.address.model.person.Person}
      * Returns null if there is no name in the {@code Person}
@@ -267,13 +330,13 @@ public class GoogleUtil {
         toAdd = new seedu.address.model.person.Person(nameAdd,
                 new Phone(phone), new Email(email), new seedu.address.model.person.Address(address),
                 new seedu.address.model.person.Birthday(birthday), new UserName(""), new UserName(""),
-                new DisplayPic(MainWindow.DEFAULT_DP, false),
+                new DisplayPic(MainWindow.DEFAULT_DP),
                 defaultTags);
         return toAdd;
     }
 }
 ```
-###### /java/seedu/address/logic/commands/AliasCommand.java
+###### \java\seedu\address\logic\commands\AliasCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -338,7 +401,7 @@ public class AliasCommand extends UndoableCommand {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/EditCommand.java
+###### \java\seedu\address\logic\commands\EditCommand.java
 ``` java
         public void setTwitterName(UserName twitterName) {
             this.twitterName = twitterName;
@@ -357,7 +420,7 @@ public class AliasCommand extends UndoableCommand {
         }
 
 ```
-###### /java/seedu/address/logic/commands/ImportCommand.java
+###### \java\seedu\address\logic\commands\ImportCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -370,7 +433,6 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.services.people.v1.model.Person;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.CloseProgressEvent;
@@ -395,18 +457,23 @@ public class ImportCommand extends UndoableCommand {
             + "google ";
 
     public static final String MESSAGE_SUCCESS = "%1$s contacts imported. %2$s contacts failed to import.";
-    public static final String MESSAGE_IN_PROGRESS = "Importing in progress";
+    public static final String MESSAGE_IN_PROGRESS = "Importing in progress. Please enter your credentials in the"
+            + " Browser Panel. If you do not wish to continue with the import, you can type in other commands.";
     public static final String MESSAGE_INVALID_PEOPLE = "The contacts unable to be imported are: ";
     public static final String MESSAGE_FAILURE = "Failed to import contacts.";
     public static final String MESSAGE_FAILURE_EMPTY = "0 contacts imported as you have zero Google contacts.";
     public static final String MESSAGE_CONNECTION_FAILURE = "Failed to access Google. Check your internet connection or"
             + " try again in a few minutes.";
     public static final int ADDRESSBOOK_SIZE = 1000;
-    private static int peopleAdded;
+    public static final int FIRST_PERSON_INDEX = 0;
+
     private static ArrayList<String> invalidPeople;
     private static Credential credential;
     private static HttpTransport httpTransport;
     private final String service;
+
+    private int peopleAdded;
+    private int peopleNotAdded;
 
     /**
      * Creates an ImportCommand to add contacts from the specified service
@@ -421,6 +488,13 @@ public class ImportCommand extends UndoableCommand {
         }
     }
 
+    /**
+     * Executes the Import Command using a Thread. The thread uses methods for authorization with Google and
+     * subsequent retrieval of contacts from the service.
+     *
+     * Returns a CommandResult with an "In Progress" message as the results display will be updated upon
+     * execution of the thread.
+     */
     @Override
     protected CommandResult executeUndoableCommand() throws CommandException {
         // Check for connectivity to Google
@@ -430,32 +504,25 @@ public class ImportCommand extends UndoableCommand {
         Thread thread = new Thread(() -> {
             try {
                 credential = GoogleUtil.authorize(httpTransport);
+                if (credential.equals(null)) {
+                    EventsCenter.getInstance().post(new NewResultAvailableEvent(MESSAGE_FAILURE, true));
+                    return;
+                }
+                // Retrieve a list of Persons
+                List<Person> connections = GoogleUtil.retrieveContacts(credential, httpTransport);
+
+                if (connections.equals(null)) {
+                    EventsCenter.getInstance().post(new NewResultAvailableEvent(MESSAGE_FAILURE_EMPTY, false));
+                    return;
+                }
+
+                // Import contacts into the application
+                importContacts(connections);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
         thread.start();
-
-        try {
-            thread.join(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new CommandException(MESSAGE_FAILURE);
-        }
-
-        if (credential == null) {
-            throw new CommandException(MESSAGE_FAILURE);
-        }
-
-        // Retrieve a list of Persons
-        List<Person> connections = GoogleUtil.retrieveContacts(credential, httpTransport);
-
-        if (connections == null) {
-            throw new CommandException(MESSAGE_FAILURE_EMPTY);
-        }
-
-        // Import contacts into the application
-        importContacts(connections);
 
         return new CommandResult(MESSAGE_IN_PROGRESS);
     }
@@ -469,24 +536,22 @@ public class ImportCommand extends UndoableCommand {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+
                 int amountToAdd = connections.size();
                 invalidPeople = new ArrayList<String>();
                 for (Person person : connections) {
                     seedu.address.model.person.Person toAdd = GoogleUtil.convertPerson(person);
                     if (toAdd == null) {
-                        invalidPeople.add(person.getNames().get(0).getDisplayName());
+                        invalidPeople.add(person.getNames().get(FIRST_PERSON_INDEX).getDisplayName());
                         continue;
                     }
                     try {
                         model.addPerson(toAdd);
+                        peopleAdded++;
                     } catch (DuplicatePersonException e) {
                         e.printStackTrace();
                     }
-                    peopleAdded++;
-                    Platform.runLater(() -> {
-                        updateProgress(peopleAdded, amountToAdd);
-
-                    });
+                    updateProgress(peopleAdded, amountToAdd);
                 }
                 return null;
             }
@@ -494,16 +559,14 @@ public class ImportCommand extends UndoableCommand {
 
         task.setOnSucceeded(t -> {
             EventsCenter.getInstance().post(new CloseProgressEvent());
-            StringBuilder sb = new StringBuilder();
-            if (connections.size() - peopleAdded > 0) {
-                sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded));
-                sb.append(" ");
-                sb.append(MESSAGE_INVALID_PEOPLE);
-                sb.append(invalidPeople.toString());
+            peopleNotAdded = connections.size() - peopleAdded;
+            String result;
+            if (peopleNotAdded > 0) {
+                result = constructResultMessage(peopleNotAdded, false);
             } else {
-                sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, connections.size() - peopleAdded));
+                result = constructResultMessage(peopleNotAdded, true);
             }
-            EventsCenter.getInstance().post(new NewResultAvailableEvent(sb.toString(), false));
+            EventsCenter.getInstance().post(new NewResultAvailableEvent(result, false));
         });
 
         task.setOnFailed(t -> {
@@ -513,7 +576,30 @@ public class ImportCommand extends UndoableCommand {
 
         EventsCenter.getInstance().post(new ShowProgressEvent(task.progressProperty()));
         Thread importThread = new Thread(task);
-        importThread.start();
+        try {
+            importThread.start();
+            importThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Constructs a message for the result
+     */
+    private String constructResultMessage(int peopleNotAdded, boolean isSuccessful) {
+        StringBuilder sb = new StringBuilder();
+        if (isSuccessful) {
+            sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, peopleNotAdded));
+
+        } else {
+            sb.append(String.format(MESSAGE_SUCCESS, peopleAdded, peopleNotAdded));
+            sb.append(" ");
+            sb.append(MESSAGE_INVALID_PEOPLE);
+            sb.append(invalidPeople.toString());
+        }
+        return sb.toString();
     }
 
     @Override
@@ -525,7 +611,7 @@ public class ImportCommand extends UndoableCommand {
 
 }
 ```
-###### /java/seedu/address/logic/commands/LocationCommand.java
+###### \java\seedu\address\logic\commands\LocationCommand.java
 ``` java
 
 package seedu.address.logic.commands;
@@ -535,7 +621,7 @@ import java.util.List;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.ui.ShowLocationEvent;
+import seedu.address.commons.events.ui.ShowUrlEvent;
 import seedu.address.commons.util.GoogleUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Address;
@@ -589,7 +675,7 @@ public class LocationCommand extends Command {
         }
 
         String finalUrl = GOOGLE_MAPS_URL_PREFIX + parseAddressForUrl(current.getAddress());
-        EventsCenter.getInstance().post(new ShowLocationEvent(finalUrl));
+        EventsCenter.getInstance().post(new ShowUrlEvent(finalUrl));
         return new CommandResult(String.format(MESSAGE_SUCCESS, current.getName().toString()));
     }
 
@@ -620,7 +706,7 @@ public class LocationCommand extends Command {
 }
 
 ```
-###### /java/seedu/address/logic/parser/AddCommandParser.java
+###### \java\seedu\address\logic\parser\AddCommandParser.java
 ``` java
     /**
      * Fills the prefixes that have not been specified by the user with an empty string in the given
@@ -648,7 +734,7 @@ public class LocationCommand extends Command {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
+###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
     /**
      * Checks if the input command is valid.
@@ -686,7 +772,7 @@ public class LocationCommand extends Command {
 
 }
 ```
-###### /java/seedu/address/logic/parser/AliasCommandParser.java
+###### \java\seedu\address\logic\parser\AliasCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -723,7 +809,7 @@ public class AliasCommandParser implements Parser<AliasCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ImportCommandParser.java
+###### \java\seedu\address\logic\parser\ImportCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -755,7 +841,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/LocationCommandParser.java
+###### \java\seedu\address\logic\parser\LocationCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -787,7 +873,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ParserUtil.java
+###### \java\seedu\address\logic\parser\ParserUtil.java
 ``` java
     /**
      * Parses a {@code Optional<String> twitterUserName} into an {@code Optional<UserName>} if {@code twitterUserName}
@@ -811,31 +897,31 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Clears existing aliases from UserPrefs and replaces with the provided new data */
     void resetAlias(HashMap<String, String> prevAliasMap);
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Returns the User Preferences */
     UserPrefs getUserPrefs();
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Adds the given alias */
     void addAlias(String alias, String command);
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Gets the command mapping for an alias */
     String getAlias(String alias);
 
 ```
-###### /java/seedu/address/model/ModelManager.java
+###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
     public void resetAlias(HashMap<String, String> prevAliasMap) {
@@ -843,7 +929,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
         indicateUserPrefsChanged();
     }
 ```
-###### /java/seedu/address/model/ModelManager.java
+###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
     public UserPrefs getUserPrefs() {
@@ -851,7 +937,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/ModelManager.java
+###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
     public void addAlias(String alias, String command) {
@@ -871,7 +957,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/person/Person.java
+###### \java\seedu\address\model\person\Person.java
 ``` java
     @Override
     public ObjectProperty<UserName> twitterNameProperty() {
@@ -902,7 +988,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/person/UserName.java
+###### \java\seedu\address\model\person\UserName.java
 ``` java
 package seedu.address.model.person;
 
@@ -968,14 +1054,14 @@ public class UserName {
 
 }
 ```
-###### /java/seedu/address/model/UserPrefs.java
+###### \java\seedu\address\model\UserPrefs.java
 ``` java
     public void resetAlias(HashMap<String, String> prevAliasMap) {
         this.aliasMap = prevAliasMap;
     }
 
 ```
-###### /java/seedu/address/model/UserPrefs.java
+###### \java\seedu\address\model\UserPrefs.java
 ``` java
     public HashMap<String, String> getAliasMap() {
         return aliasMap;
@@ -990,7 +1076,7 @@ public class UserName {
     }
 
 ```
-###### /java/seedu/address/storage/Storage.java
+###### \java\seedu\address\storage\Storage.java
 ``` java
     /**
      * Saves the current version of the User Preferences to the hard disk.
@@ -998,11 +1084,8 @@ public class UserName {
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleUserPrefsChangedEvent(UserPrefsChangedEvent upce);
-
-
-}
 ```
-###### /java/seedu/address/storage/StorageManager.java
+###### \java\seedu\address\storage\StorageManager.java
 ``` java
     @Override
     @Subscribe
@@ -1016,7 +1099,7 @@ public class UserName {
     }
 
 ```
-###### /java/seedu/address/ui/BrowserWindow.java
+###### \java\seedu\address\ui\BrowserWindow.java
 ``` java
 package seedu.address.ui;
 
@@ -1080,15 +1163,15 @@ public class BrowserWindow extends UiPart<Region> {
     }
 }
 ```
-###### /java/seedu/address/ui/MainWindow.java
+###### \java\seedu\address\ui\MainWindow.java
 ``` java
 
     /**
-     * Opens the provided Google Maps URL in the built-in browser
-     * @param googleMapsUrl is the full URL of a person's location
+     * Opens the provided URL in the built-in browser
+     * @param link is a URL to be opened in the BrowserPanel
      */
-    public void handleLocation(String googleMapsUrl) {
-        browserPanel.loadPage(googleMapsUrl);
+    public void handleUrl(String link) {
+        browserPanel.loadPage(link);
     }
 
     /**
@@ -1096,9 +1179,11 @@ public class BrowserWindow extends UiPart<Region> {
      */
     @FXML
     public void handleProgress(ReadOnlyDoubleProperty progress) {
-        pWindow = new ProgressWindow(progress);
-        primaryStage.toFront();
-        pWindow.show();
+        Platform.runLater(() -> {
+            pWindow = new ProgressWindow(progress);
+            pWindow.show();
+        });
+
     }
 
     /**
@@ -1110,13 +1195,13 @@ public class BrowserWindow extends UiPart<Region> {
     }
 
 ```
-###### /java/seedu/address/ui/MainWindow.java
+###### \java\seedu\address\ui\MainWindow.java
 ``` java
 
     @Subscribe
-    private void handleShowLocationEvent(ShowLocationEvent event) {
+    private void handleShowUrlEvent(ShowUrlEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        handleLocation(event.getGoogleMapsUrl());
+        handleUrl(event.getUrl());
     }
 
     @Subscribe
@@ -1140,7 +1225,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 
 ```
-###### /java/seedu/address/ui/PersonListPanel.java
+###### \java\seedu\address\ui\PersonListPanel.java
 ``` java
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
@@ -1165,7 +1250,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 }
 ```
-###### /java/seedu/address/ui/ProgressWindow.java
+###### \java\seedu\address\ui\ProgressWindow.java
 ``` java
 package seedu.address.ui;
 
@@ -1248,7 +1333,7 @@ public class ProgressWindow extends UiPart<Region> {
 
 }
 ```
-###### /resources/view/ProgressWindow.fxml
+###### \resources\view\ProgressWindow.fxml
 ``` fxml
 
 <?import javafx.scene.control.ProgressBar?>
