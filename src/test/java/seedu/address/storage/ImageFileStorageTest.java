@@ -14,18 +14,18 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.address.commons.util.FileUtil;
+import seedu.address.testutil.TestUtil;
 
 //@@author JunQuann
 public class ImageFileStorageTest {
-    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/ImageFileStorageTest/");
-    private static final String TEST_IMAGE = FileUtil.getPath("./src/test/data/ImageFileStorageTest/testImage.png");
+    private static final String TEST_DATA_FOLDER = "./src/test/data/ImageFileStorageTest/";
     private static final String TEST_FILENAME = "test";
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
+    private final String testImage = TestUtil.getTestImgPath();
 
     @Test
     public void createImageFolder_nullFilePath_throwsNullPointerException() throws Exception {
@@ -48,8 +48,8 @@ public class ImageFileStorageTest {
     public void copiedImage_success() throws IOException {
         String filePath = testFolder.getRoot().getPath();
         ImageFileStorage imageFileStorage = new ImageFileStorage(filePath);
-        imageFileStorage.copyImage(TEST_IMAGE, TEST_FILENAME);
-        File expectedFile = new File(TEST_IMAGE);
+        imageFileStorage.copyImage(testImage, TEST_FILENAME);
+        File expectedFile = new File(testImage);
         File actualFile = new File(imageFileStorage.getImageFilePath(TEST_FILENAME));
         assertFileContentEqual(expectedFile, actualFile);
     }
