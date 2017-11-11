@@ -19,7 +19,7 @@
             </Label>
          </children>
       </Pane>
-      <JFXListView fx:id="tagListView" style="-fx-background-radius: 10; -fx-background-color: #F5F9FA;" VBox.vgrow="ALWAYS" />
+      <JFXListView fx:id="groupListView" style="-fx-background-radius: 10; -fx-background-color: #F5F9FA;" VBox.vgrow="ALWAYS" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

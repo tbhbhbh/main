@@ -13,17 +13,17 @@ import seedu.address.model.tag.Tag;
 /**
  * An UI component that display the name of a {@code Tag}.
  */
-public class TagBox extends UiPart<Region> {
+public class GroupLabel extends UiPart<Region> {
 
-    private static final String FXML = "TagBox.fxml";
-    public final Tag tag;
+    private static final String FXML = "GroupLabel.fxml";
+    private final Tag tag;
 
     @FXML
     private HBox cardPane;
     @FXML
-    private Label tagsName;
+    private Label groupName;
 
-    public TagBox(Tag tag) {
+    public GroupLabel(Tag tag) {
         super(FXML);
         this.tag = tag;
         initTags(tag);
@@ -32,19 +32,24 @@ public class TagBox extends UiPart<Region> {
     }
 
     private void initTags(Tag tag) {
-        tagsName.setText(tag.tagName);
+        groupName.setText(tag.tagName);
     }
 
     /**
      * Register the Label {@tagsName} for MouseEvent to display the persons with the tag that user wants to see.
      */
     private void setEventHandlerForMouseClick() {
-        tagsName.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        groupName.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 raise(new SearchTagEvent(tag));
             }
         });
+    }
+
+    /** Returns the tag associated with this GroupLabel **/
+    public Tag getTag() {
+        return this.tag;
     }
 
     @Override
@@ -54,10 +59,10 @@ public class TagBox extends UiPart<Region> {
             return true;
         }
         // instanceof handles nulls
-        if (!(other instanceof TagBox)) {
+        if (!(other instanceof GroupLabel)) {
             return false;
         }
         // state check
-        return tag.equals(((TagBox) other).tag);
+        return tag.equals(((GroupLabel) other).tag);
     }
 }
