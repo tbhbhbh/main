@@ -47,16 +47,14 @@ public class ImportCommandTest {
             throws DuplicatePersonException, InterruptedException, TimeoutException {
         ImportCommand importCommand = prepareCommand("Google");
         ArrayList<Person> googlePersonList = new ArrayList<Person>();
-        GooglePersonBuilder gpb = new GooglePersonBuilder();
-        googlePersonList.add(gpb.build());
-        System.out.println(googlePersonList);
+        GooglePersonBuilder googlePerson = new GooglePersonBuilder();
+        googlePersonList.add(googlePerson.build());
+        // Initialise a primary stage and the FxToolkit for importContacts to run
         FxToolkit.registerPrimaryStage();
-        Thread thread = new Thread(() -> importCommand.importContacts(googlePersonList));
-        thread.run();
-        PersonBuilder pB = new PersonBuilder();
-        expectedModel.addPerson(pB.withInstagram("").withTwitter("").withTags("Google").build());
-        System.out.println(model.getAddressBook().getPersonList());
-        System.out.println(expectedModel.getAddressBook().getPersonList());
+        importCommand.importContacts(googlePersonList);
+        PersonBuilder person = new PersonBuilder();
+        expectedModel.addPerson(person.withInstagram("").withTwitter("")
+                .withTags(GooglePersonBuilder.DEFAULT_TAGS).build());
         assertEquals(expectedModel, model);
     }
 

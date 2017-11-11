@@ -289,10 +289,10 @@ public class MainWindow extends UiPart<Region> {
 
     /**
      * Opens the provided URL in the built-in browser
-     * @param Url is the a URL to be opened in the BrowserPanel
+     * @param link is a URL to be opened in the BrowserPanel
      */
-    public void handleUrl(String Url) {
-        browserPanel.loadPage(Url);
+    public void handleUrl(String link) {
+        browserPanel.loadPage(link);
     }
 
     /**

@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
-import seedu.address.commons.util.FileUtil;
 import seedu.address.testutil.TestUtil;
 
 //@@author JunQuann
