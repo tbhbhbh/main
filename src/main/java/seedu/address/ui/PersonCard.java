@@ -27,7 +27,6 @@ public class PersonCard extends UiPart<Region> {
     private static final String INSTA_ICON = "/images/insta_icon.png";
     private static final String TWITTER_ICON = "/images/twitter_icon.png";
     private static HashMap<String, String> tagColours = new HashMap<String, String>();
-    private static String[] colours = {"brown", "grey", "blue", "pink", "green", "maroon", "orange" };
     private static Random rand = new Random();
 
     /**
@@ -136,17 +135,9 @@ public class PersonCard extends UiPart<Region> {
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label newTag = new Label(tag.tagName);
-            newTag.setStyle("-fx-background-color: "
-                    + getTagColours(tag.tagName));
+            newTag.setStyle("#C1D3DD");
             tags.getChildren().add(newTag);
         });
-    }
-
-    private String getTagColours(String tagName) {
-        if (!tagColours.containsKey(tagName)) {
-            tagColours.put(tagName, colours[rand.nextInt(colours.length)]);
-        }
-        return tagColours.get(tagName);
     }
     //@@author
 
