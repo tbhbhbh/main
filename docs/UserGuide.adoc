@@ -507,7 +507,7 @@ There is no need to save manually.
 *Q*: How do I transfer my data to another Computer? +
 *A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
 
-[mailsettings]
+[[mailsettings]]
 *Q*: How do I set my default mail application to use the email feature? +
 *A*: For Windows users, go to Settings > Apps & features > Default apps. For MAC users, click https://www.imore.com/how-set-mac-app-default-when-opening-file[here] for instructions.
 For other OS users, please refer to the guides online on how to set your default mail application.
