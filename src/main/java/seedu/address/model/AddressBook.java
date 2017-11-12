@@ -145,7 +145,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
     //@@author conantteo
     /**
-     * Ensures that all tags of a {@code person} is deleted away from the master list.
+     * Ensures that all tags of a {@code person} is deleted away from the master tag list.
      */
     private void deleteMasterTagListWith(Person person) {
         final UniqueTagList personTags = new UniqueTagList(person.getTags());

@@ -137,7 +137,7 @@ public class ArgumentTokenizer {
         return value.trim();
     }
 
-    //@@author JunQuan
+    //@@author JunQuann
     /***
      * Input the path of the display pic that is copied into the preferred image file directory
      */

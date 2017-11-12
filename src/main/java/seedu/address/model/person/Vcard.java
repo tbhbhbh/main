@@ -21,7 +21,7 @@ public class Vcard {
      * Creates a Vcard using a given person.
      * @param person enforces no nulls person.
      * Store information of a given person in a string {@code cardDetails}
-     * Note that using Vcard version 3.0:
+     * Note that Vcard version used is 3.0:
      * BEING, VERSION, FN, END fields in cardDetails are required.
      * The rest of the fields are not required and can be empty Strings.
      */

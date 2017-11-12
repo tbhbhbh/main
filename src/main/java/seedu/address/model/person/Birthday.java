@@ -14,11 +14,12 @@ public class Birthday {
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
             "Birthday format should be 'DD/MM/YYYY', and it should not be blank\n"
                     + "Please check if the birthday is valid and is not a leap day";
-
+    // This regex guarantees that a Birthday format is DD/MM/YYYY and is not leap day.
     public static final String BIRTHDAY_VALIDATION_REGEX = "^(?:(?:31(/)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)"
             + "(/)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(/)0?2\\3(?:(?:"
             + "(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?"
             + "[1-9]|1\\d|2[0-8])(/)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
+    // This regex guarantees that a Birthday month is MM and the range of values is from [01-12].
     public static final String BIRTHDAY_MONTH_REGEX = "([0][1-9])|([1][0-2])";
 
     public final String value;

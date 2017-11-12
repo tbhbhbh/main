@@ -90,7 +90,6 @@ public class StorageManager extends ComponentManager implements Storage {
     public String getImageFilePath(String imageName) {
         return imageFileStorage.getImageFilePath(imageName);
     }
-    //@@author
 
     //@@author conantteo
     @Override

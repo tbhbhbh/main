@@ -34,7 +34,7 @@ public class EmailCommandParser implements Parser<EmailCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
         }
-        if (!IndexArrayUtil.isDistinct(indexArray)) {
+        if (!IndexArrayUtil.indexAreUnique(indexArray)) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
         }
