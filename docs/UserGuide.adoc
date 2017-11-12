@@ -43,7 +43,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 == Enhancement
 
-This section shows existing features and future features to be implemented in HitMeUp.
+This section shows existing features implemented in HitMeUp.
 
 ====
 *Existing features*
@@ -58,11 +58,6 @@ Email, Address, Birthday, Twitter, Instagram, Display Picture, Tag
 * Keep up with your contacts through the social command
 * View your contacts' addresses quickly in Google Maps
 
-*Future features*
-
-* Multiple themes to customize HitMeUp
-* Secure HitMeUp with a PIN
-* Import your contacts from Apple iCloud
 ====
 
 
