@@ -733,7 +733,7 @@ image::SDforDisplayPic.png[width="800"]
 _Figure 5.5.2a shows the interaction between components for `edit 1 dp/` command (part 1)_
 
 The above diagrams shows the series of event when `ArgumentTokenizer` detects the prefix `dp/`. +
-The following code snippets will show how the events are posted within each methods.
+The following code snippets will show how the events are posted within each methods:
 [source, java]
 ---------------
 private static String getCurrentImgPath() {
