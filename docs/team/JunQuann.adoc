@@ -47,7 +47,9 @@ include::../DeveloperGuide.adoc[tag=displayPic]
 
 ---
 
-=== Enhancement Proposed: to be updated
+=== Enhancement Proposed:
+
+Delete the picture in display picture storage directory when the image is not used anymore.
 
 === Other contributions
 * Made UI MockUp based on material design using Adobe PhotoShop.
