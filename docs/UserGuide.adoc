@@ -46,8 +46,6 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 This section shows existing features implemented in HitMeUp.
 
 ====
-*Existing features*
-
 * Add a contact using only their name and number, or with any of the following supported fields:
 Email, Address, Birthday, Twitter, Instagram, Display Picture, Tag
 * Import your existing contacts from Google Contacts
@@ -285,26 +283,28 @@ Format: `import SERVICE_NAME`
 * The service name is case-insensitive.
 ****
 
-=======
 * `import google` +
 . Opens the Google authentication page (as shown below) in HitMeUp to grant the app access to your contacts.
 +
 image::HitMeUpImportStep1.png[width="790"]
+_Figure 3.11.1 Google Authentication Page_
 +
-.  Once you have logged in with your credentials, the consent screen below will be loaded:
+.  Once you have logged in with your credentials, the consent page below will be loaded:
 +
 image::HitMeUpImportStep2.png[width="790"]
+_Figure 3.11.2 Google Consent Page_
 +
 .  After granting access, HitMeUp will display a progress bar (as shown below) to indicate the progress of import.
 +
 image::HitMeUpImportStep3.png[width="790"]
+_Figure 3.11.3 HitMeUp Import Progress_
 +
 .  After import has completed, the application will show the number of contacts successfully imported and the names of contacts that were
 unable to be imported.
 +
 image::HitMeUpImportStep4.png[width="790"]
+_Figure 3.11.4 Import Result Display_
 
-=======
 //end::import[]
 
 // tag::export[]
