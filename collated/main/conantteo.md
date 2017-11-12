@@ -4,7 +4,30 @@
     public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid: ";
     public static final String MESSAGE_INVALID_PERSON_TO_EMAIL = "The person may have missing email address "
             + "at specified index provided: ";
+    public static final String MESSAGE_NO_PERSONS_FOUND = "There are no contacts found!";
 
+}
+```
+###### \java\seedu\address\commons\events\model\SearchTagEvent.java
+``` java
+package seedu.address.commons.events.model;
+
+import seedu.address.commons.events.BaseEvent;
+import seedu.address.model.tag.Tag;
+
+/** Indicates that users want to search for this particular {@code tag} */
+public class SearchTagEvent extends BaseEvent {
+
+    public final Tag tag;
+
+    public SearchTagEvent(Tag tag) {
+        this.tag = tag;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }
 ```
 ###### \java\seedu\address\commons\events\ui\EmailRequestEvent.java
@@ -91,10 +114,10 @@ public class IndexArrayUtil {
     }
 
     /**
-     * Check if IndexArray {@code arr} has distinct Index with no duplicates.
+     * Check if IndexArray {@code arr} has unique Index with no duplicates.
      * @return false if there are at least one repeated index in the array.
      */
-    public static boolean isDistinct(Index[] arr) {
+    public static boolean indexAreUnique(Index[] arr) {
         boolean isDistinct = true;
         for (int i = 0; i < arr.length - 1; i++) {
             for (int j = i + 1; j < arr.length; j++) {
@@ -151,14 +174,14 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
- * Email one or more person identified using it's last displayed index from the address book.
+ * Email one or more persons identified using it's last displayed index from the address book.
  */
 public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Email one or more person identified by the index number used in the last person listing.\n"
+            + ": Email one or more persons identified by the index number used in the last person listing.\n"
             + "Parameters: INDEX [INDEX]... (must be a positive and no repeated integers)\n"
             + "Example: " + COMMAND_WORD + " 1" + " [2]" + " [3]";
 
@@ -176,6 +199,7 @@ public class EmailCommand extends Command {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         StringBuilder addresses = new StringBuilder();
         StringBuilder persons = new StringBuilder();
+
         for (Index targetIndex : targetIndices) {
             if (targetIndex.getZeroBased() >= lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
@@ -183,13 +207,17 @@ public class EmailCommand extends Command {
             }
             ReadOnlyPerson personToEmail = lastShownList.get(targetIndex.getZeroBased());
             if (personToEmail.getEmail().toString().isEmpty()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL + targetIndex.getOneBased());
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL
+                        + targetIndex.getOneBased());
             }
+            // Concatenate the names and email addresses of each person
             persons.append(", " + personToEmail.getName().toString());
             addresses.append(" " + personToEmail.getEmail().toString());
         }
 
+        // Removes the substring ", " at the start of the allPersons string
         String allPersons = persons.toString().trim().substring(2, persons.length());
+        // Replaces all white spaces in the allEmailAddresses string with commas
         String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
 
         EventsCenter.getInstance().post(new EmailRequestEvent(allEmailAddresses));
@@ -209,9 +237,10 @@ public class EmailCommand extends Command {
 ``` java
 package seedu.address.logic.commands;
 
+import static seedu.address.commons.util.FileUtil.createIfMissing;
+import static seedu.address.commons.util.FileUtil.writeToFile;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -220,7 +249,6 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.ui.ExportRequestEvent;
-import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.IndexArrayUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -235,12 +263,12 @@ public class ExportCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Export all contacts or specified person identified by the index number "
-            + "used in the last person listing into a VCard file.\n"
+            + "used in the last person listing into a vCard file.\n"
             + "Parameters: all or INDEX [INDEX]... (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " 1 2" + " or " + COMMAND_WORD + " all";
 
     public static final String MESSAGE_EXPORT_PERSON_SUCCESS = "Export Person: %1$s\n"
-            + "Please close the app before moving the vcf file to another location.";
+            + "Please close the app before moving the contacts.vcf file to another location.";
 
     public static final String DEFAULT_FILE_DIR = "./data/";
     public static final String DEFAULT_FILE_NAME = "contacts.vcf";
@@ -257,10 +285,14 @@ public class ExportCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
+
         List<ReadOnlyPerson> fullList = model.getAddressBook().getPersonList();
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+
         StringBuilder persons = new StringBuilder();
-        ArrayList<Vcard> listOfvCards = new ArrayList<>();
+        List<ReadOnlyPerson> listToExport = new ArrayList<>();
+
+        // Checks if user has specified the index of persons to email
         if (targetIndices.length > 0) {
             for (Index targetIndex : targetIndices) {
                 if (targetIndex.getZeroBased() >= lastShownList.size()) {
@@ -268,42 +300,43 @@ public class ExportCommand extends Command {
                             + targetIndex.getOneBased());
                 }
                 ReadOnlyPerson personToExport = lastShownList.get(targetIndex.getZeroBased());
-                persons.append(", ");
-                persons.append(personToExport.getName().toString());
-                Vcard vCard = new Vcard(personToExport);
-                listOfvCards.add(vCard);
+                listToExport.add(personToExport);
             }
         } else {
-            for (ReadOnlyPerson person : fullList) {
-                persons.append(", ");
-                persons.append(person.getName().toString());
-                Vcard vCard = new Vcard(person);
-                listOfvCards.add(vCard);
+            if (!fullList.isEmpty()) {
+                listToExport = fullList;
+            } else {
+                throw new CommandException(Messages.MESSAGE_NO_PERSONS_FOUND);
             }
+        }
+
+        // Constructs the String for all persons names
+        for (ReadOnlyPerson person : listToExport) {
+            persons.append(", ");
+            persons.append(person.getName().toString());
         }
         String allPersons = persons.toString().trim().substring(2, persons.length());
 
-        //Create a new VCard format file to store all the VCard information.
+        // Creates a new vCard file to store all the VCard information.
         File file = new File(DEFAULT_FILE_DIR, DEFAULT_FILE_NAME);
         try {
-            FileUtil.createIfMissing(file);
+            createIfMissing(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //Write information from a list of VCards into the VCard format file.
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            assert false :  "File is always created when exporting";
+        // Creates the content to be written into the vCard file
+        StringBuilder content = new StringBuilder();
+        for (ReadOnlyPerson person : listToExport) {
+            Vcard personCard = new Vcard(person);
+            content.append(personCard.getCardDetails());
         }
-        for (Vcard vCard : listOfvCards) {
-            try {
-                fos.write(vCard.getCardDetails().getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        // Writes the content into the vCard file.
+        try {
+            writeToFile(file, content.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         EventsCenter.getInstance().post(new ExportRequestEvent());
@@ -374,7 +407,7 @@ public class EmailCommandParser implements Parser<EmailCommand> {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
         }
-        if (!IndexArrayUtil.isDistinct(indexArray)) {
+        if (!IndexArrayUtil.indexAreUnique(indexArray)) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
         }
@@ -409,7 +442,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
     public ExportCommand parse(String args) throws ParseException {
 
         String trimmedArgs = args.trim();
-        if (trimmedArgs.startsWith("all")) {
+        if (trimmedArgs.matches("all")) {
             return new ExportCommand();
         } else {
             String[] indices = args.trim().split(" ");
@@ -423,7 +456,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
             }
-            if (!IndexArrayUtil.isDistinct(indexArray)) {
+            if (!IndexArrayUtil.indexAreUnique(indexArray)) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
             }
@@ -432,14 +465,36 @@ public class ExportCommandParser implements Parser<ExportCommand> {
     }
 }
 ```
+###### \java\seedu\address\logic\parser\ParserUtil.java
+``` java
+    /**
+     * Parses a {@code Optional<String> birthday} into an {@code Optional<Birthday>} if {@code birthday} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<Birthday> parseBirthday(Optional<String> birthday) throws IllegalValueException {
+        requireNonNull(birthday);
+        return birthday.isPresent() ? Optional.of(new Birthday(birthday.get())) : Optional.empty();
+    }
+
+```
 ###### \java\seedu\address\model\AddressBook.java
 ``` java
     /**
-     * Ensures that all tags of a {@code person} is deleted away from the master list.
+     * Ensures that all tags of a {@code person} is deleted away from the master tag list.
      */
     private void deleteMasterTagListWith(Person person) {
         final UniqueTagList personTags = new UniqueTagList(person.getTags());
         tags.deleteFrom(personTags);
+    }
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Subscribe
+    private void handleSearchTagEvent(SearchTagEvent event)  {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        String[] tagNameArr = {event.tag.tagName};
+        Predicate<ReadOnlyPerson> predicate = new PersonContainsKeywordsPredicate(Arrays.asList(tagNameArr));
+        updateFilteredPersonList(predicate);
     }
 ```
 ###### \java\seedu\address\model\person\Birthday.java
@@ -459,11 +514,12 @@ public class Birthday {
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS =
             "Birthday format should be 'DD/MM/YYYY', and it should not be blank\n"
                     + "Please check if the birthday is valid and is not a leap day";
-
+    // This regex guarantees that a Birthday format is DD/MM/YYYY and is not leap day.
     public static final String BIRTHDAY_VALIDATION_REGEX = "^(?:(?:31(/)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)"
             + "(/)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(/)0?2\\3(?:(?:"
             + "(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?"
             + "[1-9]|1\\d|2[0-8])(/)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
+    // This regex guarantees that a Birthday month is MM and the range of values is from [01-12].
     public static final String BIRTHDAY_MONTH_REGEX = "([0][1-9])|([1][0-2])";
 
     public final String value;
@@ -538,6 +594,37 @@ public class Birthday {
         this.birthday.set(requireNonNull(birthday));
     }
 ```
+###### \java\seedu\address\model\person\PersonContainsBirthdayPredicate.java
+``` java
+package seedu.address.model.person;
+
+import java.util.function.Predicate;
+
+/**
+ * Tests that a {@code ReadOnlyPerson}'s {@code Birthday} matches any of the birthday month given
+ */
+public class PersonContainsBirthdayPredicate implements Predicate<ReadOnlyPerson> {
+    private final String birthdayMonth;
+
+    public PersonContainsBirthdayPredicate(String birthdayMonth) {
+        this.birthdayMonth = birthdayMonth;
+    }
+
+    @Override
+    public boolean test(ReadOnlyPerson person) {
+        return birthdayMonth.equals(person.getBirthday().getBirthdayMonth());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof PersonContainsBirthdayPredicate// instanceof handles nulls
+                && this.birthdayMonth.equals(((PersonContainsBirthdayPredicate) other)
+                .birthdayMonth)); // state check
+    }
+
+}
+```
 ###### \java\seedu\address\model\person\Vcard.java
 ``` java
 package seedu.address.model.person;
@@ -562,7 +649,7 @@ public class Vcard {
      * Creates a Vcard using a given person.
      * @param person enforces no nulls person.
      * Store information of a given person in a string {@code cardDetails}
-     * Note that using Vcard version 3.0:
+     * Note that Vcard version used is 3.0:
      * BEING, VERSION, FN, END fields in cardDetails are required.
      * The rest of the fields are not required and can be empty Strings.
      */
@@ -662,25 +749,161 @@ public class Vcard {
 
 }
 ```
+###### \java\seedu\address\ui\GroupLabel.java
+``` java
+package seedu.address.ui;
+
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import seedu.address.commons.events.model.SearchTagEvent;
+import seedu.address.model.tag.Tag;
+
+/**
+ * An UI component that display the name of a {@code Tag}.
+ */
+public class GroupLabel extends UiPart<Region> {
+
+    private static final String FXML = "GroupLabel.fxml";
+    private final Tag tag;
+
+    @FXML
+    private HBox cardPane;
+    @FXML
+    private Label groupName;
+
+    public GroupLabel(Tag tag) {
+        super(FXML);
+        this.tag = tag;
+        initTags(tag);
+        registerAsAnEventHandler(this);
+        setEventHandlerForMouseClick();
+    }
+
+    private void initTags(Tag tag) {
+        groupName.setText(tag.tagName);
+    }
+
+    /**
+     * Register the Label {@tagsName} for MouseEvent to display the persons with the tag that user wants to see.
+     */
+    private void setEventHandlerForMouseClick() {
+        groupName.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                raise(new SearchTagEvent(tag));
+            }
+        });
+    }
+
+    /** Returns the tag associated with this GroupLabel **/
+    public Tag getTag() {
+        return this.tag;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+        // instanceof handles nulls
+        if (!(other instanceof GroupLabel)) {
+            return false;
+        }
+        // state check
+        return tag.equals(((GroupLabel) other).tag);
+    }
+}
+```
+###### \java\seedu\address\ui\GroupListPanel.java
+``` java
+package seedu.address.ui;
+
+import org.fxmisc.easybind.EasyBind;
+
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Region;
+import seedu.address.model.tag.Tag;
+
+/**
+ * Panel containing the list of unique tags
+ */
+public class GroupListPanel extends UiPart<Region> {
+    private static final String FXML = "GroupList.fxml";
+
+    @FXML
+    private ListView groupListView;
+
+    public GroupListPanel(ObservableList<Tag> allTagsList) {
+        super(FXML);
+        bindTags(allTagsList);
+    }
+
+    /**
+     * Creating bindings for each tag to each {@code GroupListViewCell} in the ListView
+     * @param allTagsList is a valid list of all unique tags to be displayed.
+     */
+    private void bindTags(ObservableList<Tag> allTagsList) {
+        ObservableList<GroupLabel> mappedList = EasyBind.map(
+                allTagsList, (tag) -> new GroupLabel(tag));
+        groupListView.setItems(mappedList);
+        groupListView.setCellFactory(listView -> new GroupListViewCell());
+
+    }
+
+    /**
+     * Custom {@code GroupListViewCell} that displays the graphics of a {@code GroupLabel}.
+     */
+    class GroupListViewCell extends ListCell<GroupLabel> {
+
+        @Override
+        protected void updateItem(GroupLabel groupLabel, boolean empty) {
+            super.updateItem(groupLabel, empty);
+
+            Platform.runLater(() -> {
+                if (empty || groupLabel == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    setGraphic(groupLabel.getRoot());
+                }
+
+            });
+
+        }
+    }
+}
+```
 ###### \java\seedu\address\ui\MainWindow.java
 ``` java
     /**
-     * This method will invoke the user's default mail client and set the recipients field with all the
+     * This method will call the user's default mail application and set the recipients field with all the
      * email addresses specified by the user.
      * @param allEmailAddresses is a string of all valid email addresses user request to email to.
-     * @throws IOException when user's desktop cannot support Desktop operations.
+     * @throws IOException when java Desktop class is not supported in this platform.
      */
     public void handleEmail(String allEmailAddresses) {
+
         URI mailTo = null;
         try {
             mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+        // Checks if Desktop class is supported in the current platform
         if (Desktop.isDesktopSupported()) {
             Desktop userDesktop = Desktop.getDesktop();
-            logger.info("Showing user's default mail client");
             try {
+                logger.info("Showing user's default mail client");
                 userDesktop.mail(mailTo);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -692,9 +915,9 @@ public class Vcard {
 ###### \java\seedu\address\ui\MainWindow.java
 ``` java
     /**
-     * Opens a file folder which shows the directory where contacts.vcf file is found.
-     * Folder is is guaranteed to exist before showing.
-     * @throws IOException when user's desktop cannot support Desktop operations.
+     * Opens a file directory which shows the folder where contacts.vcf file is located.
+     * The file directory is is guaranteed to exist before showing.
+     * @throws IOException when java Desktop class is not supported in this platform.
      */
     public void handleExport() {
         File file = new File(EXPORT_FILE_PATH);
@@ -712,7 +935,7 @@ public class Vcard {
 ###### \java\seedu\address\ui\MainWindow.java
 ``` java
     @Subscribe
-    private void handleEmailRequestEvent(EmailRequestEvent event) throws Exception {
+    private void handleEmailRequestEvent(EmailRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleEmail(event.getAllEmailAddresses());
     }
@@ -724,134 +947,6 @@ public class Vcard {
     private void handleExportRequestEvent(ExportRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleExport();
-    }
-}
-```
-###### \java\seedu\address\ui\TagBox.java
-``` java
-package seedu.address.ui;
-
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import seedu.address.commons.events.model.SearchTagEvent;
-import seedu.address.model.tag.Tag;
-
-/**
- * An UI component that display the name of a {@code Tag}.
- */
-public class TagBox extends UiPart<Region> {
-
-    private static final String FXML = "TagBox.fxml";
-    public final Tag tag;
-
-    @FXML
-    private HBox cardPane;
-    @FXML
-    private Label tagsName;
-
-    public TagBox(Tag tag) {
-        super(FXML);
-        this.tag = tag;
-        initTags(tag);
-        registerAsAnEventHandler(this);
-        setEventHandlerForMouseClick();
-    }
-
-    private void initTags(Tag tag) {
-        tagsName.setText(tag.tagName);
-    }
-
-    /**
-     * Register the Label {@tagsName} for MouseEvent to display the persons with the tag that user wants to see.
-     */
-    private void setEventHandlerForMouseClick() {
-        tagsName.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                raise(new SearchTagEvent(tag));
-            }
-        });
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        // short circuit if same object
-        if (other == this) {
-            return true;
-        }
-        // instanceof handles nulls
-        if (!(other instanceof TagBox)) {
-            return false;
-        }
-        // state check
-        return tag.equals(((TagBox) other).tag);
-    }
-}
-```
-###### \java\seedu\address\ui\TagListPanel.java
-``` java
-package seedu.address.ui;
-
-import org.fxmisc.easybind.EasyBind;
-
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.Region;
-import seedu.address.model.tag.Tag;
-
-/**
- * Panel containing the list of unique tags
- */
-public class TagListPanel extends UiPart<Region> {
-    private static final String FXML = "GroupList.fxml";
-
-    @FXML
-    private ListView tagListView;
-
-    public TagListPanel(ObservableList<Tag> allTagsList) {
-        super(FXML);
-        bindTags(allTagsList);
-    }
-
-    /**
-     * Creating bindings for each tag to each ListCell in the ListView
-     * @param allTagsList is a valid list of all unique tags to be displayed.
-     */
-    private void bindTags(ObservableList<Tag> allTagsList) {
-        ObservableList<TagBox> mappedList = EasyBind.map(
-                allTagsList, (tag) -> new TagBox(tag));
-        tagListView.setItems(mappedList);
-        tagListView.setCellFactory(listView -> new TagListViewCell());
-
-    }
-
-    /**
-     * Custom {@code ListCell} that displays the graphics of a {@code TagBox}.
-     */
-    class TagListViewCell extends ListCell<TagBox> {
-
-        @Override
-        protected void updateItem(TagBox groupLabel, boolean empty) {
-            super.updateItem(groupLabel, empty);
-
-            Platform.runLater(() -> {
-                if (empty || groupLabel == null) {
-                    setGraphic(null);
-                    setText(null);
-                } else {
-                    setGraphic(groupLabel.getRoot());
-                }
-
-            });
-
-        }
     }
 }
 ```
