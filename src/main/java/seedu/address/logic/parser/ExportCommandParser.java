@@ -23,7 +23,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
     public ExportCommand parse(String args) throws ParseException {
 
         String trimmedArgs = args.trim();
-        if (trimmedArgs.startsWith("all")) {
+        if (trimmedArgs.matches("all")) {
             return new ExportCommand();
         } else {
             String[] indices = args.trim().split(" ");
