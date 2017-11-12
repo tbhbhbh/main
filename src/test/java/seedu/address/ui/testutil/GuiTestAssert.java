@@ -8,12 +8,12 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import guitests.guihandles.GroupLabelHandle;
+import guitests.guihandles.GroupListPanelHandle;
 import guitests.guihandles.PersonCardHandle;
 import guitests.guihandles.PersonDescriptionHandle;
 import guitests.guihandles.PersonListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
-import guitests.guihandles.TagBoxHandle;
-import guitests.guihandles.TagListPanelHandle;
 import javafx.scene.image.Image;
 import seedu.address.commons.util.AppUtil;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -97,21 +97,24 @@ public class GuiTestAssert {
         assertListMatching(personListPanelHandle, persons.toArray(new ReadOnlyPerson[0]));
     }
 
+    //@@author conantteo
     /**
-     * Asserts that the list in {@code tagListPanelHandle} displays the name of the {@code tags} correctly.
+     * Asserts that the list in {@code groupListPanelHandle} displays the name of the {@code tags} correctly.
      */
-    public static void assertTagListMatching(TagListPanelHandle tagListPanelHandle, List<Tag> tags) {
-        assertTagListMatching(tagListPanelHandle, tags.toArray(new Tag[0]));
+    public static void assertGroupListMatching(GroupListPanelHandle groupListPanelHandle, List<Tag> tags) {
+        assertGroupListMatching(groupListPanelHandle, tags.toArray(new Tag[0]));
     }
 
     /**
-     * Asserts that the list in {@code tagListPanelHandle} displays the name of the {@code tags} correctly.
+     * Asserts that the list in {@code groupListPanelHandle} displays the name of the {@code tags} correctly.
      */
-    public static void assertTagListMatching(TagListPanelHandle tagListPanelHandle, Tag... tags) {
+    public static void assertGroupListMatching(GroupListPanelHandle groupListPanelHandle, Tag... tags) {
         for (int i = 0; i < tags.length; i++) {
-            assertBoxDisplayTag(tags[i], tagListPanelHandle.getTagBoxHandle(tags[i]));
+            assertGroupLabelDisplayTag(tags[i], groupListPanelHandle.getGroupLabelHandle(tags[i]));
         }
     }
+
+    //@@ author
     /**
      * Asserts the size of the list in {@code personListPanelHandle} equals to {@code size}.
      */
@@ -127,8 +130,9 @@ public class GuiTestAssert {
         assertEquals(expected, resultDisplayHandle.getText());
     }
 
-    public static void assertBoxDisplayTag(Tag expectedTag, TagBoxHandle tagBox) {
-        assertEquals(expectedTag.tagName, tagBox.getTagName());
+    //@@author conantteo
+    public static void assertGroupLabelDisplayTag(Tag expectedTag, GroupLabelHandle groupLabel) {
+        assertEquals(expectedTag.tagName, groupLabel.getGroupName());
     }
 
     //@@author JunQuann

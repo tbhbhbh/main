@@ -8,7 +8,7 @@
 ###### \java\guitests\guihandles\MainWindowHandle.java
 ``` java
     public TagListPanelHandle getTagListPanel() {
-        return tagListPanel;
+        return groupListPanel;
     }
 
 }
@@ -61,7 +61,7 @@ import java.util.Optional;
 
 import javafx.scene.control.ListView;
 import seedu.address.model.tag.Tag;
-import seedu.address.ui.TagBox;
+import seedu.address.ui.GroupLabel;
 
 /**
  * Provides a handle for {@code TagListPanel} containing a list of {@code TagBox}
@@ -77,8 +77,8 @@ public class TagListPanelHandle extends NodeHandle<ListView<TagBox>> {
      * Navigates the list view to display and select the particular tag {@param toTag}
      */
     public void navigateToTag(Tag toTag) {
-        List<TagBox> tagBoxes = getRootNode().getItems();
-        Optional<TagBox> matchingTag = tagBoxes.stream().filter(tagBox -> tagBox.tag.equals(toTag)).findFirst();
+        List<TagBox> groupLabels = getRootNode().getItems();
+        Optional<TagBox> matchingTag = groupLabels.stream().filter(groupLabel -> groupLabel.tag.equals(toTag)).findFirst();
 
         if (!matchingTag.isPresent()) {
             throw new IllegalArgumentException("Tag does not exists");
@@ -871,11 +871,11 @@ import static seedu.address.testutil.TypicalTags.FACEBOOK;
 import static seedu.address.testutil.TypicalTags.FRIENDS;
 import static seedu.address.testutil.TypicalTags.GOOGLE;
 import static seedu.address.testutil.TypicalTags.OWE_MONEY;
-import static seedu.address.ui.testutil.GuiTestAssert.assertBoxDisplayTag;
+import static assertGroupLabelDisplayTag;
 
 import org.junit.Test;
 
-import guitests.guihandles.TagBoxHandle;
+import guitests.guihandles.GroupLabelHandle;
 import seedu.address.model.tag.Tag;
 
 public class TagBoxTest extends GuiUnitTest {
@@ -906,39 +906,39 @@ public class TagBoxTest extends GuiUnitTest {
         testTagBox = new TagBox(testTag);
         uiPartRule.setUiPart(testTagBox);
 
-        TagBoxHandle tagBoxHandle = new TagBoxHandle(testTagBox.getRoot());
-        tagBoxHandle.click();
+        TagBoxHandle groupLabelHandle = new TagBoxHandle(testTagBox.getRoot());
+        groupLabelHandle.click();
 
-        guiRobot.waitForEvent(tagBoxHandle::isClicked);
+        guiRobot.waitForEvent(groupLabelHandle::isClicked);
 
-        assertTrue(tagBoxHandle.isClicked());
+        assertTrue(groupLabelHandle.isClicked());
     }
 
     @Test
     public void equals() {
         testTag = FRIENDS;
-        TagBox tagBox = new TagBox(testTag);
+        TagBox groupLabel = new TagBox(testTag);
 
         // same object -> returns true
-        assertTrue(tagBox.equals(tagBox));
+        assertTrue(groupLabel.equals(groupLabel));
 
         // null -> returns false
-        assertFalse(tagBox.equals(null));
+        assertFalse(groupLabel.equals(null));
 
         // different types -> returns false
         Tag differentTag = CLASSMATES;
-        assertFalse(tagBox.equals(new TagBox(differentTag)));
+        assertFalse(groupLabel.equals(new TagBox(differentTag)));
     }
 
     /**
-     * Asserts that {@code tagBox} displays the {@code tag} correctly.
+     * Asserts that {@code groupLabel} displays the {@code tag} correctly.
      */
-    private void assertTagBoxDisplay(TagBox tagBox, Tag tag) {
+    private void assertTagBoxDisplay(TagBox groupLabel, Tag tag) {
         guiRobot.pauseForHuman();
 
-        TagBoxHandle tagBoxHandle = new TagBoxHandle(tagBox.getRoot());
+        TagBoxHandle groupLabelHandle = new TagBoxHandle(groupLabel.getRoot());
 
-        assertBoxDisplayTag(tag, tagBoxHandle);
+        assertBoxDisplayTag(tag, groupLabelHandle);
     }
 }
 ```
@@ -947,36 +947,36 @@ public class TagBoxTest extends GuiUnitTest {
 package seedu.address.ui;
 
 import static seedu.address.testutil.TypicalTags.getTypicalTags;
-import static seedu.address.ui.testutil.GuiTestAssert.assertBoxDisplayTag;
+import static assertGroupLabelDisplayTag;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import guitests.guihandles.TagBoxHandle;
-import guitests.guihandles.TagListPanelHandle;
+import guitests.guihandles.GroupLabelHandle;
+import guitests.guihandles.GroupListPanelHandle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.model.tag.Tag;
 
 public class TagListPanelTest extends GuiUnitTest {
     private static final ObservableList<Tag> TYPICAL_TAGS = FXCollections.observableList(getTypicalTags());
-    private TagListPanelHandle tagListPanelHandle;
+    private TagListPanelHandle groupListPanelHandle;
 
     @Before
     public void setUp() {
-        TagListPanel tagListPanel = new TagListPanel(TYPICAL_TAGS);
-        uiPartRule.setUiPart(tagListPanel);
+        TagListPanel groupListPanel = new TagListPanel(TYPICAL_TAGS);
+        uiPartRule.setUiPart(groupListPanel);
 
-        tagListPanelHandle = new TagListPanelHandle(getChildNode(tagListPanel.getRoot(),
+        groupListPanelHandle = new TagListPanelHandle(getChildNode(groupListPanel.getRoot(),
                 TagListPanelHandle.TAG_LIST_VIEW_ID));
     }
 
     @Test
     public void display() {
         for (int i = 0; i < TYPICAL_TAGS.size(); i++) {
-            tagListPanelHandle.navigateToTag(TYPICAL_TAGS.get(i));
+            groupListPanelHandle.navigateToTag(TYPICAL_TAGS.get(i));
             Tag expectedTag = TYPICAL_TAGS.get(i);
-            TagBoxHandle actualTagBox = tagListPanelHandle.getTagBoxHandle(i);
+            TagBoxHandle actualTagBox = groupListPanelHandle.getTagBoxHandle(i);
 
             assertBoxDisplayTag(expectedTag, actualTagBox);
         }

@@ -14,44 +14,44 @@ import seedu.address.model.tag.Tag;
 /**
  * Panel containing the list of unique tags
  */
-public class TagListPanel extends UiPart<Region> {
+public class GroupListPanel extends UiPart<Region> {
     private static final String FXML = "GroupList.fxml";
 
     @FXML
-    private ListView tagListView;
+    private ListView groupListView;
 
-    public TagListPanel(ObservableList<Tag> allTagsList) {
+    public GroupListPanel(ObservableList<Tag> allTagsList) {
         super(FXML);
         bindTags(allTagsList);
     }
 
     /**
-     * Creating bindings for each tag to each ListCell in the ListView
+     * Creating bindings for each tag to each {@code GroupListViewCell} in the ListView
      * @param allTagsList is a valid list of all unique tags to be displayed.
      */
     private void bindTags(ObservableList<Tag> allTagsList) {
-        ObservableList<TagBox> mappedList = EasyBind.map(
-                allTagsList, (tag) -> new TagBox(tag));
-        tagListView.setItems(mappedList);
-        tagListView.setCellFactory(listView -> new TagListViewCell());
+        ObservableList<GroupLabel> mappedList = EasyBind.map(
+                allTagsList, (tag) -> new GroupLabel(tag));
+        groupListView.setItems(mappedList);
+        groupListView.setCellFactory(listView -> new GroupListViewCell());
 
     }
 
     /**
-     * Custom {@code ListCell} that displays the graphics of a {@code TagBox}.
+     * Custom {@code GroupListViewCell} that displays the graphics of a {@code GroupLabel}.
      */
-    class TagListViewCell extends ListCell<TagBox> {
+    class GroupListViewCell extends ListCell<GroupLabel> {
 
         @Override
-        protected void updateItem(TagBox tagBox, boolean empty) {
-            super.updateItem(tagBox, empty);
+        protected void updateItem(GroupLabel groupLabel, boolean empty) {
+            super.updateItem(groupLabel, empty);
 
             Platform.runLater(() -> {
-                if (empty || tagBox == null) {
+                if (empty || groupLabel == null) {
                     setGraphic(null);
                     setText(null);
                 } else {
-                    setGraphic(tagBox.getRoot());
+                    setGraphic(groupLabel.getRoot());
                 }
 
             });
