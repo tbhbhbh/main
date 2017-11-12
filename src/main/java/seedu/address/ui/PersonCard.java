@@ -24,8 +24,10 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
+    private static final String INSTA_ICON = "/images/insta_icon.png";
+    private static final String TWITTER_ICON = "/images/twitter_icon.png";
     private static HashMap<String, String> tagColours = new HashMap<String, String>();
-    private static String[] colours = { "red", "brown", "grey", "yellow", "blue", "pink", "green", "maroon", "orange" };
+    private static String[] colours = {"brown", "grey", "blue", "pink", "green", "maroon", "orange" };
     private static Random rand = new Random();
 
     /**
@@ -50,13 +52,19 @@ public class PersonCard extends UiPart<Region> {
     private FlowPane tags;
     @FXML
     private Circle displayPic;
+    @FXML
+    private Circle insta_icon;
+    @FXML
+    private Circle twitter_icon;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
         initTags(person);
-        initImage(person);
+        initDisplayPic(person);
+        initInstaIcon(person);
+        initTwitterIcon(person);
         bindListeners(person);
     }
 
@@ -67,21 +75,27 @@ public class PersonCard extends UiPart<Region> {
     private void bindListeners(ReadOnlyPerson person) {
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
         phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
-        person.displayPicProperty().addListener((observable, oldValue, newValue) -> {
-            initImage(person);
-        });
         person.tagProperty().addListener((observable, oldValue, newValue) -> {
             tags.getChildren().clear();
             initTags(person);
         });
+        //@@author JunQuann
+        person.displayPicProperty().addListener((observable, oldValue, newValue) -> {
+            initDisplayPic(person);
+        });
+        person.instagramNameProperty().addListener((observable, oldValue, newValue) -> {
+            initInstaIcon(person);
+        });
+        person.twitterNameProperty().addListener((observable, oldValue, newValue) -> {
+            initTwitterIcon(person);
+        });
     }
 
-    //@@author JunQuann
     /**
      * Initialise the image in PersonCard display
      * @param person
      */
-    private void initImage(ReadOnlyPerson person) {
+    private void initDisplayPic(ReadOnlyPerson person) {
         Image displayPicture;
         if (person.getDisplayPic().toString().equals(DEFAULT_DP)) {
             displayPicture = AppUtil.getImage(DEFAULT_DP);
@@ -91,6 +105,28 @@ public class PersonCard extends UiPart<Region> {
             displayPicture = new Image(imgUrl);
         }
         displayPic.setFill(new ImagePattern(displayPicture));
+    }
+
+    /**
+     * Initialise the twitter icon is the person has a twitter account
+     */
+    private void initTwitterIcon(ReadOnlyPerson person) {
+        String twitterName = person.getTwitterName().value;
+        if (!twitterName.isEmpty()) {
+            Image twitterIcon = AppUtil.getImage(TWITTER_ICON);
+            twitter_icon.setFill(new ImagePattern(twitterIcon));
+        }
+    }
+
+    /**
+     * Initialise the instagram icon is the person has a instagram account
+     */
+    private void initInstaIcon(ReadOnlyPerson person) {
+        String instaName = person.getInstagramName().value;
+        if (!instaName.isEmpty()) {
+            Image instaIcon = AppUtil.getImage(INSTA_ICON);
+            insta_icon.setFill(new ImagePattern(instaIcon));
+        }
     }
 
     /**
