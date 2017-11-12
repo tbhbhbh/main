@@ -1,64 +1,12 @@
 # JunQuann
-###### \java\guitests\guihandles\PersonCardHandle.java
+###### /java/guitests/guihandles/PersonCardHandle.java
 ``` java
-/**
- * Provides a handle to a person card in the person list panel.
- */
-public class PersonCardHandle extends NodeHandle<Node> {
-    private static final String ID_FIELD_ID = "#id";
-    private static final String NAME_FIELD_ID = "#name";
-    private static final String PHONE_FIELD_ID = "#phone";
-    private static final String TAGS_FIELD_ID = "#tags";
-    private static final String DP_FIELD_ID = "#displayPic";
-
-    private final Label idLabel;
-    private final Label nameLabel;
-    private final Label phoneLabel;
-    private final List<Label> tagLabels;
-    private final Circle displayPicPanel;
-
-    public PersonCardHandle(Node cardNode) {
-        super(cardNode);
-
-        this.idLabel = getChildNode(ID_FIELD_ID);
-        this.nameLabel = getChildNode(NAME_FIELD_ID);
-        this.phoneLabel = getChildNode(PHONE_FIELD_ID);
-        this.displayPicPanel = getChildNode(DP_FIELD_ID);
-
-        Region tagsContainer = getChildNode(TAGS_FIELD_ID);
-        this.tagLabels = tagsContainer
-                .getChildrenUnmodifiable()
-                .stream()
-                .map(Label.class::cast)
-                .collect(Collectors.toList());
-    }
-
-    public String getId() {
-        return idLabel.getText();
-    }
-
-    public String getName() {
-        return nameLabel.getText();
-    }
-
-    public String getPhone() {
-        return phoneLabel.getText();
-    }
-
     public Image getDisplayPic() {
         ImagePattern displayPicImage = (ImagePattern) displayPicPanel.getFill();
         return displayPicImage.getImage();
     }
-
-    public List<String> getTags() {
-        return tagLabels
-                .stream()
-                .map(Label::getText)
-                .collect(Collectors.toList());
-    }
-}
 ```
-###### \java\guitests\guihandles\PersonDescriptionHandle.java
+###### /java/guitests/guihandles/PersonDescriptionHandle.java
 ``` java
 /**
  * Provides a handle to the person description panel.
@@ -131,7 +79,7 @@ public class PersonDescriptionHandle extends NodeHandle<Node> {
 
 }
 ```
-###### \java\seedu\address\logic\parser\ArgumentTokenizerTest.java
+###### /java/seedu/address/logic/parser/ArgumentTokenizerTest.java
 ``` java
     private static String getFinalImgPathName = "getFinalImgPath";
 
@@ -176,7 +124,7 @@ public class PersonDescriptionHandle extends NodeHandle<Node> {
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof NewImageEvent);
     }
 ```
-###### \java\seedu\address\logic\parser\ArgumentTokenizerTest.java
+###### /java/seedu/address/logic/parser/ArgumentTokenizerTest.java
 ``` java
     @Test
     public void tokenize_multipleArgumentsJoined() {
@@ -198,7 +146,7 @@ public class PersonDescriptionHandle extends NodeHandle<Node> {
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof FileChooserEvent);
     }
 ```
-###### \java\seedu\address\model\person\DisplayPicTest.java
+###### /java/seedu/address/model/person/DisplayPicTest.java
 ``` java
 public class DisplayPicTest {
 
@@ -223,7 +171,7 @@ public class DisplayPicTest {
     }
 }
 ```
-###### \java\seedu\address\storage\ImageFileStorageTest.java
+###### /java/seedu/address/storage/ImageFileStorageTest.java
 ``` java
 public class ImageFileStorageTest {
     private static final String TEST_DATA_FOLDER = "./src/test/data/ImageFileStorageTest/";
@@ -273,13 +221,13 @@ public class ImageFileStorageTest {
     }
 }
 ```
-###### \java\seedu\address\storage\StorageManagerTest.java
+###### /java/seedu/address/storage/StorageManagerTest.java
 ``` java
     private static final String INVALID_IMG_PATH = "/invalid/test.png";
     private static final String IMG_NAME = "testImage";
     private static final NewImageEvent EVENT_STUB = new NewImageEvent(IMG_NAME, INVALID_IMG_PATH);
 ```
-###### \java\seedu\address\storage\StorageManagerTest.java
+###### /java/seedu/address/storage/StorageManagerTest.java
 ``` java
     @Test
     public void handleNewImageEvent_exceptionThrown_eventRaised() {
@@ -314,7 +262,7 @@ public class ImageFileStorageTest {
         assertTrue(equal);
     }
 ```
-###### \java\seedu\address\testutil\EditPersonDescriptorBuilder.java
+###### /java/seedu/address/testutil/EditPersonDescriptorBuilder.java
 ``` java
     /**
      * Sets the {@code DisplayPic} of the {@code EditPersonDescriptor} that we are building.
@@ -328,7 +276,7 @@ public class ImageFileStorageTest {
         return this;
     }
 ```
-###### \java\seedu\address\testutil\PersonBuilder.java
+###### /java/seedu/address/testutil/PersonBuilder.java
 ``` java
     /**
      * Sets the {@code Address} of the {@code Person} that we are building.
@@ -342,7 +290,7 @@ public class ImageFileStorageTest {
         return this;
     }
 ```
-###### \java\seedu\address\ui\PersonCardTest.java
+###### /java/seedu/address/ui/PersonCardTest.java
 ``` java
         // changes made to Person reflects on card
         guiRobot.interact(() -> {
@@ -353,7 +301,7 @@ public class ImageFileStorageTest {
         });
         assertCardDisplay(personCard, personWithTags, 2);
 ```
-###### \java\seedu\address\ui\testutil\GuiTestAssert.java
+###### /java/seedu/address/ui/testutil/GuiTestAssert.java
 ``` java
     /**
      * Asserts that {@code actualCard} displays the same values as {@code expectedCard}.
@@ -408,7 +356,7 @@ public class ImageFileStorageTest {
         assertEquals(expectedPerson.getTwitterName().value, actualDescription.getTwitter());
     }
 ```
-###### \java\seedu\address\ui\testutil\GuiTestAssert.java
+###### /java/seedu/address/ui/testutil/GuiTestAssert.java
 ``` java
     /**
      * Asserts that the image {@code expected} equals to {@code actual}
@@ -426,7 +374,7 @@ public class ImageFileStorageTest {
     }
 }
 ```
-###### \java\systemtests\AddressBookSystemTest.java
+###### /java/systemtests/AddressBookSystemTest.java
 ``` java
     private static final List<String> COMMAND_BOX_DEFAULT_STYLE = Arrays.asList("text-input", "text-field",
             "jfx-text-field");

@@ -79,11 +79,12 @@ Opens up the User Guide. +
 
 Format: `help`
 
+// tag::displayPic[]
 === Adding a person: `add`
 
 Adds a person to the application. +
 
-Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER] [ig/INSTAGRAM] [dp/DISPLAY_PIC_CHOICE] [t/TAG]...`
+Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER] [ig/INSTAGRAM] [dp/] [t/TAG]...`
 
 ****
 * Only the name and phone number field must be provided.
@@ -99,15 +100,23 @@ A person can have any number of tags (including 0).
 If you do not have a display picture to add, leave out the dp/ prefix.
 =======
 
-Examples:
+Example:
 
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 b/19/09/1999 tw/john_doe dp/Y` +
-Adds a person called `John Doe` with a phone number of `98765432`, an email address of `johnd@example.com`, an address of
-`John street, block 123, #01-01`, a Twitter username of `john_doe`. In addition, as the `DISPLAY_PIC_CHOICE` is set to `Y`,
-a file picker will open to allow you to choose a custom display picture for `John Doe`.
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 b/25/06/1994 ig/crowe_94 t/criminal` +
-Adds a person called `Betsy Crowe` with tags of `friend` and `criminal`, an email address of `betsycrowe@example.com`, an address of `Newgate Prison`,
-a phone number of `1234567`, a birthday of `5/06/1994` and an Instagram username of `crowe_94`.
+=======
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 b/19/09/1999 tw/john_doe dp/` +
+1. Pops up the file chooser for user to choose the image they want to set as display picture.
++
+image::AddDP1.png[width"800]
+2. Adds a person called *John Doe* with a phone number of *98765432*, an email address of *johnd@example.com*, an address of *John street,
+block 123, #01-01*, a Twitter username of *john_doe*.
+John Doe is also added with the image chosen as his display picture.
++
+image::AddDP2.png[width"800]
+3. The image is copied into the designated display picture storage directory with a unique name.
++
+image::AddDP3.png[width"800]
+=======
+// end::displayPic[]
 
 === Listing all persons : `list`
 
@@ -115,12 +124,13 @@ Shows a list of all persons in the application. +
 
 Format: `list`
 
+// tag::displayPic[]
 === Editing a person : `edit`
 
 Edits an existing person in the application. +
 
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER]
-[ig/INSTAGRAM] [dp/DISPLAY_PIC_CHOICE] [t/TAG]...`
+[ig/INSTAGRAM] [dp/] [t/TAG]...`
 
 ****
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
@@ -137,6 +147,19 @@ Examples:
 Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+* `edit 3 dp/` +
+======
+1. Pops up the file chooser for user toc hoose the image they want to set as display picture. +
++
+image::EditDP1.png[width="800"]
+2. Display picture of the 3rd person is changed to the chosen image. +
++
+image::EditDP2.png[width="800"]
+3. The image is copied into the designated display picture storage directory with a unique name. +
++
+image::EditDP3.png[width="800"]
+======
+// end::displayPic[]
 
 === Deleting a person : `delete`
 
@@ -304,7 +327,6 @@ unable to be imported.
 +
 image::HitMeUpImportStep4.png[width="790"]
 _Figure 3.11.4 Import Result Display_
-
 //end::import[]
 
 // tag::export[]
