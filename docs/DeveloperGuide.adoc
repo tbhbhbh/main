@@ -468,7 +468,7 @@ Lastly, users' desktop will launch a default mail application where they can com
 Moreover, users can also edit their recipients field to include carbon copy or blind carbon copy before sending out
 the email to their recipients.
 
-==== Design consideration
+==== Design Considerations
 **Aspect:** Types of application to send emails +
 **Alternative 1 (current choice):** Use user's default mail application in their desktop +
 **Pros:** The default mail application tends to load faster than the Javafx `WebView` used by the `BrowserPanel` in the `UI`. +
@@ -573,7 +573,7 @@ A progress bar for importing is also shown to the user, implemented using the `p
 
 The following sequence diagram shows how the import operation works:
 
-image::ImportSequenceDiagram.png[width="800"]
+image::ImportSequenceDiagram.png[width="1000"]
 
 The import mechanism is built upon an `UndoableCommand`, which means that any changes made by the command can be easily reversed by calling the
 `undo` command.
@@ -833,7 +833,7 @@ return `FindCommand`. In `FindCommand`, the method `PersonContainsKeywordsPredic
 against the existing list of names and tags and return all persons with the matching keyword `Alex` in their names and
 tag `friends`. Finally, `execute()` will run `updateFilteredPersonList` to show the list of persons returned.
 
-==== Design consideration
+==== Design Considerations
 *Aspect:* How to input arguments for the command +
 *Alternative 1 (current choice):* flexible input, no prefixes needed +
 *Pros:* easy and simple to use for the users +
@@ -861,7 +861,7 @@ of social media platform in the 2nd argument of the user input. In this case, th
 posting a new `SocialRequestEvent` to the UI. In the UI, the `MainWindow` calls an instance of the `BrowserPanel` to
 load the Instagram page of the person at index 1.
 
-==== Design consideration
+==== Design Considerations
 *Aspect:* What the user input for social media field should be +
 *Alternative 1 (current choice):* Use the same prefixes when adding person +
 *Pros:* Feels intuitive since you add people with the prefixes `ig` and `tw` and therefore should be able to invoke
@@ -873,6 +873,65 @@ this command the same way +
 command the full name of the chosen social media is required. Moreover, it might be more user-friendly to allow them to
 type less into the CLI +
 // end::social[]
+
+// tag::location[]
+=== Location
+
+The location command is facilitated by the `BrowserPanel` class. It allows HitMeUp to load any URL through the use of the general `ShowUrlEvent` class
+that sends an event to the `MainWindow` class, which subsequently invokes the `handleShowUrlEvent` that allows the URL to be displayed in the `BrowserPanel`. The URL
+in this context would be a Google Maps URL which contains the address of the contact at the index selected by the user.
+
+The input from the user will first be parsed by the `LocationCommandParser` which will determine whether or not the command conforms to the expected format.
+
+The following code snippet shows the `execute` method of the `LocationCommand` class:
+
+* Code listing:
++
+[source, java]
+    public CommandResult execute() throws CommandException {
+            List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+            // Check if index is valid
+            if (index.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            }
+            // Check if Google is reachable
+            if (!GoogleUtil.isReachable()) {
+                throw new CommandException(MESSAGE_FAILURE);
+            }
+            ReadOnlyPerson current = lastShownList.get(index.getZeroBased());
+            // Check if Person has an address
+            if (current.getAddress().toString().length() == 0) {
+                throw new CommandException(String.format(MESSAGE_NO_ADDRESS, current.getName().toString()));
+            }
+            String finalUrl = GOOGLE_MAPS_URL_PREFIX + parseAddressForUrl(current.getAddress());
+            EventsCenter.getInstance().post(new ShowUrlEvent(finalUrl));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, current.getName().toString()));
+        }
+
+After the input is successfully parsed, the `userInput` is passed to the `LocationCommand` class where 3 important checks are performed. Firstly, the index that is input by the user is checked to ensure
+that it does not exceed the length of the list that is currently shown to the user. Next, a check is performed to see if the Google website is up, otherwise the Google Maps URL
+would fail to load. Lastly, a check on the person at the user's specified index is done to see if he or she has an address. Once these checks are done, the
+`parseAddressForUrl` method of the `LocationCommand` class takes in the address of the person and appends it to a `GOOGLE_MAPS_URL_PREFIX` to build the final URL. This method is
+included in the `LocationCommand` class to allow for higher cohesion as this is the only class that would need to parse an address into a Google Maps URL.
+
+
+
+The following activity diagram summarizes the flow of the location command:
+
+image::LocationActivityDiagram.png[width="800]
+
+==== Design Considerations
+*Aspect:* How the Google Maps URL is passed to the BrowserPanel +
+*Alternative 1 (current choice):* Use a `showUrlEvent` to send the URL to the `MainWindow` subscriber +
+*Pros:* Allows `LocationCommand` to be more cohesive as it does not need to have an extra method to deal with the logic +
+for displaying a URL in the `BrowserPanel` +
+*Cons:* `LocationCommand` class would be more coupled with the `EventsCenter` class as it relies on the event for its core functionality +
+*Alternative 2:* Create a public method in `MainWindow` for showing a URL in the `BrowserPanel`  +
+*Pros:* Easy to implement, only 1 method in `MainWindow` required and it is called from the `execute` method of `LocationCommand` +
+*Cons:* Exposes functionality of `MainWindow` unnecessarily to other classes
+// end::location[]
+
+
 
 === Logging
 
