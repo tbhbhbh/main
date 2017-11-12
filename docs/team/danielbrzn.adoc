@@ -97,7 +97,14 @@ which cloud service to import their contacts from, and would thus allow HitMeUp 
 ---
 
 The iCloud import would be facilitated by the `CloudKit JS` framework provided by Apple in their Developer Program. However, as there are no native Java APIs
-provided by Apple for usage, the import would have to be facilitated using HTTP requests in contrast to the implementation of the Google import.
+provided by Apple for usage, the import would have to be facilitated using HTTP requests in contrast to the implementation of the Google import. The http://unirest.io/java.html[Unirest] HTTP Request libraries would be used to achieve this.
+
+
+A HTTP request would be sent to Apple's servers with the user's credentials for authentication. Once authenticated, another request containing parameters to access the contacts
+of the authenticated user would be sent, and the returned data would be parsed into a `Person` and added to the application if the fields are valid.
+
+The user's credentials will never be stored in the application.
+
 
 ---
 
