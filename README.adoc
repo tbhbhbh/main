@@ -20,44 +20,19 @@ in the application itself without having to switch to a browser or check their p
 == Features
 
 ====
-*Since v1.5rc*
-
-* View your contacts' addresses quickly in Google Maps
-* Search by first letter of name
-* Search by birthday month
-* Automatically moves your contact's display pictures
-* Easily access your groups by clicking on the tags in the `Groups` panel
-
-====
-
-
-====
 *Key Features*
 
-* Add a person with just their name and number
+* Add a contact using only their name and number, or with any of the following supported fields:
+Email, Address, Birthday, Twitter, Instagram, Display Picture, Tag
+* Import your existing contacts from Google Contacts
 * Export individual contacts to easily share with others
-* Search by groups and names
-* A more compact view for the list of contacts, showing only the name/display picture/phone number
-* Never forget a birthday again! Add birthdays to every contact
-* Email contacts quickly without copying and pasting
-* Import your contacts from Google Contacts
-* Automatic list sorting
-* Add pictures to every contact
-* Add your contacts' Instagram/Twitter accounts
-* View your groups at a glance with new groups tab
-* New Material Design inspired UI, and an improved PersonCard
-* Directly access your contacts' Instagram/Twitter accounts with the new *social* command
-
+* Search by a contact's name, starting alphabet, birthday month or groups
+* Email contacts quickly without having to copy their email addresses
+* View your groups at a glance with the groups tab
+* Keep up with your contacts through the social command
+* View your contacts' addresses quickly in Google Maps
 ====
 
-====
-*Coming in v2.0*
-
-* Multiple themes to suit your needs
-* Secure your application with a PIN
-* Import your contacts from Apple iCloud
-
-====
 == Site Map
 
 * <<UserGuide#, User Guide>>
@@ -71,5 +46,7 @@ in the application itself without having to switch to a browser or check their p
 _Marco Jakob_.
 
 * https://developers.google.com/people/[Google People API]
+
+* http://www.jfoenix.com/index.html#start[JFoenix JavaFX Material Design Library]
 
 == Licence : link:LICENSE[MIT]
