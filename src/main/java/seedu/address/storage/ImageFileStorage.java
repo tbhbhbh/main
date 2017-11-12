@@ -54,6 +54,5 @@ public class ImageFileStorage {
         requireNonNull(dirPath);
         FileUtil.createDirs(new File(dirPath));
     }
-
-
 }
+
