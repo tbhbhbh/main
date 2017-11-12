@@ -324,7 +324,7 @@ Format: `export all` or `export INDEX [INDEX]...`
 * The input 'all' is case-sensitive.
 * The index refers to the index number shown in the most recent listing.
 * The index must be a positive integer 1, 2, 3, ...
-* The data folder directory where the vCard file ("contacts.vcf") is located will be displayed after a successful export.
+* The data folder directory where the vCard file ("contacts.vcf") is located will be displayed after a successful export as shown below.
 * If you would like to move this vCard file to another folder, please close HitMeUp first.
 ****
 
@@ -351,7 +351,7 @@ Format: `email INDEX [INDEX]...`
 * The index refers to the index number shown in the most recent listing
 * The index *must be a positive integer* 1, 2, 3, ...
 * The person specified must have a valid email address.
-* Opens the default mail application in your desktop with the email addresses of the specified persons
+* Opens the default mail application in your desktop as shown below with the email addresses of the specified persons
 ****
 
 image:EmailWindow.png[width="790"]
