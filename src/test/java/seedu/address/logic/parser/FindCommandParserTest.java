@@ -18,10 +18,13 @@ public class FindCommandParserTest {
     private FindCommandParser parser = new FindCommandParser();
 
     @Test
-    public void parse_emptyArg_throwsParseException() {
+    public void parse_invalidArg_throwsParseException() {
         assertParseFailure(parser, "     ",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "102",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.BIRTHDAY_USAGE));
     }
+}
 
     @Test
     public void parse_validArgs_returnsSearchCommand() {

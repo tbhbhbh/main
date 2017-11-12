@@ -16,8 +16,11 @@ public class FindCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": finds all persons whose information contain "
             + "any of the specified keywords and displays them as a list with index numbers.\n"
-            + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
-            + "(HitMeUp only supports finding 1 keyword for name. Finding multiple tags is supported)\n"
+            + "Parameters: names (eg. Tan, Alex, Abdullah), tags (eg. colleagues, friends), initials (eg. A, b, x), "
+            + "birthday month (eg. 05, 12)"
+            + "Format: KEYWORD [MORE_KEYWORDS]...\n"
+            + "(The format for entering this command differs depending on what you are searching for. Go into our "
+            + "help window for more information)"
             + "Example: " + COMMAND_WORD + " alice colleagues";
 
     public static final String BIRTHDAY_USAGE = COMMAND_WORD + ": Search for persons whose birthday month is "

@@ -32,8 +32,9 @@ public class FindCommandParser implements Parser<FindCommand> {
         String[] nameKeywords = trimmedArgs.split("\\s+");
         // Single keyword as argument and check that it contains an non-zero integer
         if (nameKeywords.length == 1) {
+            System.out.println(Character.isLetter(nameKeywords[0].charAt(0)));
             if (Character.isLetter(nameKeywords[0].charAt(0))) {
-                return new FindCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
+                return new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
             } else if (StringUtil.isNonZeroUnsignedInteger(nameKeywords[0]) &&
                     nameKeywords[0].matches(BIRTHDAY_MONTH_REGEX)) {
                 return new FindCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
