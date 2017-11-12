@@ -24,7 +24,7 @@ public class FindCommandParserTest {
         assertParseFailure(parser, "102",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.BIRTHDAY_USAGE));
     }
-}
+
 
     @Test
     public void parse_validArgs_returnsSearchCommand() {
