@@ -1,5 +1,5 @@
 # danielbrzn
-###### \java\seedu\address\commons\events\model\UserPrefsChangedEvent.java
+###### /java/seedu/address/commons/events/model/UserPrefsChangedEvent.java
 ``` java
 package seedu.address.commons.events.model;
 
@@ -22,7 +22,7 @@ public class UserPrefsChangedEvent extends BaseEvent {
     }
 }
 ```
-###### \java\seedu\address\commons\events\ui\CloseProgressEvent.java
+###### /java/seedu/address/commons/events/ui/CloseProgressEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -40,6 +40,7 @@ public class CloseProgressEvent extends BaseEvent {
 
 }
 ```
+<<<<<<< HEAD
 ###### \java\seedu\address\commons\events\ui\ShowLocationEvent.java
 ``` java
 package seedu.address.commons.events.ui;
@@ -69,6 +70,9 @@ public class ShowLocationEvent extends BaseEvent {
 }
 ```
 ###### \java\seedu\address\commons\events\ui\ShowProgressEvent.java
+=======
+###### /java/seedu/address/commons/events/ui/ShowProgressEvent.java
+>>>>>>> upstream/master
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -97,7 +101,7 @@ public class ShowProgressEvent extends BaseEvent {
 
 }
 ```
-###### \java\seedu\address\commons\events\ui\ShowUrlEvent.java
+###### /java/seedu/address/commons/events/ui/ShowUrlEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -125,7 +129,7 @@ public class ShowUrlEvent extends BaseEvent {
 
 }
 ```
-###### \java\seedu\address\commons\util\AuthorizationUtil.java
+###### /java/seedu/address/commons/util/AuthorizationUtil.java
 ``` java
 package seedu.address.commons.util;
 
@@ -191,7 +195,7 @@ public class AuthorizationUtil extends AuthorizationCodeInstalledApp {
     }
 }
 ```
-###### \java\seedu\address\commons\util\GoogleUtil.java
+###### /java/seedu/address/commons/util/GoogleUtil.java
 ``` java
 package seedu.address.commons.util;
 
@@ -239,6 +243,8 @@ public class GoogleUtil {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final int HTTP_PORT = 80;
     private static final String GOOGLE_ADDRESS = "www.google.com";
+    private static final String DIALING_PREFIX = "+";
+    private static final String APPLICATION_NAME = "HitMeUp";
 
     /**
      * Returns true if Google is reachable
@@ -278,7 +284,8 @@ public class GoogleUtil {
      */
     public static List<Person> retrieveContacts(Credential credential, HttpTransport httpTransport) {
         PeopleService peopleService =
-                new PeopleService.Builder(httpTransport, JSON_FACTORY, credential).build();
+                new PeopleService.Builder(httpTransport, JSON_FACTORY, credential)
+                        .setApplicationName(APPLICATION_NAME).build();
 
         ListConnectionsResponse response = null;
         try {
@@ -321,9 +328,17 @@ public class GoogleUtil {
         }
 
         if (numbers != null && numbers.size() > 0) {
-            phone = numbers.get(0).getCanonicalForm().replace("+", "");
+            // Google phone numbers are stored in either canonical form or value
+            try {
+                phone = numbers.get(0).getCanonicalForm().replace(DIALING_PREFIX, "");
+            } catch (NullPointerException npe) {
+                phone = numbers.get(0).getValue().replace(DIALING_PREFIX, "");
+                if (!Phone.isValidPhone(phone)) {
+                    return null;
+                }
+            }
         } else {
-            phone = "";
+            return null;
         }
         if (emailAddresses != null && emailAddresses.size() > 0) {
             email = emailAddresses.get(0).getValue();
@@ -364,7 +379,7 @@ public class GoogleUtil {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\AliasCommand.java
+###### /java/seedu/address/logic/commands/AliasCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -429,7 +444,7 @@ public class AliasCommand extends UndoableCommand {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\EditCommand.java
+###### /java/seedu/address/logic/commands/EditCommand.java
 ``` java
         public void setTwitterName(UserName twitterName) {
             this.twitterName = twitterName;
@@ -448,13 +463,14 @@ public class AliasCommand extends UndoableCommand {
         }
 
 ```
-###### \java\seedu\address\logic\commands\ImportCommand.java
+###### /java/seedu/address/logic/commands/ImportCommand.java
 ``` java
 package seedu.address.logic.commands;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -463,6 +479,7 @@ import com.google.api.services.people.v1.model.Person;
 
 import javafx.concurrent.Task;
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
@@ -498,6 +515,7 @@ public class ImportCommand extends UndoableCommand {
     private static ArrayList<String> invalidPeople;
     private static Credential credential;
     private static HttpTransport httpTransport;
+    private static final Logger logger = LogsCenter.getLogger(ImportCommand.class);
     private final String service;
 
     private int peopleAdded;
@@ -599,13 +617,14 @@ public class ImportCommand extends UndoableCommand {
 
         task.setOnFailed(t -> {
             EventsCenter.getInstance().post(new CloseProgressEvent());
+            logger.warning(task.getException().toString());
             EventsCenter.getInstance().post(new NewResultAvailableEvent(String.format(MESSAGE_FAILURE), true));
         });
 
         EventsCenter.getInstance().post(new ShowProgressEvent(task.progressProperty()));
         Thread importThread = new Thread(task);
+        importThread.start();
         try {
-            importThread.start();
             importThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -639,7 +658,7 @@ public class ImportCommand extends UndoableCommand {
 
 }
 ```
-###### \java\seedu\address\logic\commands\LocationCommand.java
+###### /java/seedu/address/logic/commands/LocationCommand.java
 ``` java
 
 package seedu.address.logic.commands;
@@ -691,7 +710,7 @@ public class LocationCommand extends Command {
 
         // Check if index is valid
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + index.getOneBased());
         }
 
         // Check if Google is reachable
@@ -742,7 +761,7 @@ public class LocationCommand extends Command {
 }
 
 ```
-###### \java\seedu\address\logic\parser\AddCommandParser.java
+###### /java/seedu/address/logic/parser/AddCommandParser.java
 ``` java
     /**
      * Fills the prefixes that have not been specified by the user with an empty string in the given
@@ -770,7 +789,7 @@ public class LocationCommand extends Command {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\AddressBookParser.java
+###### /java/seedu/address/logic/parser/AddressBookParser.java
 ``` java
     /**
      * Checks if the input command is valid.
@@ -808,7 +827,7 @@ public class LocationCommand extends Command {
 
 }
 ```
-###### \java\seedu\address\logic\parser\AliasCommandParser.java
+###### /java/seedu/address/logic/parser/AliasCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -845,7 +864,7 @@ public class AliasCommandParser implements Parser<AliasCommand> {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\ImportCommandParser.java
+###### /java/seedu/address/logic/parser/ImportCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -877,7 +896,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\LocationCommandParser.java
+###### /java/seedu/address/logic/parser/LocationCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -909,7 +928,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\ParserUtil.java
+###### /java/seedu/address/logic/parser/ParserUtil.java
 ``` java
     /**
      * Parses a {@code Optional<String> twitterUserName} into an {@code Optional<UserName>} if {@code twitterUserName}
@@ -933,31 +952,31 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### \java\seedu\address\model\Model.java
+###### /java/seedu/address/model/Model.java
 ``` java
     /** Clears existing aliases from UserPrefs and replaces with the provided new data */
     void resetAlias(HashMap<String, String> prevAliasMap);
 
 ```
-###### \java\seedu\address\model\Model.java
+###### /java/seedu/address/model/Model.java
 ``` java
     /** Returns the User Preferences */
     UserPrefs getUserPrefs();
 
 ```
-###### \java\seedu\address\model\Model.java
+###### /java/seedu/address/model/Model.java
 ``` java
     /** Adds the given alias */
     void addAlias(String alias, String command);
 
 ```
-###### \java\seedu\address\model\Model.java
+###### /java/seedu/address/model/Model.java
 ``` java
     /** Gets the command mapping for an alias */
     String getAlias(String alias);
 
 ```
-###### \java\seedu\address\model\ModelManager.java
+###### /java/seedu/address/model/ModelManager.java
 ``` java
     @Override
     public void resetAlias(HashMap<String, String> prevAliasMap) {
@@ -965,7 +984,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
         indicateUserPrefsChanged();
     }
 ```
-###### \java\seedu\address\model\ModelManager.java
+###### /java/seedu/address/model/ModelManager.java
 ``` java
     @Override
     public UserPrefs getUserPrefs() {
@@ -973,7 +992,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### \java\seedu\address\model\ModelManager.java
+###### /java/seedu/address/model/ModelManager.java
 ``` java
     @Override
     public void addAlias(String alias, String command) {
@@ -993,7 +1012,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### \java\seedu\address\model\person\Person.java
+###### /java/seedu/address/model/person/Person.java
 ``` java
     @Override
     public ObjectProperty<UserName> twitterNameProperty() {
@@ -1024,7 +1043,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### \java\seedu\address\model\person\UserName.java
+###### /java/seedu/address/model/person/UserName.java
 ``` java
 package seedu.address.model.person;
 
@@ -1090,14 +1109,14 @@ public class UserName {
 
 }
 ```
-###### \java\seedu\address\model\UserPrefs.java
+###### /java/seedu/address/model/UserPrefs.java
 ``` java
     public void resetAlias(HashMap<String, String> prevAliasMap) {
         this.aliasMap = prevAliasMap;
     }
 
 ```
-###### \java\seedu\address\model\UserPrefs.java
+###### /java/seedu/address/model/UserPrefs.java
 ``` java
     public HashMap<String, String> getAliasMap() {
         return aliasMap;
@@ -1112,7 +1131,7 @@ public class UserName {
     }
 
 ```
-###### \java\seedu\address\storage\Storage.java
+###### /java/seedu/address/storage/Storage.java
 ``` java
     /**
      * Saves the current version of the User Preferences to the hard disk.
@@ -1121,7 +1140,7 @@ public class UserName {
      */
     void handleUserPrefsChangedEvent(UserPrefsChangedEvent upce);
 ```
-###### \java\seedu\address\storage\StorageManager.java
+###### /java/seedu/address/storage/StorageManager.java
 ``` java
     @Override
     @Subscribe
@@ -1135,7 +1154,7 @@ public class UserName {
     }
 
 ```
-###### \java\seedu\address\ui\BrowserWindow.java
+###### /java/seedu/address/ui/BrowserWindow.java
 ``` java
 package seedu.address.ui;
 
@@ -1199,7 +1218,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 }
 ```
-###### \java\seedu\address\ui\MainWindow.java
+###### /java/seedu/address/ui/MainWindow.java
 ``` java
 
     /**
@@ -1239,7 +1258,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 
 ```
-###### \java\seedu\address\ui\MainWindow.java
+###### /java/seedu/address/ui/MainWindow.java
 ``` java
 
     @Subscribe
@@ -1275,7 +1294,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 
 ```
-###### \java\seedu\address\ui\PersonListPanel.java
+###### /java/seedu/address/ui/PersonListPanel.java
 ``` java
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
@@ -1300,7 +1319,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 }
 ```
-###### \java\seedu\address\ui\ProgressWindow.java
+###### /java/seedu/address/ui/ProgressWindow.java
 ``` java
 package seedu.address.ui;
 
@@ -1383,7 +1402,7 @@ public class ProgressWindow extends UiPart<Region> {
 
 }
 ```
-###### \resources\view\ProgressWindow.fxml
+###### /resources/view/ProgressWindow.fxml
 ``` fxml
 
 <?import javafx.scene.control.ProgressBar?>

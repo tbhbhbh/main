@@ -10,7 +10,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
-//@@author JunQuann
 /**
  * Provides a handle to a person card in the person list panel.
  */
@@ -55,10 +54,12 @@ public class PersonCardHandle extends NodeHandle<Node> {
         return phoneLabel.getText();
     }
 
+    //@@author JunQuann
     public Image getDisplayPic() {
         ImagePattern displayPicImage = (ImagePattern) displayPicPanel.getFill();
         return displayPicImage.getImage();
     }
+    //@@author
 
     public List<String> getTags() {
         return tagLabels

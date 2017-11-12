@@ -221,7 +221,7 @@ public class MainWindow extends UiPart<Region> {
     }
 
     //@@author JunQuann
-    public String getDisplayPicPath() {
+    private String getDisplayPicPath() {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files", "*.jpg", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);
@@ -245,7 +245,7 @@ public class MainWindow extends UiPart<Region> {
      * Opens the help window.
      */
     @FXML
-    public void handleHelp() {
+    private void handleHelp() {
         HelpWindow helpWindow = new HelpWindow();
         helpWindow.show();
     }
@@ -256,7 +256,7 @@ public class MainWindow extends UiPart<Region> {
      * @param allEmailAddresses is a string of all valid email addresses user request to email to.
      * @throws IOException when java Desktop class is not supported in this platform.
      */
-    public void handleEmail(String allEmailAddresses) {
+    private void handleEmail(String allEmailAddresses) {
 
         URI mailTo = null;
         try {
@@ -283,7 +283,7 @@ public class MainWindow extends UiPart<Region> {
      * or Instagram).
      * @param userName is a UserName of the person
      */
-    public void handleSocial(UserName userName, String socialMediaLink) {
+    private void handleSocial(UserName userName, String socialMediaLink) {
         browserPanel.loadPage(socialMediaLink + userName);
     }
 
@@ -294,7 +294,7 @@ public class MainWindow extends UiPart<Region> {
      * Opens the provided URL in the built-in browser
      * @param link is a URL to be opened in the BrowserPanel
      */
-    public void handleUrl(String link) {
+    private void handleUrl(String link) {
         browserPanel.loadPage(link);
     }
 
@@ -302,7 +302,7 @@ public class MainWindow extends UiPart<Region> {
      * Opens the progress window.
      */
     @FXML
-    public void handleProgress(ReadOnlyDoubleProperty progress) {
+    private void handleProgress(ReadOnlyDoubleProperty progress) {
         Platform.runLater(() -> {
             pWindow = new ProgressWindow(progress);
             pWindow.show();
@@ -314,7 +314,7 @@ public class MainWindow extends UiPart<Region> {
      * Closes the progress window.
      */
     @FXML
-    public void handleCloseProgress() {
+    private void handleCloseProgress() {
         pWindow.getDialogStage().close();
     }
 
@@ -328,7 +328,7 @@ public class MainWindow extends UiPart<Region> {
      * The file directory is is guaranteed to exist before showing.
      * @throws IOException when java Desktop class is not supported in this platform.
      */
-    public void handleExport() {
+    private void handleExport() {
         File file = new File(EXPORT_FILE_PATH);
         try {
             if (Desktop.isDesktopSupported()) {
