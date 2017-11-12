@@ -24,37 +24,32 @@ Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
 +
 .  Download the latest `HitMeUp.jar` link:{repoURL}/releases[here].
-.  Copy the file to the folder you want to use as the home folder for your Address Book.
-.  Double-click the file to start the app. The user interfac shown below should appear in a few seconds.
+
+.  Copy the file to the folder you want to use as the home folder for HitMeUp.
+
+.  Double-click the file to start the app. The user interface shown below should appear in a few seconds.
 +
 image::Ui.png[width="790"]
-+
+_Figure 1. HitMeUp User Interface_
+
 .  Type a command (we recommend trying the `import` command first) into the command box and press kbd:[Enter] to execute it. +
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
-.  Try some of these example commands to get started:
 
+.  Try some of these example commands to get started:
 * *`list`* : lists all contacts
-* **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 b/19/09/1999` : adds a contact named `John Doe` to the Address Book.
-* **`delete`**`3` : deletes the 3rd contact shown in the current list
+* **`add`**`n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 b/19/09/1999` : adds a contact named `John Doe` to the list of contacts
+* **`delete`**`3` : deletes the 3rd contact shown in the current list of contacts
 * *`exit`* : exits the app
 
+== Enhancement
 
-== Features
-
-====
-*Command Format*
-
-* Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
-* Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
-* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
-* Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
-====
+This section shows existing features implemented in HitMeUp.
 
 ====
-*Key Features*
+*Existing features*
 
 * Add a contact using only their name and number, or with any of the following supported fields:
-Email, Address, Birthday, Twitter, Instagram, Display Picture, Group
+Email, Address, Birthday, Twitter, Instagram, Display Picture, Tag
 * Import your existing contacts from Google Contacts
 * Export individual contacts to easily share with others
 * Search by a contact's name, starting alphabet, birthday month or groups
@@ -66,7 +61,19 @@ Email, Address, Birthday, Twitter, Instagram, Display Picture, Group
 ====
 
 
+== Features
 
+This section covers all the existing features that are implemented in HitMeUp. The command format is as follows:
+
+====
+*Command Format*
+
+* Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+* Items in square brackets are optional e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+* Items with `…`​ after them can be used multiple times including zero times e.g. `[t/TAG]...` can be used as `{nbsp}` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+
+====
 
 === Viewing help : `help`
 
@@ -79,6 +86,11 @@ Format: `help`
 Adds a person to the application. +
 
 Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER] [ig/INSTAGRAM] [dp/DISPLAY_PIC_CHOICE] [t/TAG]...`
+
+****
+* Only the name and phone number field must be provided.
+* Duplicated person, where all the fields are exactly the same, cannot be added.
+****
 
 =======
 [TIP]
@@ -114,7 +126,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TW
 
 ****
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
-* If the edited person's name is changed and it ends up affecting the alphabetical ordering, the list of people will be re-sorted to maintain the ordering.
+* If a change in person's name ends up affecting the alphabetical order, the list of contacts will be resorted.
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
@@ -170,29 +182,6 @@ Selects the 2nd person from the list of contacts listed.
 * `find Betsy` +
 `select 1` +
 Selects the 1st person in the results of the `find` command.
-
-// tag::email[]
-=== Sending an email to one or more persons: `email`
-Emails one or more persons identified by the index number used in the last person listing. +
-
-Format: `email INDEX [INDEX]...`
-
-****
-* Opens your default email application and composes a new email with the email addresses
-of persons at the specified indices.
-* The index refers to the index number shown in the most recent listing
-* The index *must be a positive integer* 1, 2, 3, ...
-****
-
-Examples:
-
-* `list` +
-`email 2 3` +
-Composes an email addressed to the 2nd person and 3rd person from the list of contacts listed.
-* `find Betsy` +
-`email 1` +
-Composes an email addressed to the 1st person in the results of the `find` command.
-// end::email[]
 
 === Listing entered commands : `history`
 
@@ -321,25 +310,62 @@ image::HitMeUpImportStep4.png[width="790"]
 // tag::export[]
 === Exporting contacts : `export`
 
-Allows you to export contacts from the application.
+Allows you to export contacts from HitMeUp into a vCard file.
 
 Format: `export all` or `export INDEX [INDEX]...`
 
 ****
-* Exports all information of all contacts or the contact at the specified INDEX into a vCard format file.
+* Exports all information of all contacts or the contact at the specified INDEX into a vCard file.
 * The input 'all' is case-sensitive.
 * The index refers to the index number shown in the most recent listing.
 * The index must be a positive integer 1, 2, 3, ...
+* The data folder directory where the vCard file ("contacts.vcf") is located will be displayed after a successful export as shown below.
+* If you would like to move this vCard file to another folder, please close HitMeUp first.
 ****
+
+image:ExportDirectory.png[width="790"]
+_Figure 3.12. Data folder directory containing vCard file_
 
 Examples:
 
 * `export all` +
-Exports all contacts into a vCard format file.
+Exports all contacts into a vCard file.
 * `list` +
 `export 1 2` +
-Exports the 1st and 2nd person from the list of contacts listed.
+Exports the 1st and 2nd persons from the list of contacts into a vCard file.
 // end::export[]
+
+// tag::email[]
+=== Sending an email to one or more persons: `email`
+
+Emails one or more persons identified by the index number used in the last person listing. +
+
+Format: `email INDEX [INDEX]...`
+
+****
+* The index refers to the index number shown in the most recent listing
+* The index *must be a positive integer* 1, 2, 3, ...
+* The person specified must have a valid email address.
+* Opens the default mail application in your desktop as shown below with the email addresses of the specified persons
+****
+
+image:EmailWindow.png[width="790"]
+_Figure 3.13. Default mail application in Windows 10_
+
+=======
+[TIP]
+You can set your own default mail application. Please refer to instructions in the link:#mailsettings[FAQ].
+=======
+
+Examples:
+
+* `list` +
+`email 2 3` +
+Opens the default mail application to send an email to the 2nd and 3rd persons from the list of contacts.
+* `find Betsy` +
+`email 1` +
+Opens the default mail application to send an email to the 1st person in the results of the `find` command.
+// end::email[]
 
 // tag::tagdelete[]
 === Deleting a tag : `tagdelete`
@@ -455,6 +481,9 @@ Format: `location INDEX`
 * The person at the chosen index should have an address.
 ****
 
+Examples:
+* `location 1` +
+Opens up the Google Maps location of the person at index 1.
 
 === Clearing all entries : `clear`
 
@@ -478,16 +507,22 @@ There is no need to save manually.
 *Q*: How do I transfer my data to another Computer? +
 *A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
 
+[mailsettings]
+*Q*: How do I set my default mail application to use the email feature? +
+*A*: For Windows users, go to Settings > Apps & features > Default apps. For MAC users, click https://www.imore.com/how-set-mac-app-default-when-opening-file[here] for instructions.
+For other OS users, please refer to the guides online on how to set your default mail application.
+
 == Command Summary
 
-* *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` +
-e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 b/03/04/1990 t/friend t/colleague`
+* *Add* `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER] [ig/INSTAGRAM] [dp/DISPLAY_PIC_CHOICE] [t/TAG]...` +
+e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 b/03/04/1990 ig/jamesho t/friend t/colleague`
 * *Alias* : `alias ALIAS COMMAND` +
 e.g. `alias a add`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
-* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [t/TAG]...` +
+* *Edit* : `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTER]
+            [ig/INSTAGRAM] [dp/DISPLAY_PIC_CHOICE] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Email* : `email INDEX [INDEX]...` +
 e.g. `email 1 2`
@@ -501,7 +536,7 @@ e.g. `find James Jake`
 * *Import* : `import` +
 e.g. `import Google`
 * *List* : `list`
-* *Location* : `location` +
+* *Location* : `location INDEX` +
 e.g. `location 1`
 * *Redo* : `redo`
 * *Select* : `select INDEX` +
