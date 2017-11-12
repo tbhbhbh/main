@@ -394,15 +394,12 @@ public CommandResult execute() throws CommandException {
     StringBuilder persons = new StringBuilder();
     for (Index targetIndex : targetIndices) {
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
-                    + targetIndex.getOneBased());
+            // Throw exception for out of bounds index
         }
         ReadOnlyPerson personToEmail = lastShownList.get(targetIndex.getZeroBased());
-        // Throws exception if personToEmail has no email address
         if (personToEmail.getEmail().toString().isEmpty()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_TO_EMAIL + targetIndex.getOneBased());
+            // Throws exception if personToEmail has no email address
         }
-        // Appends all names and email addresses of the persons to email
         persons.append(", " + personToEmail.getName().toString());
         addresses.append(" " + personToEmail.getEmail().toString());
     }
@@ -412,9 +409,7 @@ public CommandResult execute() throws CommandException {
     String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
 
     // Post the EmailRequestEvent
-    EventsCenter.getInstance().post(new EmailRequestEvent(allEmailAddresses));
     // Returns CommandResult to display all person that user wants to email
-    return new CommandResult(String.format(MESSAGE_EMAIL_PERSON_SUCCESS, allPersons));
 }
 
 -------------
@@ -429,7 +424,7 @@ image::EmailRequestEventSequenceDiagram.png[width="800"]
 _Figure 5.2.1 Email Request Event Sequence Diagram_
 
 With reference to the diagram above, after `EmailCommand` has executed, it will post a new `EmailRequestEvent` and allows the UI to handle this event. In the UI, we are using java `Desktop` class to
-launch the default mail client registered on users' native desktop. A `URI` instance have to be created and pass to the mail method in the `Desktop` class.
+launch the default mail application registered on users' native desktop. A `URI` instance have to be created and pass to the mail method in the `Desktop` class.
 Refer to the code example below: +
 
 * Code listing:
@@ -450,9 +445,9 @@ public void handleEmail(String allEmailAddresses) {
     if (Desktop.isDesktopSupported()) {
         // Creates a Desktop instance if it is supported
         Desktop userDesktop = Desktop.getDesktop();
-        logger.info("Showing user's default mail client");
+        logger.info("Showing user's default mail application");
         try {
-            // Desktop mail method will launch user default mail client
+            // Desktop mail method will launch user default mail application
             userDesktop.mail(mailTo);
         } catch (IOException e) {
             e.printStackTrace();
@@ -462,18 +457,18 @@ public void handleEmail(String allEmailAddresses) {
 --------------
 
 [NOTE]
-To construct a valid `URI` instance, the String `EMAIL_URI_PREFIX` which specifies the scheme to launch user's default mail client must be
+To construct a valid `URI` instance, the String `EMAIL_URI_PREFIX` which specifies the scheme to launch user's default mail application must be
 followed by the String `allEmailAddresses`.
 
-Lastly, users' desktop will launch a default mail client where they can compose the subject and message body of the email.
+Lastly, users' desktop will launch a default mail application where they can compose the subject and message body of the email.
 Moreover, users can also edit their recipients field to include carbon copy or blind carbon copy before sending out
 the email to their recipients.
 
 ==== Design consideration
 **Aspect:** Types of application to send emails +
-**Alternative 1 (current choice):** Use user's default mail client in their desktop +
-**Pros:** The default mail client tends to load faster than the Javafx `WebView` used by the `BrowserPanel` in the `UI`. +
-**Cons:** Some users may have set their default mail client as other applications such as web browser where they have to make changes before it can be used. +
+**Alternative 1 (current choice):** Use user's default mail application in their desktop +
+**Pros:** The default mail application tends to load faster than the Javafx `WebView` used by the `BrowserPanel` in the `UI`. +
+**Cons:** Some users may have set their default mail application as other applications such as web browser where they have to make changes before it can be used. +
 **Alternative 2:** Use web browsers to access user email services online +
 **Pros:** It is able to support more users as there are more options for different users using different email services. +
 **Cons:** Since all users may not use the same email services such as link:#gmail[Gmail] or link:#outlook[Outlook],
@@ -483,7 +478,7 @@ it is difficult to authorize every email services as some services such as Gmail
 
 **Aspect:** Types of API used +
 **Alternative 1 (current choice):** Use `Desktop` API +
-**Pros:** It allows user to format their messages using text editor in default mail client. +
+**Pros:** It allows user to format their messages using text editor in default mail application. +
 **Cons:** It does not require authentication if user has already configured so it may be misused if application is used by someone else. +
 **Alternative 2:** Use `JavaMail` API +
 **Pros:** It is able to support most email services such as Outlook. +
@@ -617,9 +612,9 @@ authorization URL to be shown in the `BrowserPanel` +
 === Export mechanism
 
 The export mechanism is facilitated by java `File` and `FileOutputStream` class. It supports writing contact information into a link:#vCard[vCard] by creating a vCard format file.
-This file will be saved in the application data folder where user can import it into other platforms such as Google Contacts.
+This file will be created and can be imported it into other platforms such as Google Contacts.
 
-image::VcardClassDiagram.png[width="400"]
+image::vCardClassDiagram.png[width="400"]
 _Figure 5.4 Vcard Class Diagram_
 
 With reference to the class diagram of `Vcard` above, a `Vcard` object created is unique for every person that user wants to export. `Vcard` of each person contains a unique
@@ -645,27 +640,38 @@ public Vcard(ReadOnlyPerson person) {
 }
 --------------
 
-Next, a `File` will be created. In order to store all the `cardDetails` created earlier, `FileOutputStream` will call its
-method write to write and saved all information in the `File` named as "contacts.vcf". An example of how the write method is executed is shown below:
+Next, an instance of `File` will be created. In order for the `File` to store all the `cardDetails` created earlier, `writeToFile` method
+will use `FileOutputStream` to write and saved all `cardDetails` content into the `File` created.
+An example of the process of writing into the `File` is shown below:
 
-* FileOutputStream write method: +
+* Creating a `File` and writing to the `File`: +
 
 [source, java]
 ---------------
-// Creating an instance of FileOutputStream
-fos = new FileOutputStream(file);
-// For each Vcard created earlier
-    try {
-        // cardDetails are first encoded before FileOutputStream writes the encoded string into the file.
-        fos.write(vCard.getCardDetails().getBytes());
-    } catch (IOException e) {
-        // Print exception
-    }
+// Creates a new vCard file using a default file directory and file name.
+File file = new File(DEFAULT_FILE_DIR, DEFAULT_FILE_NAME);
+try {
+    createIfMissing(file);
+} catch (IOException e) {
+    // Print exception
+}
+
+// Creates the content to be written into the vCard file
+StringBuilder content = new StringBuilder();
+for (ReadOnlyPerson person : listToExport) {
+    Vcard personCard = new Vcard(person);
+    content.append(personCard.getCardDetails());
+}
+
+// Writes the content into the vCard file.
+try {
+    writeToFile(file, content.toString());
+} catch (IOException e) {
+    // Print exception
 }
 ---------------
 [NOTE]
-`cardDetails` are first encoded into a sequence of bytes and stored in a byte array.
-`FileOutputStream` calls the write method in order to write the encoded string into the file.
+The `DEFAULT_FILE_DIR` is the data folder found in the application directory and the `DEFAULT_FILE_NAME` is contacts.vcf.
 
 Finally, the directory that stores the "contacts.vcf" file will be shown to the user and the file can be imported to other platforms that support vCard files.
 

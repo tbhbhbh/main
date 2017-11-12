@@ -323,7 +323,7 @@ Format: `export all` or `export INDEX [INDEX]...`
 * If you would like to move this vCard file to another folder, please close HitMeUp first.
 ****
 
-image:ExportDirectory.png[width="790"]
+image::ExportDirectory.png[width="790"]
 _Figure 3.12. Data folder directory containing vCard file_
 
 Examples:
@@ -349,7 +349,7 @@ Format: `email INDEX [INDEX]...`
 * Opens the default mail application in your desktop as shown below with the email addresses of the specified persons
 ****
 
-image:EmailWindow.png[width="790"]
+image::EmailWindow.png[width="790"]
 _Figure 3.13. Default mail application in Windows 10_
 
 =======
