@@ -45,6 +45,7 @@ public class GoogleUtil {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final int HTTP_PORT = 80;
     private static final String GOOGLE_ADDRESS = "www.google.com";
+    private static final String DIALING_PREFIX = "+";
     private static final String APPLICATION_NAME = "HitMeUp";
 
     /**
@@ -131,9 +132,9 @@ public class GoogleUtil {
         if (numbers != null && numbers.size() > 0) {
             // Google phone numbers are stored in either canonical form or value
             try {
-                phone = numbers.get(0).getCanonicalForm().replace("+", "");
+                phone = numbers.get(0).getCanonicalForm().replace(DIALING_PREFIX, "");
             } catch (NullPointerException npe) {
-                phone = numbers.get(0).getValue().replace("+", "");
+                phone = numbers.get(0).getValue().replace(DIALING_PREFIX, "");
                 if (!Phone.isValidPhone(phone)) {
                     return null;
                 }
