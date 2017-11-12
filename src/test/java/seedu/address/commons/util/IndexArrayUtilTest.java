@@ -55,15 +55,15 @@ public class IndexArrayUtilTest {
     }
 
     @Test
-    public void array_isDistinct() {
+    public void arrayElements_areUnique() {
         Index[] distinctArray = {INDEX_FIRST_PERSON, INDEX_SECOND_PERSON, INDEX_THIRD_PERSON};
-        assertTrue(IndexArrayUtil.isDistinct(distinctArray));
+        assertTrue(IndexArrayUtil.indexAreUnique(distinctArray));
     }
 
     @Test
-    public void array_isNotDistinct() {
+    public void arrayElements_areNotUnique() {
         Index[] notDistinctArray = {INDEX_FIRST_PERSON, INDEX_FIRST_PERSON, INDEX_THIRD_PERSON};
-        assertFalse(IndexArrayUtil.isDistinct(notDistinctArray));
+        assertFalse(IndexArrayUtil.indexAreUnique(notDistinctArray));
     }
 
     private void assertExceptionThrown(Class<? extends Throwable> exceptionClass, Index[] arr1, Index[] arr2,

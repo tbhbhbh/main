@@ -251,22 +251,25 @@ public class MainWindow extends UiPart<Region> {
     }
     //@@author conantteo
     /**
-     * This method will invoke the user's default mail client and set the recipients field with all the
+     * This method will call the user's default mail application and set the recipients field with all the
      * email addresses specified by the user.
      * @param allEmailAddresses is a string of all valid email addresses user request to email to.
-     * @throws IOException when user's desktop cannot support Desktop operations.
+     * @throws IOException when java Desktop class is not supported in this platform.
      */
     public void handleEmail(String allEmailAddresses) {
+
         URI mailTo = null;
         try {
             mailTo = new URI(EMAIL_URI_PREFIX + allEmailAddresses);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+        // Checks if Desktop class is supported in the current platform
         if (Desktop.isDesktopSupported()) {
             Desktop userDesktop = Desktop.getDesktop();
-            logger.info("Showing user's default mail client");
             try {
+                logger.info("Showing user's default mail client");
                 userDesktop.mail(mailTo);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -321,9 +324,9 @@ public class MainWindow extends UiPart<Region> {
     }
     //@@author conantteo
     /**
-     * Opens a file folder which shows the directory where contacts.vcf file is found.
-     * Folder is is guaranteed to exist before showing.
-     * @throws IOException when user's desktop cannot support Desktop operations.
+     * Opens a file directory which shows the folder where contacts.vcf file is located.
+     * The file directory is is guaranteed to exist before showing.
+     * @throws IOException when java Desktop class is not supported in this platform.
      */
     public void handleExport() {
         File file = new File(EXPORT_FILE_PATH);
@@ -361,7 +364,7 @@ public class MainWindow extends UiPart<Region> {
     }
     //@@author conantteo
     @Subscribe
-    private void handleEmailRequestEvent(EmailRequestEvent event) throws Exception {
+    private void handleEmailRequestEvent(EmailRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleEmail(event.getAllEmailAddresses());
     }

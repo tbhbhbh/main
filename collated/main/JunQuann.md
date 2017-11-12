@@ -62,6 +62,49 @@ public class NewImageEvent extends BaseEvent {
         return inputDisplayPicPath(argsMultimap, prefixes);
     }
 ```
+###### \java\seedu\address\logic\parser\ArgumentTokenizer.java
+``` java
+    /***
+     * Input the path of the display pic that is copied into the preferred image file directory
+     */
+    private static ArgumentMultimap inputDisplayPicPath(ArgumentMultimap argMultimap, Prefix... prefixes) {
+        Optional<String> displayPicValue = argMultimap.getValue(PREFIX_DP);
+        if (displayPicValue.isPresent() && !displayPicValue.get().equals(DEFAULT_DP)) {
+            String hashedDisplayPicName = createUniqueDisplayPicName(argMultimap, prefixes);
+            String currentImgPath = getCurrentImgPath();
+            if (currentImgPath == null || currentImgPath.equals(DEFAULT_DP)) {
+                argMultimap.put(PREFIX_DP, DEFAULT_DP);
+            } else {
+                String finalImgPath = getFinalImgPath(hashedDisplayPicName, currentImgPath);
+                argMultimap.put(PREFIX_DP, finalImgPath);
+            }
+        }
+        return argMultimap;
+    }
+
+    private static String getFinalImgPath(String hashedDisplayPicName, String imgPath) {
+        NewImageEvent newImageEvent = new NewImageEvent(hashedDisplayPicName, imgPath);
+        EventsCenter.getInstance().post(newImageEvent);
+        return newImageEvent.getImagePath();
+    }
+
+    private static String getCurrentImgPath() {
+        FileChooserEvent fileChooserEvent = new FileChooserEvent();
+        EventsCenter.getInstance().post(fileChooserEvent);
+        return fileChooserEvent.getImgPath();
+    }
+
+    /**
+     * Create a unique display pic name by adding all fields of a person together and creating a hashcode
+     */
+    private static String createUniqueDisplayPicName(ArgumentMultimap argMultimap, Prefix... prefixes) {
+        String displayPicName = "";
+        for (Prefix prefix : prefixes) {
+            displayPicName += argMultimap.getValue(prefix);
+        }
+        return String.valueOf(displayPicName.hashCode());
+    }
+```
 ###### \java\seedu\address\logic\parser\ParserUtil.java
 ``` java
     /**
@@ -198,6 +241,7 @@ public class ImageFileStorage {
     public String getImageFilePath(String imageName) {
         return imageFileStorage.getImageFilePath(imageName);
     }
+
 ```
 ###### \java\seedu\address\storage\StorageManager.java
 ``` java
@@ -424,6 +468,19 @@ public class PersonDescription extends UiPart<StackPane> {
     -fx-font-size: 11;
 }
 ```
+###### \resources\view\GroupLabel.fxml
+``` fxml
+<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <Label fx:id="groupName" alignment="CENTER" minHeight="30.0" minWidth="30.0" style="-fx-alignment: center;" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+      <font>
+         <Font name="Material Design Icons" size="13.0" />
+      </font>
+   </Label>
+   <padding>
+      <Insets left="30.0" />
+   </padding>
+</HBox>
+```
 ###### \resources\view\GroupList.fxml
 ``` fxml
 <VBox minWidth="150.0" prefHeight="445.0" prefWidth="150.0" style="-fx-background-radius: 10; -fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
@@ -437,7 +494,7 @@ public class PersonDescription extends UiPart<StackPane> {
             </Label>
          </children>
       </Pane>
-      <JFXListView fx:id="tagListView" style="-fx-background-radius: 10; -fx-background-color: #F5F9FA;" VBox.vgrow="ALWAYS" />
+      <JFXListView fx:id="groupListView" style="-fx-background-radius: 10; -fx-background-color: #F5F9FA;" VBox.vgrow="ALWAYS" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -649,17 +706,4 @@ public class PersonDescription extends UiPart<StackPane> {
   <StatusBar styleClass="anchor-pane" fx:id="numberOfPersons" GridPane.columnIndex="1" nodeOrientation="RIGHT_TO_LEFT" />
   <StatusBar styleClass="anchor-pane" fx:id="saveLocationStatus" GridPane.columnIndex="2" nodeOrientation="RIGHT_TO_LEFT" />
 </GridPane>
-```
-###### \resources\view\TagBox.fxml
-``` fxml
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
-   <Label fx:id="tagsName" alignment="CENTER" minHeight="30.0" minWidth="30.0" style="-fx-alignment: center;" textAlignment="CENTER" HBox.hgrow="ALWAYS">
-      <font>
-         <Font name="Material Design Icons" size="13.0" />
-      </font>
-   </Label>
-   <padding>
-      <Insets left="30.0" />
-   </padding>
-</HBox>
 ```

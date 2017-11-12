@@ -20,6 +20,11 @@ public class FindCommand extends Command {
             + "(HitMeUp only supports finding 1 keyword for name. Finding multiple tags is supported)\n"
             + "Example: " + COMMAND_WORD + " alice colleagues";
 
+    public static final String BIRTHDAY_USAGE = COMMAND_WORD + ": Search for persons whose birthday month is "
+            + "represented by [01-12] for [January to December].\n"
+            + "Parameters: MM (must be a non-zero integer 01 to 12)\n"
+            + "Example: " + COMMAND_WORD + " 09";
+
     private final Predicate<ReadOnlyPerson> searchPredicate;
 
     public FindCommand(PersonContainsKeywordsPredicate searchPredicate) {

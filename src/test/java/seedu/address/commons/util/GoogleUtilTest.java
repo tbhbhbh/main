@@ -21,4 +21,13 @@ public class GoogleUtilTest {
         assertEquals(typicalAddressBookPerson, GoogleUtil.convertPerson(typicalPerson));
 
     }
+
+    @Test
+    public void convertFromGooglePersonWithNonCanonicalPhoneNumber_success() throws IllegalValueException {
+        Person typicalPerson = new GooglePersonBuilder().withPhone(GooglePersonBuilder.DEFAULT_PHONE).build();
+        seedu.address.model.person.Person typicalAddressBookPerson = new PersonBuilder().withTags("Google")
+                .withTwitter("").withInstagram("").build();
+        assertEquals(typicalAddressBookPerson, GoogleUtil.convertPerson(typicalPerson));
+
+    }
 }
