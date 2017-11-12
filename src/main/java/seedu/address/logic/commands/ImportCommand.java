@@ -4,6 +4,7 @@ package seedu.address.logic.commands;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -12,6 +13,7 @@ import com.google.api.services.people.v1.model.Person;
 
 import javafx.concurrent.Task;
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
@@ -47,6 +49,7 @@ public class ImportCommand extends UndoableCommand {
     private static ArrayList<String> invalidPeople;
     private static Credential credential;
     private static HttpTransport httpTransport;
+    private static final Logger logger = LogsCenter.getLogger(ImportCommand.class);
     private final String service;
 
     private int peopleAdded;
@@ -148,13 +151,14 @@ public class ImportCommand extends UndoableCommand {
 
         task.setOnFailed(t -> {
             EventsCenter.getInstance().post(new CloseProgressEvent());
+            logger.warning(task.getException().toString());
             EventsCenter.getInstance().post(new NewResultAvailableEvent(String.format(MESSAGE_FAILURE), true));
         });
 
         EventsCenter.getInstance().post(new ShowProgressEvent(task.progressProperty()));
         Thread importThread = new Thread(task);
+        importThread.start();
         try {
-            importThread.start();
             importThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();

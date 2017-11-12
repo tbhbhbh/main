@@ -45,6 +45,7 @@ public class GoogleUtil {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final int HTTP_PORT = 80;
     private static final String GOOGLE_ADDRESS = "www.google.com";
+    private static final String APPLICATION_NAME = "HitMeUp";
 
     /**
      * Returns true if Google is reachable
@@ -84,7 +85,8 @@ public class GoogleUtil {
      */
     public static List<Person> retrieveContacts(Credential credential, HttpTransport httpTransport) {
         PeopleService peopleService =
-                new PeopleService.Builder(httpTransport, JSON_FACTORY, credential).build();
+                new PeopleService.Builder(httpTransport, JSON_FACTORY, credential)
+                        .setApplicationName(APPLICATION_NAME).build();
 
         ListConnectionsResponse response = null;
         try {
@@ -127,9 +129,17 @@ public class GoogleUtil {
         }
 
         if (numbers != null && numbers.size() > 0) {
-            phone = numbers.get(0).getCanonicalForm().replace("+", "");
+            // Google phone numbers are stored in either canonical form or value
+            try {
+                phone = numbers.get(0).getCanonicalForm().replace("+", "");
+            } catch (NullPointerException npe) {
+                phone = numbers.get(0).getValue().replace("+", "");
+                if (!Phone.isValidPhone(phone)) {
+                    return null;
+                }
+            }
         } else {
-            phone = "";
+            return null;
         }
         if (emailAddresses != null && emailAddresses.size() > 0) {
             email = emailAddresses.get(0).getValue();
