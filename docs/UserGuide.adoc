@@ -89,7 +89,7 @@ Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTE
 
 ****
 * Only the name and phone number field must be provided.
-* Duplicated person, where all the fields are exactly the same, cannot be added.
+* Duplicated person, where all the fields excluding tag and display picture choice are exactly the same, cannot be added.
 ****
 
 =======
