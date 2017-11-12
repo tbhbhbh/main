@@ -15,9 +15,12 @@ By: `Daniel, Jun Quan, Conant, Bing Hwang`      Since: `Jun 2016`      L
 
 == Introduction
 HitMeUp is designed to provide sociable users with a one stop solution for all their needs. A user is able to contact
-others, keep up and organise their contact list. With the cloud import feature, a user will be able to get HitMeUp
-running in a matter of minutes. Being able to group your contacts and view each group at a glance offers convenience like never before. Social
-integration with Instagram and Twitter also allows users to view their contacts' social media profiles in HitMeUp itself without
+others, keep up and organise their contact list.
+
+With the cloud import feature, a user will be able to get HitMeUp
+running in a matter of minutes. Being able to group your contacts and view each group at a glance affords convenience like never before.
+
+Social integration with Instagram and Twitter also allows users to view their contacts' social media profiles in HitMeUp itself without
 having to switch to another browser or phone.
 
 == About
@@ -25,7 +28,7 @@ This Developer Guide aims to provide comprehensive information to help both expe
 development of HitMeUp.
 
 This Developer Guide will also explain some of the design patterns used to design HitMeUp. Moreover, it will cover some
-of the underlying mechanism of certain features that are implemented as well as the different aspects of implementation
+of the underlying mechanism of certain features that are implemented as well as the different aspects of the implementation
 considered by our development team.
 
 == Setting up
@@ -400,12 +403,13 @@ public CommandResult execute() throws CommandException {
         if (personToEmail.getEmail().toString().isEmpty()) {
             // Throws exception if personToEmail has no email address
         }
+        // Concatenate the names and email addresses of each person
         persons.append(", " + personToEmail.getName().toString());
         addresses.append(" " + personToEmail.getEmail().toString());
     }
     // Removes the substring ", " at the start of the allPersons string
     String allPersons = persons.toString().trim().substring(2, persons.length());
-    // Replaces all white spaces in the addresses String with commas
+    // Replaces all white spaces in the allEmailAddresses string with commas
     String allEmailAddresses = addresses.toString().trim().replaceAll(" ", ",");
 
     // Post the EmailRequestEvent
