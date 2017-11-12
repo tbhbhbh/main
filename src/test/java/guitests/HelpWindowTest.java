@@ -29,9 +29,10 @@ public class HelpWindowTest extends AddressBookGuiTest {
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowOpen();
 
-        getTagListPanel().click();
+        getGroupListPanel().click();
         getMainMenu().openHelpWindowUsingAccelerator();
         assertHelpWindowOpen();
+
         /* TODO: Fix TestApp display window resolution size
         getBrowserPanel().click();
         getMainMenu().openHelpWindowUsingAccelerator();

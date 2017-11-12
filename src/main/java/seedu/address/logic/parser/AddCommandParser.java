@@ -10,7 +10,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TWITTER;
-import static seedu.address.ui.CommandBox.DEFAULT_DISPLAY_PIC;
+import static seedu.address.ui.MainWindow.DEFAULT_DP;
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -101,7 +101,7 @@ public class AddCommandParser implements Parser<AddCommand> {
             argumentMultimap.put(PREFIX_INSTAGRAM, "");
         }
         if (!argumentMultimap.getValue(PREFIX_DP).isPresent()) {
-            argumentMultimap.put(PREFIX_DP, DEFAULT_DISPLAY_PIC);
+            argumentMultimap.put(PREFIX_DP, DEFAULT_DP);
         }
     }
 }

@@ -64,7 +64,7 @@ public class XmlAdaptedPerson {
         birthday = source.getBirthday().value;
         twitterName = source.getTwitterName().value;
         instagramName = source.getInstagramName().value;
-        displayPicPath = source.getDisplayPic().displayPicPath;
+        displayPicPath = source.getDisplayPic().getNewDisplayPicPath();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));

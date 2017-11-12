@@ -42,10 +42,21 @@ public class BrowserPanel extends UiPart<Region> {
 
         loadDefaultPage();
         registerAsAnEventHandler(this);
+<<<<<<< HEAD
     }
     //@@author tbhbhbh
     /**
      * Loads the person's Instagram, Twitter and then a Google search page for the person's name, in that order,
+=======
+
+        // Allows Google sign in to work in WebView as
+        // Same-Origin Policy would prevent it otherwise
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+    }
+    //@@author tbhbhbh
+    /**
+     * Loads the person's Instagram or Twitter
+>>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
      * depending on if the person has the social media fields filled in.
      */
     private void loadPersonPage(ReadOnlyPerson person) {
@@ -53,9 +64,12 @@ public class BrowserPanel extends UiPart<Region> {
             loadPage(INSTAGRAM_URL_PREFIX +  person.getInstagramName());
         } else if (!person.getTwitterName().toString().isEmpty()) {
             loadPage(TWITTER_URL_PREFIX + person.getTwitterName());
+<<<<<<< HEAD
         } else {
             loadPage(GOOGLE_SEARCH_URL_PREFIX + person.getName().fullName.replaceAll(" ", "+")
                     + GOOGLE_SEARCH_URL_SUFFIX);
+=======
+>>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
         }
     }
     //@@author

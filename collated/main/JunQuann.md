@@ -1,95 +1,219 @@
 # JunQuann
-###### /java/seedu/address/commons/util/ImagePathUtil.java
+###### \java\seedu\address\commons\events\model\FileChooserEvent.java
 ``` java
 /**
- * Appends selected image path for inputs
+ * Indicates that the file chooser needs to pop up
  */
-public class ImagePathUtil {
+public class FileChooserEvent extends BaseEvent {
 
-    private static final String ERROR_MESSAGE = "Please make sure that your input includes either dp/Y or dp/N";
+    private String imgPath;
 
-    private static final int PREFIX_LENGTH = PREFIX_DP.getPrefix().length();
-
-    public static String setPath(String arguments, CommandBox commandBox) throws ParseException {
-        try {
-            int prefixIndex = findPrefixPosition(arguments, PREFIX_DP.getPrefix(), 0);
-            StringBuilder sb = new StringBuilder(arguments);
-            String choice = sb.substring(prefixIndex + PREFIX_LENGTH, prefixIndex + PREFIX_LENGTH + 1);
-            if (requireFileChooser(choice)) {
-                String selectedPath = commandBox.getDisplayPicPath();
-                sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix() + selectedPath + " ");
-                arguments = sb.toString();
-            } else {
-                sb.replace(prefixIndex, prefixIndex + PREFIX_LENGTH + 1, PREFIX_DP.getPrefix()
-                        + DEFAULT_DISPLAY_PIC + " ");
-                arguments = sb.toString();
-            }
-            return arguments;
-        } catch (StringIndexOutOfBoundsException sioe) {
-            throw new ParseException(ERROR_MESSAGE, sioe);
-        }
+    public String getImgPath() {
+        return imgPath;
     }
 
-    /**
-     *
-     * @param input is the user input in the Command Box
-     * @return
-     */
-    private static boolean requireFileChooser(String input) {
-        String trimmedInput = input.trim();
-        if (trimmedInput.equalsIgnoreCase("y")) {
-            return true;
-        }
-        return false;
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
-    private static int findPrefixPosition(String argsString, String prefix, int fromIndex) {
-        int prefixIndex = argsString.indexOf(" " + prefix, fromIndex);
-        return prefixIndex == -1 ? -1
-                : prefixIndex + 1; // +1 as offset for whitespace
+    @Override
+    public String toString() {
+        return "Select your image from the file chooser";
     }
 
 }
 ```
-###### /java/seedu/address/commons/util/ImagePathUtil.java
+###### \java\seedu\address\commons\events\model\NewImageEvent.java
 ``` java
+/**
+ * Indicate that a new image is available to be copied to designated folder
+ */
+public class NewImageEvent extends BaseEvent {
 
+    public final String imageName;
+    public final String currentImagePath;
+
+    private String imagePath;
+
+    public NewImageEvent(String imageName, String currentImagePath) {
+        this.imageName = imageName;
+        this.currentImagePath = currentImagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    @Override
+    public String toString() {
+        return "Image has been copied to the designated folder.";
+    }
+}
 ```
-###### /java/seedu/address/model/person/DisplayPic.java
+###### \java\seedu\address\logic\parser\ArgumentTokenizer.java
+``` java
+    public static ArgumentMultimap tokenize(String argsString, Prefix... prefixes) {
+        List<PrefixPosition> positions = findAllPrefixPositions(argsString, prefixes);
+        ArgumentMultimap argsMultimap = extractArguments(argsString, positions);
+        return inputDisplayPicPath(argsMultimap, prefixes);
+    }
+```
+###### \java\seedu\address\logic\parser\ParserUtil.java
+``` java
+    /**
+     * Parses a {@code Optional<String> displayPic} into an {@code Optional<DisplayPic>}
+     * if {@code displayPic} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<DisplayPic> parseDisplayPic(Optional<String> displayPic) throws IllegalValueException {
+        requireNonNull(displayPic);
+        return displayPic.isPresent() ? Optional.of(new DisplayPic(displayPic.get())) : Optional.empty();
+    }
+```
+###### \java\seedu\address\model\person\DisplayPic.java
 ``` java
 /**
  * Represents a Person's display picture path in a addressbook
  */
 public class DisplayPic {
+    public static final String MESSAGE_DISPLAYPIC_CONSTRAINTS = "Please ensure that you choose a valid image file";
 
-    public final String displayPicPath;
+    private String newDisplayPicPath;
 
-    public DisplayPic(String displayPicPath) throws IllegalValueException {
-        requireNonNull(displayPicPath);
-        String trimmedDisplayPicPath = displayPicPath.trim();
-        this.displayPicPath = trimmedDisplayPicPath;
+    public DisplayPic(String displayPicName) throws IllegalValueException {
+        requireNonNull(displayPicName);
+        String trimmedDisplayPicName = displayPicName.trim();
+        if (!isValidPicPath(trimmedDisplayPicName) && !trimmedDisplayPicName.equals(DEFAULT_DP)) {
+            throw new IllegalValueException(MESSAGE_DISPLAYPIC_CONSTRAINTS);
+        }
+        this.newDisplayPicPath = trimmedDisplayPicName;
+    }
+
+    public String getNewDisplayPicPath() {
+        return newDisplayPicPath;
+    }
+
+    /**
+     * Returns if a given string is a valid picture path
+     */
+    public static boolean isValidPicPath(String displayPicPath) {
+        File displayPicFile = new File(displayPicPath);
+
+        MimetypesFileTypeMap mtftp = new MimetypesFileTypeMap();
+        mtftp.addMimeTypes("image png jpg jpeg");
+
+        String mimeType = mtftp.getContentType(displayPicFile).split("/")[0];
+        boolean isPicture = mimeType.equals("image");
+
+        return isPicture && displayPicFile.exists();
     }
 
     @Override
     public String toString() {
-        return this.displayPicPath;
+        return this.newDisplayPicPath;
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof DisplayPic // instanceof handles nulls
-                && this.displayPicPath.equals(((DisplayPic) other).displayPicPath)); // state check
+                && this.newDisplayPicPath.equals(((DisplayPic) other).newDisplayPicPath)); // state check
     }
-
 
     @Override
     public int hashCode() {
-        return displayPicPath.hashCode();
+        return newDisplayPicPath.hashCode();
     }
 }
 ```
-###### /java/seedu/address/ui/CommandBox.java
+###### \java\seedu\address\storage\ImageFileStorage.java
+``` java
+/**
+ */
+public class ImageFileStorage {
+
+    private String dirPath;
+
+    public ImageFileStorage(String dirPath) {
+        this.dirPath = dirPath;
+    }
+
+    public String getImageFilePath(String imageName) {
+        return dirPath + imageName + ".png";
+    }
+
+    /**
+     * Copy the image {@code currentImagePath} to the designated ImageFileStorage
+     * folder with image name {@code imageName}
+     */
+    public void copyImage(String currentImagePath, String imageName) throws IOException {
+        File currentImage = new File(currentImagePath);
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(currentImage));
+        createImageDir();
+        String newImagePath = getImageFilePath(imageName);
+        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(newImagePath));
+
+        int data;
+
+        while ((data = bis.read()) != -1) {
+            bos.write(data);
+        }
+
+        bis.close();
+        bos.close();
+    }
+
+    /**
+     * Create the image file storage directory if it does not exists.
+     */
+    public void createImageDir() throws IOException {
+        requireNonNull(dirPath);
+        FileUtil.createDirs(new File(dirPath));
+    }
+
+
+}
+```
+###### \java\seedu\address\storage\Storage.java
+``` java
+    /**
+     * Copy the chosen image from filechooser into the hard disk.
+     *  Creates the directory if it is missing
+     * Raises {@link DataSavingExceptionEvent} if there was an error during copying.
+     */
+    void handleNewImageEvent(NewImageEvent nie);
+}
+
+```
+###### \java\seedu\address\storage\StorageManager.java
+``` java
+    public void copyImageFile(String currentImageFile, String imageName) throws IOException {
+        imageFileStorage.copyImage(currentImageFile, imageName);
+    }
+
+    public String getImageFilePath(String imageName) {
+        return imageFileStorage.getImageFilePath(imageName);
+    }
+```
+###### \java\seedu\address\storage\StorageManager.java
+``` java
+    @Override
+    @Subscribe
+    public void handleNewImageEvent(NewImageEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Copying display picture to the designated folder"));
+        event.setImagePath(getImageFilePath(event.imageName));
+        try {
+            copyImageFile(event.currentImagePath, event.imageName);
+        } catch (IOException e) {
+            raise(new DataSavingExceptionEvent(e));
+        }
+    }
+```
+###### \java\seedu\address\ui\MainWindow.java
 ``` java
     public String getDisplayPicPath() {
         FileChooser fileChooser = new FileChooser();
@@ -99,11 +223,18 @@ public class DisplayPic {
         if (selectedFile != null) {
             return selectedFile.getAbsolutePath();
         } else {
-            return DEFAULT_DISPLAY_PIC;
+            return DEFAULT_DP;
         }
     }
+
+    @Subscribe
+    private void handleFileChooserEvent(FileChooserEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Select your image from the file chooser"));
+        String currentImgPath = getDisplayPicPath();
+        event.setImgPath(currentImgPath);
+    }
 ```
-###### /java/seedu/address/ui/PersonCard.java
+###### \java\seedu\address\ui\PersonCard.java
 ``` java
     /**
      * Initialise the image in PersonCard display
@@ -111,8 +242,8 @@ public class DisplayPic {
      */
     private void initImage(ReadOnlyPerson person) {
         Image displayPicture;
-        if (person.getDisplayPic().toString().equals(DEFAULT_DISPLAY_PIC)) {
-            displayPicture = AppUtil.getImage(DEFAULT_DISPLAY_PIC);
+        if (person.getDisplayPic().toString().equals(DEFAULT_DP)) {
+            displayPicture = AppUtil.getImage(DEFAULT_DP);
         } else {
             File personImg = new File(person.getDisplayPic().toString());
             String imgUrl = personImg.toURI().toString();
@@ -120,9 +251,6 @@ public class DisplayPic {
         }
         displayPic.setFill(new ImagePattern(displayPicture));
     }
-```
-###### /java/seedu/address/ui/PersonCard.java
-``` java
 
     /**
      * Create new labels and bind a colour to it
@@ -143,35 +271,15 @@ public class DisplayPic {
         }
         return tagColours.get(tagName);
     }
-
-    @Override
-    public boolean equals(Object other) {
-        // short circuit if same object
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof PersonCard)) {
-            return false;
-        }
-
-        // state check
-        PersonCard card = (PersonCard) other;
-        return id.getText().equals(card.id.getText())
-                && person.equals(card.person);
-    }
-}
 ```
-###### /java/seedu/address/ui/PersonDescription.java
+###### \java\seedu\address\ui\PersonDescription.java
 ``` java
 /**
- * The UI component that is responsible for displaying contact's in depth information
+ * An UI component that displays the detailed information of a selected person
  */
 public class PersonDescription extends UiPart<StackPane> {
 
     private static final String FXML = "PersonDescription.fxml";
-    private static final String DEFAULT_DP = "/images/defaultperson.png";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
 
@@ -230,7 +338,7 @@ public class PersonDescription extends UiPart<StackPane> {
     private void initDisplayPic(ReadOnlyPerson person) {
         Image displayPictureImg;
         String profilePic = person.getDisplayPic().toString();
-        if (profilePic.equals(DEFAULT_DISPLAY_PIC)) {
+        if (profilePic.equals(MainWindow.DEFAULT_DP)) {
             displayPictureImg = AppUtil.getImage(profilePic);
         } else {
             File imgFile = new File(person.getDisplayPic().toString());
@@ -238,7 +346,6 @@ public class PersonDescription extends UiPart<StackPane> {
         }
         displayPic.setFill(new ImagePattern(displayPictureImg));
     }
-
 
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
@@ -249,11 +356,7 @@ public class PersonDescription extends UiPart<StackPane> {
 
 }
 ```
-###### /java/seedu/address/ui/PersonDescription.java
-``` java
-
-```
-###### /resources/view/BrowserPanel.fxml
+###### \resources\view\BrowserPanel.fxml
 ``` fxml
 <StackPane prefHeight="400.0" prefWidth="300.0" style="-fx-background-radius: 5; -fx-background-insets: 0; -fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
   <WebView fx:id="browser" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" />
@@ -262,7 +365,7 @@ public class PersonDescription extends UiPart<StackPane> {
    </padding>
 </StackPane>
 ```
-###### /resources/view/CommandBox.fxml
+###### \resources\view\CommandBox.fxml
 ``` fxml
 <StackPane styleClass="anchor-pane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <JFXTextField fx:id="commandTextField" labelFloat="true" onAction="#handleCommandInputChanged" onKeyPressed="#handleKeyPress" promptText="Enter command here..." unFocusColor="BLACK">
@@ -272,7 +375,7 @@ public class PersonDescription extends UiPart<StackPane> {
    </JFXTextField>
 </StackPane>
 ```
-###### /resources/view/default.css
+###### \resources\view\default.css
 ``` css
 .list-cell {
     -fx-label-padding: 0 0 0 0;
@@ -288,7 +391,7 @@ public class PersonDescription extends UiPart<StackPane> {
 }
 
 .list-cell:filled:hover{
-    -fx-background-color: #424d5f;
+    -fx-background-color: #00bfbf;
 }
 
 .list-cell:filled:hover .label{
@@ -296,7 +399,11 @@ public class PersonDescription extends UiPart<StackPane> {
 }
 
 .list-cell:filled:selected{
-    -fx-background-color: #00bfbf;
+    -fx-background-color: #424d5f;
+}
+
+.list-cell:filled:selected .label{
+    -fx-text-fill: #f7f7f7;
 }
 
 .list-cell:empty{
@@ -317,11 +424,7 @@ public class PersonDescription extends UiPart<StackPane> {
     -fx-font-size: 11;
 }
 ```
-###### /resources/view/default.css
-``` css
-
-```
-###### /resources/view/GroupList.fxml
+###### \resources\view\GroupList.fxml
 ``` fxml
 <VBox minWidth="150.0" prefHeight="445.0" prefWidth="150.0" style="-fx-background-radius: 10; -fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -341,7 +444,13 @@ public class PersonDescription extends UiPart<StackPane> {
    </padding>
 </VBox>
 ```
-###### /resources/view/MainWindow.fxml
+###### \resources\view\HelpWindow.fxml
+``` fxml
+<StackPane fx:id="helpWindowRoot" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <WebView fx:id="browser" />
+</StackPane>
+```
+###### \resources\view\MainWindow.fxml
 ``` fxml
 <VBox stylesheets="@default.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
 
@@ -353,13 +462,13 @@ public class PersonDescription extends UiPart<StackPane> {
       <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
     </Menu>
   </MenuBar>
-  <StackPane fx:id="commandBoxPlaceholder" prefHeight="30.0" prefWidth="1022.0" style="-fx-background-color: #C1D3DD;" VBox.vgrow="NEVER">
+  <StackPane fx:id="commandBoxPlaceholder" maxHeight="80.0" prefHeight="30.0" prefWidth="1022.0" style="-fx-background-color: #C1D3DD;" VBox.vgrow="ALWAYS">
       <padding>
          <Insets bottom="5.0" left="10.0" right="10.0" top="20.0" />
       </padding>
   </StackPane>
 
-  <StackPane fx:id="resultDisplayPlaceholder" maxHeight="100" minHeight="80.0" prefHeight="80.0" style="-fx-background-color: #C1D3DD;" VBox.vgrow="NEVER">
+  <StackPane fx:id="resultDisplayPlaceholder" maxHeight="150.0" minHeight="80.0" prefHeight="80.0" style="-fx-background-color: #C1D3DD;" VBox.vgrow="ALWAYS">
       <padding>
          <Insets left="10.0" right="10.0" />
       </padding>
@@ -393,7 +502,7 @@ public class PersonDescription extends UiPart<StackPane> {
   <StackPane fx:id="statusbarPlaceholder" VBox.vgrow="NEVER" />
 </VBox>
 ```
-###### /resources/view/PersonDescription.fxml
+###### \resources\view\PersonDescription.fxml
 ``` fxml
 <AnchorPane prefHeight="503.0" prefWidth="269.0" style="-fx-background-color: #FDFDFD; -fx-background-radius: 5;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -459,7 +568,7 @@ public class PersonDescription extends UiPart<StackPane> {
    </effect>
 </AnchorPane>
 ```
-###### /resources/view/PersonListCard.fxml
+###### \resources\view\PersonListCard.fxml
 ``` fxml
 <VBox xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -510,11 +619,11 @@ public class PersonDescription extends UiPart<StackPane> {
    </children>
 </VBox>
 ```
-###### /resources/view/PersonListPanel.fxml
+###### \resources\view\PersonListPanel.fxml
 ``` fxml
 <JFXListView fx:id="personListView" depth="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="250.0" style="-fx-background-color: #F5F9FA;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" />
 ```
-###### /resources/view/ResultDisplay.fxml
+###### \resources\view\ResultDisplay.fxml
 ``` fxml
 <StackPane fx:id="placeHolder" style="-fx-background-color: TRANSPARENT;" styleClass="pane-with-border" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
   <TextArea fx:id="resultDisplay" editable="false" opacity="0.55" style="-fx-background-color: transparent;">
@@ -528,4 +637,29 @@ public class PersonDescription extends UiPart<StackPane> {
          <Font name="Helvetica" size="15.0" />
       </font></TextArea>
 </StackPane>
+```
+###### \resources\view\StatusBarFooter.fxml
+``` fxml
+<GridPane styleClass="grid-pane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="100" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="100" />
+  </columnConstraints>
+  <StatusBar styleClass="anchor-pane" fx:id="syncStatus" />
+  <StatusBar styleClass="anchor-pane" fx:id="numberOfPersons" GridPane.columnIndex="1" nodeOrientation="RIGHT_TO_LEFT" />
+  <StatusBar styleClass="anchor-pane" fx:id="saveLocationStatus" GridPane.columnIndex="2" nodeOrientation="RIGHT_TO_LEFT" />
+</GridPane>
+```
+###### \resources\view\TagBox.fxml
+``` fxml
+<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <Label fx:id="tagsName" alignment="CENTER" minHeight="30.0" minWidth="30.0" style="-fx-alignment: center;" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+      <font>
+         <Font name="Material Design Icons" size="13.0" />
+      </font>
+   </Label>
+   <padding>
+      <Insets left="30.0" />
+   </padding>
+</HBox>
 ```

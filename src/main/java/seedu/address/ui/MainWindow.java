@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,17 +21,19 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.model.FileChooserEvent;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.EmailRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ExportRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
+import seedu.address.commons.events.ui.ShowUrlEvent;
 import seedu.address.commons.events.ui.SocialRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
@@ -43,6 +46,7 @@ import seedu.address.model.person.UserName;
  */
 public class MainWindow extends UiPart<Region> {
 
+    public static final String DEFAULT_DP = "/images/defaultperson.png";
     private static final String ICON = "/images/Icon.png";
     private static final String FXML = "MainWindow.fxml";
     private static final int MIN_HEIGHT = 600;
@@ -59,7 +63,7 @@ public class MainWindow extends UiPart<Region> {
     // Independent Ui parts residing in this Ui container
     private BrowserPanel browserPanel;
     private PersonListPanel personListPanel;
-    private TagListPanel tagListPanel;
+    private GroupListPanel groupListPanel;
     private PersonDescription personDescriptionPanel;
     private Config config;
     private UserPrefs prefs;
@@ -106,7 +110,6 @@ public class MainWindow extends UiPart<Region> {
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
         primaryStage.setScene(scene);
-
         setAccelerators();
         registerAsAnEventHandler(this);
     }
@@ -169,11 +172,11 @@ public class MainWindow extends UiPart<Region> {
                 logic.getFilteredPersonList().size());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
-        CommandBox commandBox = new CommandBox(logic, primaryStage);
+        CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
 
-        tagListPanel = new TagListPanel(logic.getAllTags());
-        tagListPanelPlaceholder.getChildren().add(tagListPanel.getRoot());
+        groupListPanel = new GroupListPanel(logic.getAllTags());
+        tagListPanelPlaceholder.getChildren().add(groupListPanel.getRoot());
     }
 
     void hide() {
@@ -216,6 +219,27 @@ public class MainWindow extends UiPart<Region> {
         return new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
+
+    //@@author JunQuann
+    public String getDisplayPicPath() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files", "*.jpg", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        } else {
+            return DEFAULT_DP;
+        }
+    }
+
+    @Subscribe
+    private void handleFileChooserEvent(FileChooserEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Select your image from the file chooser"));
+        String currentImgPath = getDisplayPicPath();
+        event.setImgPath(currentImgPath);
+    }
+    //@@author
 
     /**
      * Opens the help window.
@@ -264,11 +288,11 @@ public class MainWindow extends UiPart<Region> {
     //@@author danielbrzn
 
     /**
-     * Opens the provided Google Maps URL in the built-in browser
-     * @param googleMapsUrl is the full URL of a person's location
+     * Opens the provided URL in the built-in browser
+     * @param link is a URL to be opened in the BrowserPanel
      */
-    public void handleLocation(String googleMapsUrl) {
-        browserPanel.loadPage(googleMapsUrl);
+    public void handleUrl(String link) {
+        browserPanel.loadPage(link);
     }
 
     /**
@@ -276,9 +300,11 @@ public class MainWindow extends UiPart<Region> {
      */
     @FXML
     public void handleProgress(ReadOnlyDoubleProperty progress) {
-        pWindow = new ProgressWindow(progress);
-        primaryStage.toFront();
-        pWindow.show();
+        Platform.runLater(() -> {
+            pWindow = new ProgressWindow(progress);
+            pWindow.show();
+        });
+
     }
 
     /**
@@ -343,9 +369,9 @@ public class MainWindow extends UiPart<Region> {
     //@@author danielbrzn
 
     @Subscribe
-    private void handleShowLocationEvent(ShowLocationEvent event) {
+    private void handleShowUrlEvent(ShowUrlEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        handleLocation(event.getGoogleMapsUrl());
+        handleUrl(event.getUrl());
     }
 
     @Subscribe

@@ -115,6 +115,7 @@ public class ParserUtil {
     }
 
     //@@author
+    //@@author JunQuann
     /**
      * Parses a {@code Optional<String> displayPic} into an {@code Optional<DisplayPic>}
      * if {@code displayPic} is present.
@@ -124,6 +125,7 @@ public class ParserUtil {
         requireNonNull(displayPic);
         return displayPic.isPresent() ? Optional.of(new DisplayPic(displayPic.get())) : Optional.empty();
     }
+    //@@author
 
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.

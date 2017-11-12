@@ -13,6 +13,7 @@ public class UserPrefs {
     private GuiSettings guiSettings;
     private String addressBookFilePath = "data/HitMeUp.xml";
     private String addressBookName = "HitMeUp";
+    private String displayPicDir = "data/images/";
     private HashMap<String, String> aliasMap;
 
     public UserPrefs() {
@@ -44,6 +45,14 @@ public class UserPrefs {
 
     public void setAddressBookFilePath(String addressBookFilePath) {
         this.addressBookFilePath = addressBookFilePath;
+    }
+
+    public String getDisplayPicDir() {
+        return displayPicDir;
+    }
+
+    public void setDisplayPicDir(String displayPicDir) {
+        this.displayPicDir = displayPicDir;
     }
 
     public String getAddressBookName() {

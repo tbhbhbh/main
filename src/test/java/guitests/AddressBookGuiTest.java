@@ -10,12 +10,12 @@ import org.junit.rules.TestName;
 import org.testfx.api.FxToolkit;
 
 import guitests.guihandles.CommandBoxHandle;
+import guitests.guihandles.GroupListPanelHandle;
 import guitests.guihandles.MainMenuHandle;
 import guitests.guihandles.MainWindowHandle;
 import guitests.guihandles.PersonListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.StatusBarFooterHandle;
-import guitests.guihandles.TagListPanelHandle;
 import javafx.stage.Stage;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
@@ -91,9 +91,10 @@ public abstract class AddressBookGuiTest {
         return mainWindowHandle.getResultDisplay();
     }
     //@@author conantteo
-    protected TagListPanelHandle getTagListPanel() {
-        return mainWindowHandle.getTagListPanel();
+    protected GroupListPanelHandle getGroupListPanel() {
+        return mainWindowHandle.getGroupListPanel();
     }
+
     //@@author
     /**
      * Runs {@code command} in the application's {@code CommandBox}.

@@ -1,8 +1,5 @@
 package seedu.address.ui;
 
-import static seedu.address.logic.parser.CliSyntax.PREFIX_DP;
-
-import java.io.File;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -10,11 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
-import seedu.address.commons.util.ImagePathUtil;
 import seedu.address.logic.ListElementPointer;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
@@ -27,22 +21,19 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class CommandBox extends UiPart<Region> {
 
     public static final String ERROR_STYLE_CLASS = "error";
-    public static final String DEFAULT_DISPLAY_PIC = "/images/defaultperson.png";
     private static final String FXML = "CommandBox.fxml";
 
 
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);
     private final Logic logic;
-    private final Stage primaryStage;
     private ListElementPointer historySnapshot;
 
     @FXML
     private TextField commandTextField;
 
-    public CommandBox(Logic logic, Stage primaryStage) {
+    public CommandBox(Logic logic) {
         super(FXML);
         this.logic = logic;
-        this.primaryStage = primaryStage;
         // calls #setStyleToDefault() whenever there is a change to the text of the command box.
         commandTextField.textProperty().addListener((unused1, unused2, unused3) -> setStyleToDefault());
         historySnapshot = logic.getHistorySnapshot();
@@ -112,9 +103,6 @@ public class CommandBox extends UiPart<Region> {
     private void handleCommandInputChanged() {
         try {
             String arguments = commandTextField.getText();
-            if (arguments.contains(PREFIX_DP.getPrefix())) {
-                arguments = ImagePathUtil.setPath(arguments, this);
-            }
             CommandResult commandResult = logic.execute(arguments);
             initHistory();
             historySnapshot.next();
@@ -140,18 +128,6 @@ public class CommandBox extends UiPart<Region> {
         // add an empty string to represent the most-recent end of historySnapshot, to be shown to
         // the user if she tries to navigate past the most-recent end of the historySnapshot.
         historySnapshot.add("");
-    }
-
-    public String getDisplayPicPath() {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files", "*.jpg", "*.png");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File selectedFile = fileChooser.showOpenDialog(primaryStage);
-        if (selectedFile != null) {
-            return selectedFile.getAbsolutePath();
-        } else {
-            return DEFAULT_DISPLAY_PIC;
-        }
     }
 
     /**

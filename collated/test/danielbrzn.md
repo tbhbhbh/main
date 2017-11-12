@@ -196,11 +196,13 @@ package seedu.address.logic.commands;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
+import org.testfx.api.FxToolkit;
 
 import com.google.api.services.people.v1.model.Person;
 
@@ -210,22 +212,41 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.testutil.GooglePersonBuilder;
+import seedu.address.testutil.PersonBuilder;
 
 public class ImportCommandTest {
 
     private Model model = new ModelManager(new AddressBook(), new UserPrefs());
+    private Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
 
     @Test
-    public void execute_importContactsWithoutGoogleAuthorization_failure() {
+    public void execute_importContactsWithoutGoogleAuthorization_success() {
         ImportCommand importCommand = prepareCommand("Google");
-        assertCommandFailure(importCommand, model, ImportCommand.MESSAGE_FAILURE);
+        assertCommandSuccess(importCommand, model, ImportCommand.MESSAGE_IN_PROGRESS, expectedModel);
     }
 
     @Test
-    public void execute_importContactsFunction_failure() {
+    public void execute_importContactsFromEmptyList_noPersonAdded() {
         ImportCommand importCommand = prepareCommand("Google");
         importCommand.importContacts(new ArrayList<Person>());
-        Model expectedModel = new ModelManager(new AddressBook(), new UserPrefs());
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void execute_importContactsFromNonEmptyList_personsAdded()
+            throws DuplicatePersonException, InterruptedException, TimeoutException {
+        ImportCommand importCommand = prepareCommand("Google");
+        ArrayList<Person> googlePersonList = new ArrayList<Person>();
+        GooglePersonBuilder googlePerson = new GooglePersonBuilder();
+        googlePersonList.add(googlePerson.build());
+        // Initialise a primary stage and the FxToolkit for importContacts to run
+        FxToolkit.registerPrimaryStage();
+        importCommand.importContacts(googlePersonList);
+        PersonBuilder person = new PersonBuilder();
+        expectedModel.addPerson(person.withInstagram("").withTwitter("")
+                .withTags(GooglePersonBuilder.DEFAULT_TAGS).build());
         assertEquals(expectedModel, model);
     }
 
@@ -258,7 +279,7 @@ public class ImportCommandTest {
     /**
      * Returns an {@code ImportCommand} with parameters {@code service}
      */
-    private ImportCommand prepareCommand(String service) {
+    public ImportCommand prepareCommand(String service) {
         ImportCommand importCommand = new ImportCommand(service);
         importCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         return importCommand;
@@ -287,7 +308,11 @@ import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+<<<<<<< HEAD
 import seedu.address.commons.events.ui.ShowLocationEvent;
+=======
+import seedu.address.commons.events.ui.ShowUrlEvent;
+>>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -370,7 +395,11 @@ public class LocationCommandTest {
 
 
     /**
+<<<<<<< HEAD
      * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowLocationEvent}
+=======
+     * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowUrlEvent}
+>>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
      * is raised with the correct URL.
      */
     private void assertExecutionSuccess(Index index) {
@@ -388,8 +417,13 @@ public class LocationCommandTest {
         String url = LocationCommand.GOOGLE_MAPS_URL_PREFIX + locationCommand.parseAddressForUrl(
                 model.getFilteredPersonList().get(index.getZeroBased()).getAddress());
 
+<<<<<<< HEAD
         ShowLocationEvent lastEvent = (ShowLocationEvent) eventsCollectorRule.eventsCollector.getMostRecent();
         assertEquals(url, lastEvent.getGoogleMapsUrl());
+=======
+        ShowUrlEvent lastEvent = (ShowUrlEvent) eventsCollectorRule.eventsCollector.getMostRecent();
+        assertEquals(url, lastEvent.getUrl());
+>>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
     }
 
     /**
@@ -427,8 +461,8 @@ public class LocationCommandTest {
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-            + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
-                + DISPLAYPIC_DESC, new AddCommand(expectedPerson));
+            + ADDRESS_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY,
+                new AddCommand(expectedPerson));
 
         // no address
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -437,8 +471,8 @@ public class LocationCommandTest {
                 .withDisplayPic(VALID_DISPLAYPIC).withTags().build();
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
-            + EMAIL_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
-                + DISPLAYPIC_DESC, new AddCommand(expectedPerson));
+            + EMAIL_DESC_AMY + BIRTHDAY_DESC_AMY  + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY,
+                new AddCommand(expectedPerson));
 
         // no birthday
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -448,7 +482,7 @@ public class LocationCommandTest {
 
         assertParseSuccess(parser, AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY
                 + EMAIL_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
-                + ADDRESS_DESC_AMY + DISPLAYPIC_DESC, new AddCommand(expectedPerson));
+                + ADDRESS_DESC_AMY, new AddCommand(expectedPerson));
 ```
 ###### \java\seedu\address\logic\parser\AliasCommandParserTest.java
 ``` java

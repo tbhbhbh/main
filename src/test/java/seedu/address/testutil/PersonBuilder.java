@@ -93,6 +93,7 @@ public class PersonBuilder {
         return this;
     }
 
+    //@@author JunQuann
     /**
      * Sets the {@code Address} of the {@code Person} that we are building.
      */
@@ -104,6 +105,7 @@ public class PersonBuilder {
         }
         return this;
     }
+    //@@author
 
     /**
      * Sets the {@code Phone} of the {@code Person} that we are building.

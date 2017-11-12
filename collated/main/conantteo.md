@@ -838,15 +838,15 @@ public class TagListPanel extends UiPart<Region> {
     class TagListViewCell extends ListCell<TagBox> {
 
         @Override
-        protected void updateItem(TagBox tagBox, boolean empty) {
-            super.updateItem(tagBox, empty);
+        protected void updateItem(TagBox groupLabel, boolean empty) {
+            super.updateItem(groupLabel, empty);
 
             Platform.runLater(() -> {
-                if (empty || tagBox == null) {
+                if (empty || groupLabel == null) {
                     setGraphic(null);
                     setText(null);
                 } else {
-                    setGraphic(tagBox.getRoot());
+                    setGraphic(groupLabel.getRoot());
                 }
 
             });

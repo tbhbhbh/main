@@ -8,8 +8,8 @@ import static seedu.address.ui.BrowserPanel.DEFAULT_PAGE;
 import static seedu.address.ui.StatusBarFooter.SYNC_STATUS_INITIAL;
 import static seedu.address.ui.StatusBarFooter.SYNC_STATUS_UPDATED;
 import static seedu.address.ui.UiPart.FXML_FILE_FOLDER;
+import static seedu.address.ui.testutil.GuiTestAssert.assertGroupListMatching;
 import static seedu.address.ui.testutil.GuiTestAssert.assertListMatching;
-import static seedu.address.ui.testutil.GuiTestAssert.assertTagListMatching;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,12 +24,12 @@ import org.junit.ClassRule;
 
 import guitests.guihandles.BrowserPanelHandle;
 import guitests.guihandles.CommandBoxHandle;
+import guitests.guihandles.GroupListPanelHandle;
 import guitests.guihandles.MainMenuHandle;
 import guitests.guihandles.MainWindowHandle;
 import guitests.guihandles.PersonListPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.StatusBarFooterHandle;
-import guitests.guihandles.TagListPanelHandle;
 import seedu.address.MainApp;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
@@ -48,10 +48,12 @@ public abstract class AddressBookSystemTest {
     @ClassRule
     public static ClockRule clockRule = new ClockRule();
 
+    //@@author JunQuann
     private static final List<String> COMMAND_BOX_DEFAULT_STYLE = Arrays.asList("text-input", "text-field",
             "jfx-text-field");
     private static final List<String> COMMAND_BOX_ERROR_STYLE =
             Arrays.asList("text-input", "text-field", "jfx-text-field", CommandBox.ERROR_STYLE_CLASS);
+    //@@author
 
     private MainWindowHandle mainWindowHandle;
     private TestApp testApp;
@@ -102,8 +104,8 @@ public abstract class AddressBookSystemTest {
         return mainWindowHandle.getResultDisplay();
     }
 
-    public TagListPanelHandle getTagListPanel() {
-        return mainWindowHandle.getTagListPanel();
+    public GroupListPanelHandle getGroupListPanel() {
+        return mainWindowHandle.getGroupListPanel();
     }
 
     /**
@@ -157,7 +159,7 @@ public abstract class AddressBookSystemTest {
         assertEquals(expectedModel, getModel());
         assertEquals(expectedModel.getAddressBook(), testApp.readStorageAddressBook());
         assertListMatching(getPersonListPanel(), expectedModel.getFilteredPersonList());
-        assertTagListMatching(getTagListPanel(), expectedModel.getAddressBook().getTagList());
+        assertGroupListMatching(getGroupListPanel(), expectedModel.getAddressBook().getTagList());
     }
 
     /**
@@ -257,7 +259,7 @@ public abstract class AddressBookSystemTest {
             assertEquals("", getCommandBox().getInput());
             assertEquals("", getResultDisplay().getText());
             assertListMatching(getPersonListPanel(), getModel().getFilteredPersonList());
-            assertTagListMatching(getTagListPanel(), getModel().getAddressBook().getTagList());
+            assertGroupListMatching(getGroupListPanel(), getModel().getAddressBook().getTagList());
             assertEquals(MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE), getBrowserPanel().getLoadedUrl());
             assertEquals("./" + testApp.getStorageSaveLocation(), getStatusBarFooter().getSaveLocation());
             assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());
