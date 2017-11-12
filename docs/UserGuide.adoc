@@ -87,7 +87,7 @@ Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTE
 
 ****
 * Only the name and phone number field must be provided.
-* Duplicated person, where all the fields are exactly the same, cannot be added.
+* Duplicated person, where all the fields excluding tag and display picture choice are exactly the same, cannot be added.
 ****
 
 =======
@@ -323,7 +323,7 @@ Format: `export all` or `export INDEX [INDEX]...`
 * If you would like to move this vCard file to another folder, please close HitMeUp first.
 ****
 
-image:ExportDirectory.png[width="790"]
+image::ExportDirectory.png[width="790"]
 _Figure 3.12. Data folder directory containing vCard file_
 
 Examples:
@@ -349,7 +349,7 @@ Format: `email INDEX [INDEX]...`
 * Opens the default mail application in your desktop as shown below with the email addresses of the specified persons
 ****
 
-image:EmailWindow.png[width="790"]
+image::EmailWindow.png[width="790"]
 _Figure 3.13. Default mail application in Windows 10_
 
 =======
@@ -507,7 +507,7 @@ There is no need to save manually.
 *Q*: How do I transfer my data to another Computer? +
 *A*: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous Address Book folder.
 
-[mailsettings]
+[[mailsettings]]
 *Q*: How do I set my default mail application to use the email feature? +
 *A*: For Windows users, go to Settings > Apps & features > Default apps. For MAC users, click https://www.imore.com/how-set-mac-app-default-when-opening-file[here] for instructions.
 For other OS users, please refer to the guides online on how to set your default mail application.

@@ -157,8 +157,7 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
     }
-    //@@author
-
+    //@@author conantteo
     @Subscribe
     private void handleSearchTagEvent(SearchTagEvent event)  {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -166,7 +165,7 @@ public class ModelManager extends ComponentManager implements Model {
         Predicate<ReadOnlyPerson> predicate = new PersonContainsKeywordsPredicate(Arrays.asList(tagNameArr));
         updateFilteredPersonList(predicate);
     }
-
+    //@@author
     //=========== Filtered Person List Accessors =============================================================
 
     /**

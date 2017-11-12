@@ -33,7 +33,7 @@ public class ModelManagerTest {
         thrown.expect(UnsupportedOperationException.class);
         modelManager.getFilteredPersonList().remove(0);
     }
-
+    //@@author conantteo
     @Test
     public void handleSearchTagEvent_updateFilteredPersonList_success() {
         // AddressBook with Alice with tags{friends} & Benson with tags{friends, oweMoney}
@@ -47,6 +47,7 @@ public class ModelManagerTest {
         // FilteredPersonList should only show Benson now
         assertTrue(modelManager.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()).equals(BENSON));
     }
+    //@@author
     @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();

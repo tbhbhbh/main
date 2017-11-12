@@ -14,5 +14,6 @@ public class Messages {
     public static final String MESSAGE_INVALID_PERSON_DISPLAYED_INDEX = "The person index provided is invalid: ";
     public static final String MESSAGE_INVALID_PERSON_TO_EMAIL = "The person may have missing email address "
             + "at specified index provided: ";
+    public static final String MESSAGE_NO_PERSONS_FOUND = "There are no contacts found!";
 
 }

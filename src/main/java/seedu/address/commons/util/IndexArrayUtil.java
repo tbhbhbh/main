@@ -37,10 +37,10 @@ public class IndexArrayUtil {
     }
 
     /**
-     * Check if IndexArray {@code arr} has distinct Index with no duplicates.
+     * Check if IndexArray {@code arr} has unique Index with no duplicates.
      * @return false if there are at least one repeated index in the array.
      */
-    public static boolean isDistinct(Index[] arr) {
+    public static boolean indexAreUnique(Index[] arr) {
         boolean isDistinct = true;
         for (int i = 0; i < arr.length - 1; i++) {
             for (int j = i + 1; j < arr.length; j++) {

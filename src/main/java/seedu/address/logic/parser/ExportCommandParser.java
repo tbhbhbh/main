@@ -23,7 +23,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
     public ExportCommand parse(String args) throws ParseException {
 
         String trimmedArgs = args.trim();
-        if (trimmedArgs.startsWith("all")) {
+        if (trimmedArgs.matches("all")) {
             return new ExportCommand();
         } else {
             String[] indices = args.trim().split(" ");
@@ -37,7 +37,7 @@ public class ExportCommandParser implements Parser<ExportCommand> {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
             }
-            if (!IndexArrayUtil.isDistinct(indexArray)) {
+            if (!IndexArrayUtil.indexAreUnique(indexArray)) {
                 throw new ParseException(
                         String.format(MESSAGE_INVALID_COMMAND_FORMAT, ParserUtil.MESSAGE_INDEX_DUPLICATES));
             }

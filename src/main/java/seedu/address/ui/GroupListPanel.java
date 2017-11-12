@@ -18,7 +18,7 @@ public class GroupListPanel extends UiPart<Region> {
     private static final String FXML = "GroupList.fxml";
 
     @FXML
-    private ListView groupListView;
+    private ListView<GroupLabel> groupListView;
 
     public GroupListPanel(ObservableList<Tag> allTagsList) {
         super(FXML);
