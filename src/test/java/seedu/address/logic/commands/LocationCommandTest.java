@@ -56,7 +56,8 @@ public class LocationCommandTest {
     public void execute_invalidIndexUnfilteredList_failure() {
         Index outOfBoundsIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
 
-        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
+                + outOfBoundsIndex.getOneBased());
     }
 
     @Test
@@ -74,7 +75,8 @@ public class LocationCommandTest {
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundsIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
 
-        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX
+                + outOfBoundsIndex.getOneBased());
     }
 
     @Test

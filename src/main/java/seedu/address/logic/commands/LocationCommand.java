@@ -45,7 +45,7 @@ public class LocationCommand extends Command {
 
         // Check if index is valid
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + index.getOneBased());
         }
 
         // Check if Google is reachable
