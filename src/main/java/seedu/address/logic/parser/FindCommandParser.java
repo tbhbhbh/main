@@ -35,8 +35,8 @@ public class FindCommandParser implements Parser<FindCommand> {
             System.out.println(Character.isLetter(nameKeywords[0].charAt(0)));
             if (Character.isLetter(nameKeywords[0].charAt(0))) {
                 return new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
-            } else if (StringUtil.isNonZeroUnsignedInteger(nameKeywords[0]) &&
-                    nameKeywords[0].matches(BIRTHDAY_MONTH_REGEX)) {
+            } else if (StringUtil.isNonZeroUnsignedInteger(nameKeywords[0])
+                    && nameKeywords[0].matches(BIRTHDAY_MONTH_REGEX)) {
                 return new FindCommand(new PersonContainsBirthdayPredicate(nameKeywords[0]));
             } else {
                 throw new ParseException(

@@ -359,7 +359,6 @@ You can set your own default mail application. Please refer to instructions in t
 
 Examples:
 
-<<<<<<< HEAD
 =======
 * `list` +
 `email 2 3` +
@@ -367,9 +366,9 @@ Opens the default mail application to send an email to the 2nd and 3rd persons f
 * `find Betsy` +
 `email 1` +
 Opens the default mail application to send an email to the 1st person in the results of the `find` command.
+=======
 // end::email[]
 
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
 // tag::tagdelete[]
 === Deleting a tag : `tagdelete`
 
@@ -405,30 +404,18 @@ Examples:
 * `tagedit friends losers` +
 Changes the tag 'friends' into 'losers' for all persons with that tag.
 // end::tagedit[]
-<<<<<<< HEAD
 
 // tag::find[]
 === Find persons (improved) : `find`
 
-Searches for persons whose name or tags contain any of the given keywords. +
+Searches for persons whose name, tags, birthday or initials contain any of the given keywords. +
+
 =======
-
-// tag::find[]
-=== Find persons : `find`
-
-Searches for persons whose name or tags contain any of the given keywords. +
-
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
 Format: `find KEYWORD [MORE_KEYWORDS]` +
 
 ****
 * The search is case insensitive. e.g. `hans` will match `Hans` (example below)
 * The order of keywords does not matter. (example below)
-<<<<<<< HEAD
-* Name, tags and initial can be searched.
-=======
-* Name, tags and the first alphabet of a name can be searched.
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
 * For names, only full words will be matched. e.g. `Han` will not match `Hans`
 ****
 
@@ -449,30 +436,23 @@ e.g.:  `find Alex colleagues`
 `find Alex colleagues` returns all persons with the word `Alex` in their names (either first name or last name) and
 are `colleagues`.
 
+* `find` supports searching for a birthday month. +
+e.g.: `find 12` +
+`find 12` will return all persons whose birthdays are in the month of December.
+
 * `find` supports searching for an initial. +
 e.g.:  `find a` +
 `find a` will return all persons whose last names or first names begin with the letter `a`.
-<<<<<<< HEAD
 
 * The order of keywords does not matter. +
 e.g.: `find Alex colleagues` is the same as `find colleagues Alex`. +
 
 * `find` is case insensitive for all inputs. +
 e.g.: `find BeRnICe FrIEnDs` is the same as `find Bernice friends`. +
-
-// end::find[]
-
 =======
-
-* The order of keywords does not matter. +
-e.g.: `find Alex colleagues` is the same as `find colleagues Alex`. +
-
-* `find` is case insensitive for all inputs. +
-e.g.: `find BeRnICe FrIEnDs` is the same as `find Bernice friends`. +
-
 // end::find[]
 
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
+
 // tag::social[]
 === Viewing a contact's Twitter/Instagram profile : `social`
 

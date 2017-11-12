@@ -59,5 +59,12 @@ include::../DeveloperGuide.adoc[tag=social]
 
 #End of Extract#
 
+---
+
 === Other contributions
-- Implemented sorting feature that is case insensitive
+
+* Implemented sorting feature that is case insensitive (Pull request https://github.com/CS2103AUG2017-W14-B3/main/pull/17[#17])
+* Made clicking on person cards load up social media
+(Pull request https://github.com/CS2103AUG2017-W14-B3/main/pull/125[#125])
+*
+

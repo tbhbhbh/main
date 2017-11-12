@@ -1,15 +1,11 @@
 //@@author tbhbhbh
 package seedu.address.model.person;
 
-import static seedu.address.model.tag.Tag.MESSAGE_TAG_CONSTRAINTS;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.tag.Tag;
 
 /**
