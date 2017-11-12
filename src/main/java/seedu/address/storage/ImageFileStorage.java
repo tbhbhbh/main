@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import seedu.address.commons.util.FileUtil;
 
@@ -54,6 +55,5 @@ public class ImageFileStorage {
         requireNonNull(dirPath);
         FileUtil.createDirs(new File(dirPath));
     }
-
-
 }
+

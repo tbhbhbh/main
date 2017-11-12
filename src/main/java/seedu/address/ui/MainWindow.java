@@ -221,7 +221,7 @@ public class MainWindow extends UiPart<Region> {
     }
 
     //@@author JunQuann
-    public String getDisplayPicPath() {
+    private String getDisplayPicPath() {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PICTURE files", "*.jpg", "*.png");
         fileChooser.getExtensionFilters().add(extFilter);

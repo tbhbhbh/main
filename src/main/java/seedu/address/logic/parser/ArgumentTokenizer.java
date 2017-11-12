@@ -144,8 +144,8 @@ public class ArgumentTokenizer {
     private static ArgumentMultimap inputDisplayPicPath(ArgumentMultimap argMultimap, Prefix... prefixes) {
         Optional<String> displayPicValue = argMultimap.getValue(PREFIX_DP);
         if (displayPicValue.isPresent() && !displayPicValue.get().equals(DEFAULT_DP)) {
-            String hashedDisplayPicName = createUniqueDisplayPicName(argMultimap, prefixes);
             String currentImgPath = getCurrentImgPath();
+            String hashedDisplayPicName = createUniqueDisplayPicName(argMultimap, currentImgPath, prefixes);
             if (currentImgPath == null || currentImgPath.equals(DEFAULT_DP)) {
                 argMultimap.put(PREFIX_DP, DEFAULT_DP);
             } else {
@@ -171,8 +171,8 @@ public class ArgumentTokenizer {
     /**
      * Create a unique display pic name by adding all fields of a person together and creating a hashcode
      */
-    private static String createUniqueDisplayPicName(ArgumentMultimap argMultimap, Prefix... prefixes) {
-        String displayPicName = "";
+    private static String createUniqueDisplayPicName(ArgumentMultimap argMultimap, String currentImgPath, Prefix... prefixes) {
+        String displayPicName = currentImgPath;
         for (Prefix prefix : prefixes) {
             displayPicName += argMultimap.getValue(prefix);
         }
