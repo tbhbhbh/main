@@ -51,8 +51,8 @@
             </VBox>
             <Pane minHeight="25.0" minWidth="70.0" prefHeight="25.0" prefWidth="30.0">
                <children>
-                  <Circle fx:id="insta_icon" fill="#f5f9fa" layoutX="15.0" layoutY="45.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Circle fx:id="twitter_icon" fill="#f5f9fa" layoutX="51.0" layoutY="45.0" radius="12.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Circle fx:id="instaIcon" fill="#f5f9fa" layoutX="15.0" layoutY="45.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Circle fx:id="twitterIcon" fill="#f5f9fa" layoutX="51.0" layoutY="45.0" radius="12.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
                </children>
             </Pane>
          </children>

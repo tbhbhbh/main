@@ -53,9 +53,9 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Circle displayPic;
     @FXML
-    private Circle insta_icon;
+    private Circle instaIcon;
     @FXML
-    private Circle twitter_icon;
+    private Circle twitterIcon;
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
@@ -113,8 +113,8 @@ public class PersonCard extends UiPart<Region> {
     private void initTwitterIcon(ReadOnlyPerson person) {
         String twitterName = person.getTwitterName().value;
         if (!twitterName.isEmpty()) {
-            Image twitterIcon = AppUtil.getImage(TWITTER_ICON);
-            twitter_icon.setFill(new ImagePattern(twitterIcon));
+            Image twitterIconPic = AppUtil.getImage(TWITTER_ICON);
+            twitterIcon.setFill(new ImagePattern(twitterIconPic));
         }
     }
 
@@ -124,8 +124,8 @@ public class PersonCard extends UiPart<Region> {
     private void initInstaIcon(ReadOnlyPerson person) {
         String instaName = person.getInstagramName().value;
         if (!instaName.isEmpty()) {
-            Image instaIcon = AppUtil.getImage(INSTA_ICON);
-            insta_icon.setFill(new ImagePattern(instaIcon));
+            Image instaIconPic = AppUtil.getImage(INSTA_ICON);
+            instaIcon.setFill(new ImagePattern(instaIconPic));
         }
     }
 
