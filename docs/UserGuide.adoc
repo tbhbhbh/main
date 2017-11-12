@@ -491,6 +491,7 @@ Opens up the Instagram profile of the person at index 1. +
 Opens up the Twitter profile of the person at index 2.
 // end::social[]
 
+// tag::location[]
 === Viewing a contact's address : `location`
 
 View a person's address in the browser panel using Google Maps. +
@@ -503,10 +504,11 @@ Format: `location INDEX`
 * The person at the chosen index should have an address.
 ****
 
-Examples:
+Examples: +
+
 * `location 1` +
 Opens up the Google Maps location of the person at index 1.
-
+// end::location[]
 === Clearing all entries : `clear`
 
 Clears all entries from the address book. +
