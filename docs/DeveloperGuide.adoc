@@ -832,6 +832,29 @@ The returned path will be stored as the display picture value of a person.
 ---
 // end::displayPic[]
 
+// tag::tagdelete[]
+=== Tag Delete
+This feature is implemented to provide users the ability to delete tags without having to update each person at a time.
+
+The following sequence diagram shows how the tag delete operation works:
+
+image::TagDeleteSequenceDiagram.png[width="800"]
+
+The user will have to provide the command `tagdelete friends` to delete the tag `friends` from all persons in HitMeUp.
+`TagDeleteCommandParser` will parse the argument given after `tagdelete` provided by the user and it will return
+ `TagDeleteCommand`. Next, `TagDeleteCommand` will call its method `executeUndoableCommand()` and ensure that the tag
+ `friends` specified is valid.
+
+==== Design Considerations
+**Aspect:** implementation of `TagDeleteCommand` +
+**Alternative 1 (current choice):** implement it by extending `UndoableCommand` +
+**Pros:** Deleting tags is undoable/redoable +
+**Cons:** May be difficult for new developers to understand the flow +
+**Alternative 2:** just override `execute()` +
+**Pros:** Does not involve template pattern, easier to understand +
+**Cons:** Cannot undo/redo unless `super.execute()` is called
+// end::tagdelete[]
+
 // tag::tagedit[]
 === Tag Edit
 This feature is implemented to provide users the ability to edit tags without having to update each person one at a time.

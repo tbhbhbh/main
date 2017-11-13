@@ -432,7 +432,7 @@ Changes the tag 'friends' into 'losers' for all persons with that tag.
 
 Searches for persons whose name, tags, birthday or initials contain any of the given keywords. +
 
-=======
+
 Format: `find KEYWORD [MORE_KEYWORDS]` +
 
 ****
@@ -441,6 +441,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]` +
 * For names, only full words will be matched. e.g. `Han` will not match `Hans`
 ****
 
+=======
 Examples with explanation:
 
 * `find` only supports searching for 1 name. +
