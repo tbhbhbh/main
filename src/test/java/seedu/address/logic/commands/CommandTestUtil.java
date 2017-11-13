@@ -71,8 +71,8 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS + ""; // empty string allowed for addresses
     public static final String INVALID_BIRTHDAY_DESC = " " + PREFIX_BIRTHDAY + "05.11.1990"; // only '/' allowed
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
-    public static final String INVALID_TWITTER_DESC = " " + PREFIX_TWITTER + "alice.pauline"; // '.' not allowed
-    public static final String INVALID_INSTAGRAM_DESC = " " + PREFIX_INSTAGRAM + "alice.pauline"; // '.' not allowed
+    public static final String INVALID_TWITTER_DESC = " " + PREFIX_TWITTER + "alice!pauline"; // '!' not allowed
+    public static final String INVALID_INSTAGRAM_DESC = " " + PREFIX_INSTAGRAM + "alice!pauline"; // '!' not allowed
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
 
