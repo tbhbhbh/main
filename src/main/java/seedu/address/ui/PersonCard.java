@@ -24,8 +24,8 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
-    private static final String INSTA_ICON = "/images/insta_icon.png";
-    private static final String TWITTER_ICON = "/images/twitter_icon.png";
+    private static final String INSTA_ICON = "/images/insta_Icon.png";
+    private static final String TWITTER_ICON = "/images/twitter_Icon.png";
     private static HashMap<String, String> tagColours = new HashMap<String, String>();
     private static Random rand = new Random();
 
