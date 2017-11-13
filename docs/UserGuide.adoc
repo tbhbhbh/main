@@ -104,7 +104,8 @@ Format: `add n/NAME p/PHONE_NUMBER [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TWITTE
 
 ****
 * Only the name and phone number field must be provided.
-* Duplicated person, where all the fields excluding tag and display picture choice are exactly the same, cannot be added.
+* Duplicated persons, where all the fields excluding tag and display picture choice are exactly the same, cannot be
+added.
 ****
 
 =======
@@ -149,7 +150,8 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [tw/TW
 [ig/INSTAGRAM] [dp/] [t/TAG]...`
 
 ****
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
+* Edits the person at the specified `INDEX`. The index refers to the index number shown in the last person listing.
+* The index *must be a positive integer* 1, 2, 3, ...
 * If a change in person's name ends up affecting the alphabetical order, the list of contacts will be resorted.
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
@@ -380,10 +382,10 @@ Emails one or more persons identified by the index number used in the last perso
 Format: `email INDEX [INDEX]...`
 
 ****
-* The index refers to the index number shown in the most recent listing
+* The index refers to the index number shown in the most recent listing.
 * The index *must be a positive integer* 1, 2, 3, ...
 * The person specified must have a valid email address.
-* Opens the default mail application in your desktop as shown below with the email addresses of the specified persons
+* Opens the default mail application in your desktop as shown below with the email addresses of the specified persons.
 ****
 
 image::EmailWindow.png[width="790"]
@@ -414,7 +416,8 @@ Allows you to delete a tag from all persons in the address book.
 Format: `tagdelete TAG_NAME`
 
 ****
-* The tag must be a valid tag (eg. already existing)
+* The tag must be a valid tag. (eg. alphanumeric but cannot be an integer)
+* The tag to delete should already exist in HitMeUp.
 ****
 
 Examples:
@@ -431,10 +434,9 @@ Allows you to change the name of a tag belonging to all persons in the address b
 Format: `tagedit OLD_TAG_NAME NEW_TAG_NAME`
 
 ****
-* Old tag must be an existing, valid tag
-* New tag must be a valid tag (eg. alphanumerical only)
+* The old tag and new tag must be valid tags. (eg. alphanumeric but cannot be an integer)
+* The old tag to delete should already exist in HitMeUp.
 ****
-
 
 Examples:
 
@@ -447,8 +449,7 @@ Changes the tag 'friends' into 'losers' for all persons with that tag.
 
 Searches for persons whose name, tags, birthday or initials contain any of the given keywords. +
 
-
-Format: `find KEYWORD [MORE_KEYWORDS]` +
+Format: `find KEYWORD [MORE_KEYWORDS]...` +
 
 ****
 * The search is case insensitive. e.g. `hans` will match `Hans` (example below)
@@ -577,7 +578,7 @@ e.g. `email 1 2`
 e.g. `export 1 2`
 * *Exit* : `exit`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
-e.g. `find James Jake`
+e.g. `find James colleagues`
 * *Help* : `help`
 * *History* : `history`
 * *Import* : `import` +
@@ -595,6 +596,7 @@ e.g. `tagdelete friends`
 * *Tag Edit*: `tagedit OLD_TAG_NAME NEW_TAG_NAME` +
 e.g. `tagedit friends losers`
 * *Undo* : `undo`
+
 
 
 
