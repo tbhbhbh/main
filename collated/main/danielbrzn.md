@@ -211,6 +211,8 @@ public class GoogleUtil {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final int HTTP_PORT = 80;
     private static final String GOOGLE_ADDRESS = "www.google.com";
+    private static final String DIALING_PREFIX = "+";
+    private static final String APPLICATION_NAME = "HitMeUp";
 
     /**
      * Returns true if Google is reachable
@@ -250,7 +252,8 @@ public class GoogleUtil {
      */
     public static List<Person> retrieveContacts(Credential credential, HttpTransport httpTransport) {
         PeopleService peopleService =
-                new PeopleService.Builder(httpTransport, JSON_FACTORY, credential).build();
+                new PeopleService.Builder(httpTransport, JSON_FACTORY, credential)
+                        .setApplicationName(APPLICATION_NAME).build();
 
         ListConnectionsResponse response = null;
         try {
@@ -293,9 +296,17 @@ public class GoogleUtil {
         }
 
         if (numbers != null && numbers.size() > 0) {
-            phone = numbers.get(0).getCanonicalForm().replace("+", "");
+            // Google phone numbers are stored in either canonical form or value
+            try {
+                phone = numbers.get(0).getCanonicalForm().replace(DIALING_PREFIX, "");
+            } catch (NullPointerException npe) {
+                phone = numbers.get(0).getValue().replace(DIALING_PREFIX, "");
+                if (!Phone.isValidPhone(phone)) {
+                    return null;
+                }
+            }
         } else {
-            phone = "";
+            return null;
         }
         if (emailAddresses != null && emailAddresses.size() > 0) {
             email = emailAddresses.get(0).getValue();
@@ -427,6 +438,7 @@ package seedu.address.logic.commands;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -435,6 +447,7 @@ import com.google.api.services.people.v1.model.Person;
 
 import javafx.concurrent.Task;
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.CloseProgressEvent;
 import seedu.address.commons.events.ui.NewResultAvailableEvent;
 import seedu.address.commons.events.ui.ShowProgressEvent;
@@ -470,6 +483,7 @@ public class ImportCommand extends UndoableCommand {
     private static ArrayList<String> invalidPeople;
     private static Credential credential;
     private static HttpTransport httpTransport;
+    private static final Logger logger = LogsCenter.getLogger(ImportCommand.class);
     private final String service;
 
     private int peopleAdded;
@@ -571,13 +585,14 @@ public class ImportCommand extends UndoableCommand {
 
         task.setOnFailed(t -> {
             EventsCenter.getInstance().post(new CloseProgressEvent());
+            logger.warning(task.getException().toString());
             EventsCenter.getInstance().post(new NewResultAvailableEvent(String.format(MESSAGE_FAILURE), true));
         });
 
         EventsCenter.getInstance().post(new ShowProgressEvent(task.progressProperty()));
         Thread importThread = new Thread(task);
+        importThread.start();
         try {
-            importThread.start();
             importThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -659,7 +674,7 @@ public class LocationCommand extends Command {
 
         // Check if index is valid
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + index.getOneBased());
         }
 
         // Check if Google is reachable

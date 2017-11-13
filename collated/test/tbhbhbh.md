@@ -176,8 +176,7 @@ public class SocialCommandTest {
     public void execute_invalidIndexUnfilteredList_throwsCommandException() throws Exception {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         SocialCommand socialCommand = prepareCommand(outOfBoundIndex, "ig");
-        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + ": "
-                + outOfBoundIndex.getOneBased();
+        String expectedMessage = Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX + outOfBoundIndex.getOneBased();
 
         assertCommandFailure(socialCommand, model, expectedMessage);
     }
