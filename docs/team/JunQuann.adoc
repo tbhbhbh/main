@@ -37,7 +37,8 @@ include::../UserGuide.adoc[tag=displayPic]
 
 ==== Justification
 
-Having a display picture for each contact not only beautify the User Interface but also help users to remember their contacts easily.
+* Having a display picture for each contact not only beautify the User Interface but also help users to remember their contacts easily.
+* Automatically coping the chosen image for display pic into the storage and using the copied image will reduce the chance of display picture not rendering properly if user moves the chosen display picture.
 
 ==== Implementation
 
