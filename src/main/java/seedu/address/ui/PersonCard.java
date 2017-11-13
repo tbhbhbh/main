@@ -3,8 +3,6 @@ package seedu.address.ui;
 import static seedu.address.ui.MainWindow.DEFAULT_DP;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -25,9 +23,7 @@ public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
     private static final String INSTA_ICON = "/images/insta_Icon.png";
-    private static final String TWITTER_ICON = "/images/twitter_Icon.png";
-    private static HashMap<String, String> tagColours = new HashMap<String, String>();
-    private static Random rand = new Random();
+    private static final String TWITTER_ICON = "/images/twitter_icon.png";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -135,7 +131,7 @@ public class PersonCard extends UiPart<Region> {
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label newTag = new Label(tag.tagName);
-            newTag.setStyle("#C1D3DD");
+            newTag.setStyle(":#C1D3DD");
             tags.getChildren().add(newTag);
         });
     }
