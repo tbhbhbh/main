@@ -22,22 +22,22 @@ public class FindCommandParserTest {
         assertParseFailure(parser, "     ",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         assertParseFailure(parser, "102",
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.BIRTHDAY_USAGE));
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
     }
 
 
     @Test
     public void parse_validArgs_returnsSearchCommand() {
         // no leading and trailing whitespaces
-        FindCommand expectedSearchCommand =
+        FindCommand expectedFindCommand =
                 new FindCommand(new PersonContainsKeywordsPredicate(Arrays.asList("Alice", "friends")));
-        assertParseSuccess(parser, "Alice friends", expectedSearchCommand);
+        assertParseSuccess(parser, "Alice friends", expectedFindCommand);
 
         // multiple whitespaces between keywords
-        assertParseSuccess(parser, " \n Alice \n \t friends  \t", expectedSearchCommand);
+        assertParseSuccess(parser, " \n Alice \n \t friends  \t", expectedFindCommand);
 
         // single birthday month represented by 2 digits
-        expectedSearchCommand = new FindCommand(new PersonContainsBirthdayPredicate("05"));
-        assertParseSuccess(parser, "05", expectedSearchCommand);
+        expectedFindCommand = new FindCommand(new PersonContainsBirthdayPredicate("05"));
+        assertParseSuccess(parser, "05", expectedFindCommand);
     }
 }
