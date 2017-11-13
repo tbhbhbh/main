@@ -12,14 +12,14 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class UserName {
 
     public static final String MESSAGE_USERNAME_CONSTRAINTS =
-            "Social media username should only contain alphanumeric characters and underscores.";
+            "Social media username should only contain alphanumeric characters, underscores or a period character.";
 
     /*
      * The first character of the username must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
-     * It should only contain alphanumeric characters.
+     * It should only contain alphanumeric characters, underscores or a period character
      */
-    public static final String USERNAME_VALIDATION_REGEX = "\\w+";
+    public static final String USERNAME_VALIDATION_REGEX = "[\\w\\.]+";
 
     public final String value;
 

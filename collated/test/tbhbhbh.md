@@ -1,5 +1,5 @@
 # tbhbhbh
-###### \java\seedu\address\logic\commands\AddCommandTest.java
+###### /java/seedu/address/logic/commands/AddCommandTest.java
 ``` java
         @Override
         public void deleteTag(Tag tag) {
@@ -11,7 +11,7 @@
             fail("This method should not be called.");
         }
 ```
-###### \java\seedu\address\logic\commands\FindCommandTest.java
+###### /java/seedu/address/logic/commands/FindCommandTest.java
 ``` java
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
@@ -64,7 +64,7 @@
         assertCommandSuccess(command, expectedMessage, Collections.singletonList(BENSON));
     }
 ```
-###### \java\seedu\address\logic\commands\FindCommandTest.java
+###### /java/seedu/address/logic/commands/FindCommandTest.java
 ``` java
     /**
      * Parses {@code userInput} which are keywords into a {@code FindCommand}.
@@ -93,7 +93,7 @@
     }
 }
 ```
-###### \java\seedu\address\logic\commands\SocialCommandTest.java
+###### /java/seedu/address/logic/commands/SocialCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -220,7 +220,7 @@ public class SocialCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\TagDeleteCommandTest.java
+###### /java/seedu/address/logic/commands/TagDeleteCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -268,7 +268,7 @@ public class TagDeleteCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\TagEditCommandTest.java
+###### /java/seedu/address/logic/commands/TagEditCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -373,7 +373,7 @@ public class TagEditCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\FindCommandParserTest.java
+###### /java/seedu/address/logic/parser/FindCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -415,7 +415,7 @@ public class FindCommandParserTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\SocialCommandParserTest.java
+###### /java/seedu/address/logic/parser/SocialCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -457,7 +457,7 @@ public class SocialCommandParserTest {
 
 }
 ```
-###### \java\systemtests\AddressBookSystemTest.java
+###### /java/systemtests/AddressBookSystemTest.java
 ``` java
     /**
      * Asserts that the browser's url is changed to display the details of the person in the person list panel at
@@ -479,7 +479,7 @@ public class SocialCommandParserTest {
         assertEquals(expectedSelectedCardIndex.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
     }
 ```
-###### \java\systemtests\AddressBookSystemTest.java
+###### /java/systemtests/AddressBookSystemTest.java
 ``` java
     /**
      * Returns the person's instagram name from his/her full name.
