@@ -669,7 +669,7 @@ public class PersonContainsKeywordsPredicate implements Predicate<ReadOnlyPerson
      * or Instagram).
      * @param userName is a UserName of the person
      */
-    public void handleSocial(UserName userName, String socialMediaLink) {
+    private void handleSocial(UserName userName, String socialMediaLink) {
         browserPanel.loadPage(socialMediaLink + userName);
     }
 

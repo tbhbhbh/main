@@ -1018,14 +1018,14 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class UserName {
 
     public static final String MESSAGE_USERNAME_CONSTRAINTS =
-            "Social media username should only contain alphanumeric characters and underscores.";
+            "Social media username should only contain alphanumeric characters, underscores or a period character.";
 
     /*
      * The first character of the username must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
-     * It should only contain alphanumeric characters.
+     * It should only contain alphanumeric characters, underscores or a period character
      */
-    public static final String USERNAME_VALIDATION_REGEX = "\\w+";
+    public static final String USERNAME_VALIDATION_REGEX = "[\\w\\.]+";
 
     public final String value;
 
@@ -1185,7 +1185,7 @@ public class BrowserWindow extends UiPart<Region> {
      * Opens the provided URL in the built-in browser
      * @param link is a URL to be opened in the BrowserPanel
      */
-    public void handleUrl(String link) {
+    private void handleUrl(String link) {
         browserPanel.loadPage(link);
     }
 
@@ -1193,7 +1193,7 @@ public class BrowserWindow extends UiPart<Region> {
      * Opens the progress window.
      */
     @FXML
-    public void handleProgress(ReadOnlyDoubleProperty progress) {
+    private void handleProgress(ReadOnlyDoubleProperty progress) {
         Platform.runLater(() -> {
             pWindow = new ProgressWindow(progress);
             pWindow.show();
@@ -1205,7 +1205,7 @@ public class BrowserWindow extends UiPart<Region> {
      * Closes the progress window.
      */
     @FXML
-    public void handleCloseProgress() {
+    private void handleCloseProgress() {
         pWindow.getDialogStage().close();
     }
 
