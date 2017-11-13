@@ -97,7 +97,8 @@ public class NewImageEvent extends BaseEvent {
     /**
      * Create a unique display pic name by adding all fields of a person together and creating a hashcode
      */
-    private static String createUniqueDisplayPicName(ArgumentMultimap argMultimap, String currentImgPath, Prefix... prefixes) {
+    private static String createUniqueDisplayPicName(ArgumentMultimap argMultimap,
+                                                     String currentImgPath, Prefix... prefixes) {
         String displayPicName = currentImgPath;
         for (Prefix prefix : prefixes) {
             displayPicName += argMultimap.getValue(prefix);

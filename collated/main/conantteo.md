@@ -890,7 +890,7 @@ public class GroupListPanel extends UiPart<Region> {
      * @param allEmailAddresses is a string of all valid email addresses user request to email to.
      * @throws IOException when java Desktop class is not supported in this platform.
      */
-    public void handleEmail(String allEmailAddresses) {
+    private void handleEmail(String allEmailAddresses) {
 
         URI mailTo = null;
         try {
@@ -919,7 +919,7 @@ public class GroupListPanel extends UiPart<Region> {
      * The file directory is is guaranteed to exist before showing.
      * @throws IOException when java Desktop class is not supported in this platform.
      */
-    public void handleExport() {
+    private void handleExport() {
         File file = new File(EXPORT_FILE_PATH);
         try {
             if (Desktop.isDesktopSupported()) {
