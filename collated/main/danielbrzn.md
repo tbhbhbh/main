@@ -1,5 +1,5 @@
 # danielbrzn
-###### /java/seedu/address/commons/events/model/UserPrefsChangedEvent.java
+###### \java\seedu\address\commons\events\model\UserPrefsChangedEvent.java
 ``` java
 package seedu.address.commons.events.model;
 
@@ -22,7 +22,7 @@ public class UserPrefsChangedEvent extends BaseEvent {
     }
 }
 ```
-###### /java/seedu/address/commons/events/ui/CloseProgressEvent.java
+###### \java\seedu\address\commons\events\ui\CloseProgressEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -40,39 +40,7 @@ public class CloseProgressEvent extends BaseEvent {
 
 }
 ```
-<<<<<<< HEAD
-###### \java\seedu\address\commons\events\ui\ShowLocationEvent.java
-``` java
-package seedu.address.commons.events.ui;
-
-import seedu.address.commons.events.BaseEvent;
-
-/**
- * An event requesting to show the location of a Person.
- */
-public class ShowLocationEvent extends BaseEvent {
-
-    private final String googleMapsUrl;
-
-    public ShowLocationEvent(String mapsUrl) {
-        this.googleMapsUrl = mapsUrl;
-    }
-
-    public String getGoogleMapsUrl() {
-        return googleMapsUrl;
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
-    }
-
-}
-```
 ###### \java\seedu\address\commons\events\ui\ShowProgressEvent.java
-=======
-###### /java/seedu/address/commons/events/ui/ShowProgressEvent.java
->>>>>>> upstream/master
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -101,7 +69,7 @@ public class ShowProgressEvent extends BaseEvent {
 
 }
 ```
-###### /java/seedu/address/commons/events/ui/ShowUrlEvent.java
+###### \java\seedu\address\commons\events\ui\ShowUrlEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -129,7 +97,7 @@ public class ShowUrlEvent extends BaseEvent {
 
 }
 ```
-###### /java/seedu/address/commons/util/AuthorizationUtil.java
+###### \java\seedu\address\commons\util\AuthorizationUtil.java
 ``` java
 package seedu.address.commons.util;
 
@@ -195,7 +163,7 @@ public class AuthorizationUtil extends AuthorizationCodeInstalledApp {
     }
 }
 ```
-###### /java/seedu/address/commons/util/GoogleUtil.java
+###### \java\seedu\address\commons\util\GoogleUtil.java
 ``` java
 package seedu.address.commons.util;
 
@@ -379,7 +347,7 @@ public class GoogleUtil {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/AliasCommand.java
+###### \java\seedu\address\logic\commands\AliasCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -444,7 +412,7 @@ public class AliasCommand extends UndoableCommand {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/EditCommand.java
+###### \java\seedu\address\logic\commands\EditCommand.java
 ``` java
         public void setTwitterName(UserName twitterName) {
             this.twitterName = twitterName;
@@ -463,7 +431,7 @@ public class AliasCommand extends UndoableCommand {
         }
 
 ```
-###### /java/seedu/address/logic/commands/ImportCommand.java
+###### \java\seedu\address\logic\commands\ImportCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -658,7 +626,7 @@ public class ImportCommand extends UndoableCommand {
 
 }
 ```
-###### /java/seedu/address/logic/commands/LocationCommand.java
+###### \java\seedu\address\logic\commands\LocationCommand.java
 ``` java
 
 package seedu.address.logic.commands;
@@ -668,11 +636,7 @@ import java.util.List;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-<<<<<<< HEAD
-import seedu.address.commons.events.ui.ShowLocationEvent;
-=======
 import seedu.address.commons.events.ui.ShowUrlEvent;
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
 import seedu.address.commons.util.GoogleUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Address;
@@ -726,11 +690,7 @@ public class LocationCommand extends Command {
         }
 
         String finalUrl = GOOGLE_MAPS_URL_PREFIX + parseAddressForUrl(current.getAddress());
-<<<<<<< HEAD
-        EventsCenter.getInstance().post(new ShowLocationEvent(finalUrl));
-=======
         EventsCenter.getInstance().post(new ShowUrlEvent(finalUrl));
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
         return new CommandResult(String.format(MESSAGE_SUCCESS, current.getName().toString()));
     }
 
@@ -761,7 +721,7 @@ public class LocationCommand extends Command {
 }
 
 ```
-###### /java/seedu/address/logic/parser/AddCommandParser.java
+###### \java\seedu\address\logic\parser\AddCommandParser.java
 ``` java
     /**
      * Fills the prefixes that have not been specified by the user with an empty string in the given
@@ -789,7 +749,7 @@ public class LocationCommand extends Command {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
+###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
     /**
      * Checks if the input command is valid.
@@ -827,7 +787,7 @@ public class LocationCommand extends Command {
 
 }
 ```
-###### /java/seedu/address/logic/parser/AliasCommandParser.java
+###### \java\seedu\address\logic\parser\AliasCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -864,7 +824,7 @@ public class AliasCommandParser implements Parser<AliasCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ImportCommandParser.java
+###### \java\seedu\address\logic\parser\ImportCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -896,7 +856,7 @@ public class ImportCommandParser implements Parser<ImportCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/LocationCommandParser.java
+###### \java\seedu\address\logic\parser\LocationCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -928,7 +888,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ParserUtil.java
+###### \java\seedu\address\logic\parser\ParserUtil.java
 ``` java
     /**
      * Parses a {@code Optional<String> twitterUserName} into an {@code Optional<UserName>} if {@code twitterUserName}
@@ -952,31 +912,31 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Clears existing aliases from UserPrefs and replaces with the provided new data */
     void resetAlias(HashMap<String, String> prevAliasMap);
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Returns the User Preferences */
     UserPrefs getUserPrefs();
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Adds the given alias */
     void addAlias(String alias, String command);
 
 ```
-###### /java/seedu/address/model/Model.java
+###### \java\seedu\address\model\Model.java
 ``` java
     /** Gets the command mapping for an alias */
     String getAlias(String alias);
 
 ```
-###### /java/seedu/address/model/ModelManager.java
+###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
     public void resetAlias(HashMap<String, String> prevAliasMap) {
@@ -984,7 +944,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
         indicateUserPrefsChanged();
     }
 ```
-###### /java/seedu/address/model/ModelManager.java
+###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
     public UserPrefs getUserPrefs() {
@@ -992,7 +952,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/ModelManager.java
+###### \java\seedu\address\model\ModelManager.java
 ``` java
     @Override
     public void addAlias(String alias, String command) {
@@ -1012,7 +972,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/person/Person.java
+###### \java\seedu\address\model\person\Person.java
 ``` java
     @Override
     public ObjectProperty<UserName> twitterNameProperty() {
@@ -1043,7 +1003,7 @@ public class LocationCommandParser implements Parser<LocationCommand> {
     }
 
 ```
-###### /java/seedu/address/model/person/UserName.java
+###### \java\seedu\address\model\person\UserName.java
 ``` java
 package seedu.address.model.person;
 
@@ -1058,14 +1018,14 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class UserName {
 
     public static final String MESSAGE_USERNAME_CONSTRAINTS =
-            "Social media username should only contain alphanumeric characters and underscores.";
+            "Social media username should only contain alphanumeric characters, underscores or a period character.";
 
     /*
      * The first character of the username must not be a whitespace,
      * otherwise " " (a blank string) becomes a valid input.
-     * It should only contain alphanumeric characters.
+     * It should only contain alphanumeric characters, underscores or a period character
      */
-    public static final String USERNAME_VALIDATION_REGEX = "\\w+";
+    public static final String USERNAME_VALIDATION_REGEX = "[\\w\\.]+";
 
     public final String value;
 
@@ -1109,14 +1069,14 @@ public class UserName {
 
 }
 ```
-###### /java/seedu/address/model/UserPrefs.java
+###### \java\seedu\address\model\UserPrefs.java
 ``` java
     public void resetAlias(HashMap<String, String> prevAliasMap) {
         this.aliasMap = prevAliasMap;
     }
 
 ```
-###### /java/seedu/address/model/UserPrefs.java
+###### \java\seedu\address\model\UserPrefs.java
 ``` java
     public HashMap<String, String> getAliasMap() {
         return aliasMap;
@@ -1131,7 +1091,7 @@ public class UserName {
     }
 
 ```
-###### /java/seedu/address/storage/Storage.java
+###### \java\seedu\address\storage\Storage.java
 ``` java
     /**
      * Saves the current version of the User Preferences to the hard disk.
@@ -1140,7 +1100,7 @@ public class UserName {
      */
     void handleUserPrefsChangedEvent(UserPrefsChangedEvent upce);
 ```
-###### /java/seedu/address/storage/StorageManager.java
+###### \java\seedu\address\storage\StorageManager.java
 ``` java
     @Override
     @Subscribe
@@ -1154,7 +1114,7 @@ public class UserName {
     }
 
 ```
-###### /java/seedu/address/ui/BrowserWindow.java
+###### \java\seedu\address\ui\BrowserWindow.java
 ``` java
 package seedu.address.ui;
 
@@ -1218,30 +1178,22 @@ public class BrowserWindow extends UiPart<Region> {
     }
 }
 ```
-###### /java/seedu/address/ui/MainWindow.java
+###### \java\seedu\address\ui\MainWindow.java
 ``` java
 
     /**
-<<<<<<< HEAD
-     * Opens the provided Google Maps URL in the built-in browser
-     * @param googleMapsUrl is the full URL of a person's location
-     */
-    public void handleLocation(String googleMapsUrl) {
-        browserPanel.loadPage(googleMapsUrl);
-=======
      * Opens the provided URL in the built-in browser
      * @param link is a URL to be opened in the BrowserPanel
      */
-    public void handleUrl(String link) {
+    private void handleUrl(String link) {
         browserPanel.loadPage(link);
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
     }
 
     /**
      * Opens the progress window.
      */
     @FXML
-    public void handleProgress(ReadOnlyDoubleProperty progress) {
+    private void handleProgress(ReadOnlyDoubleProperty progress) {
         Platform.runLater(() -> {
             pWindow = new ProgressWindow(progress);
             pWindow.show();
@@ -1253,24 +1205,18 @@ public class BrowserWindow extends UiPart<Region> {
      * Closes the progress window.
      */
     @FXML
-    public void handleCloseProgress() {
+    private void handleCloseProgress() {
         pWindow.getDialogStage().close();
     }
 
 ```
-###### /java/seedu/address/ui/MainWindow.java
+###### \java\seedu\address\ui\MainWindow.java
 ``` java
 
     @Subscribe
-<<<<<<< HEAD
-    private void handleShowLocationEvent(ShowLocationEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        handleLocation(event.getGoogleMapsUrl());
-=======
     private void handleShowUrlEvent(ShowUrlEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleUrl(event.getUrl());
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
     }
 
     @Subscribe
@@ -1294,7 +1240,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 
 ```
-###### /java/seedu/address/ui/PersonListPanel.java
+###### \java\seedu\address\ui\PersonListPanel.java
 ``` java
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
@@ -1319,7 +1265,7 @@ public class BrowserWindow extends UiPart<Region> {
     }
 }
 ```
-###### /java/seedu/address/ui/ProgressWindow.java
+###### \java\seedu\address\ui\ProgressWindow.java
 ``` java
 package seedu.address.ui;
 
@@ -1402,7 +1348,7 @@ public class ProgressWindow extends UiPart<Region> {
 
 }
 ```
-###### /resources/view/ProgressWindow.fxml
+###### \resources\view\ProgressWindow.fxml
 ``` fxml
 
 <?import javafx.scene.control.ProgressBar?>

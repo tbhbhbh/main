@@ -1,5 +1,5 @@
 # danielbrzn
-###### /java/guitests/guihandles/ProgressWindowHandle.java
+###### \java\guitests\guihandles\ProgressWindowHandle.java
 ``` java
 package guitests.guihandles;
 
@@ -34,7 +34,7 @@ public class ProgressWindowHandle extends StageHandle {
     }
 }
 ```
-###### /java/seedu/address/commons/util/GoogleUtilTest.java
+###### \java\seedu\address\commons\util\GoogleUtilTest.java
 ``` java
 package seedu.address.commons.util;
 
@@ -69,7 +69,7 @@ public class GoogleUtilTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/AddCommandTest.java
+###### \java\seedu\address\logic\commands\AddCommandTest.java
 ``` java
         @Override
         public void addAlias(String alias, String command) {
@@ -83,7 +83,7 @@ public class GoogleUtilTest {
         }
 
 ```
-###### /java/seedu/address/logic/commands/AddCommandTest.java
+###### \java\seedu\address\logic\commands\AddCommandTest.java
 ``` java
         @Override
         public void resetAlias(HashMap<String, String> prevAliasMap) {
@@ -91,7 +91,7 @@ public class GoogleUtilTest {
         }
 
 ```
-###### /java/seedu/address/logic/commands/AddCommandTest.java
+###### \java\seedu\address\logic\commands\AddCommandTest.java
 ``` java
         @Override
         public UserPrefs getUserPrefs() {
@@ -100,7 +100,7 @@ public class GoogleUtilTest {
         }
 
 ```
-###### /java/seedu/address/logic/commands/AliasCommandTest.java
+###### \java\seedu\address\logic\commands\AliasCommandTest.java
 ``` java
 
 package seedu.address.logic.commands;
@@ -198,7 +198,7 @@ public class AliasCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/ImportCommandTest.java
+###### \java\seedu\address\logic\commands\ImportCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -296,7 +296,7 @@ public class ImportCommandTest {
 
 }
 ```
-###### /java/seedu/address/logic/commands/LocationCommandTest.java
+###### \java\seedu\address\logic\commands\LocationCommandTest.java
 ``` java
 
 package seedu.address.logic.commands;
@@ -317,11 +317,7 @@ import org.junit.Test;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-<<<<<<< HEAD
-import seedu.address.commons.events.ui.ShowLocationEvent;
-=======
 import seedu.address.commons.events.ui.ShowUrlEvent;
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -406,11 +402,7 @@ public class LocationCommandTest {
 
 
     /**
-<<<<<<< HEAD
-     * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowLocationEvent}
-=======
      * Executes a {@code LocationCommand} with the given {@code index}, and checks that {@code ShowUrlEvent}
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
      * is raised with the correct URL.
      */
     private void assertExecutionSuccess(Index index) {
@@ -428,13 +420,8 @@ public class LocationCommandTest {
         String url = LocationCommand.GOOGLE_MAPS_URL_PREFIX + locationCommand.parseAddressForUrl(
                 model.getFilteredPersonList().get(index.getZeroBased()).getAddress());
 
-<<<<<<< HEAD
-        ShowLocationEvent lastEvent = (ShowLocationEvent) eventsCollectorRule.eventsCollector.getMostRecent();
-        assertEquals(url, lastEvent.getGoogleMapsUrl());
-=======
         ShowUrlEvent lastEvent = (ShowUrlEvent) eventsCollectorRule.eventsCollector.getMostRecent();
         assertEquals(url, lastEvent.getUrl());
->>>>>>> 080bb00b598ce7886e1063e844da0c82741f89bc
     }
 
     /**
@@ -463,7 +450,7 @@ public class LocationCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/AddCommandParserTest.java
+###### \java\seedu\address\logic\parser\AddCommandParserTest.java
 ``` java
         // no email
         expectedPerson = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)
@@ -495,7 +482,7 @@ public class LocationCommandTest {
                 + EMAIL_DESC_AMY + TWITTER_DESC_AMY + INSTAGRAM_DESC_AMY
                 + ADDRESS_DESC_AMY, new AddCommand(expectedPerson));
 ```
-###### /java/seedu/address/logic/parser/AliasCommandParserTest.java
+###### \java\seedu\address\logic\parser\AliasCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -532,7 +519,7 @@ public class AliasCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ImportCommandParserTest.java
+###### \java\seedu\address\logic\parser\ImportCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -572,7 +559,7 @@ public class ImportCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/LocationCommandParserTest.java
+###### \java\seedu\address\logic\parser\LocationCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -604,7 +591,7 @@ public class LocationCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/storage/StorageManagerTest.java
+###### \java\seedu\address\storage\StorageManagerTest.java
 ``` java
     @Test
     public void getUserPrefsFilePath() {
@@ -612,7 +599,7 @@ public class LocationCommandParserTest {
     }
 
 ```
-###### /java/seedu/address/testutil/GooglePersonBuilder.java
+###### \java\seedu\address\testutil\GooglePersonBuilder.java
 ``` java
 package seedu.address.testutil;
 
@@ -725,7 +712,7 @@ public class GooglePersonBuilder {
 
 }
 ```
-###### /java/seedu/address/testutil/PersonBuilder.java
+###### \java\seedu\address\testutil\PersonBuilder.java
 ``` java
     /**
      * Sets the Twitter {@code UserName} of the {@code Person} that we are building.
@@ -752,7 +739,7 @@ public class GooglePersonBuilder {
     }
 
 ```
-###### /java/seedu/address/ui/ProgressWindowTest.java
+###### \java\seedu\address\ui\ProgressWindowTest.java
 ``` java
 package seedu.address.ui;
 
